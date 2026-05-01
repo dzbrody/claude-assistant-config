@@ -11,16 +11,14 @@ Auth: MCP_API_KEY env var, checked via:
 import os
 import json
 import base64
-from typing import Optional
 
 import httpx
 import boto3
 from mcp.server.fastmcp import FastMCP
-from starlette.applications import Starlette
+from mcp.server.transport_security import TransportSecuritySettings  # noqa: F401
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
-from starlette.routing import Mount
 
 # ---- Configuration ----
 OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.axinagroup.com")
@@ -29,8 +27,19 @@ MCP_API_KEY = os.environ.get("MCP_API_KEY", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 S3_BUCKETS = os.environ.get("S3_BUCKETS", "xgccloud-openproject-files").split(",")
 
+# Disable DNS rebinding protection — nginx is the trusted reverse proxy
+_no_dns_rebind = TransportSecuritySettings(enable_dns_rebinding_protection=False)
+
 # ---- MCP Server ----
-mcp = FastMCP("AXINA Group MCP Server")
+# mount_path="/mcp" makes FastMCP advertise /mcp/messages/ in SSE event data
+# so mcp-proxy posts to the nginx-proxied path, not bare /messages/
+mcp = FastMCP(
+    "AXINA Group MCP Server",
+    host="0.0.0.0",
+    port=39128,
+    transport_security=_no_dns_rebind,
+    mount_path="/mcp",
+)
 
 # ---- S3 client (uses EC2 IAM role automatically) ----
 s3_client = boto3.client("s3", region_name=AWS_REGION)
@@ -100,8 +109,8 @@ def create_work_package(
         project_id: Project identifier or numeric ID
         subject: Work package subject/title
         description: Optional description
-        type: Type — Task, Milestone, Bug, Feature, Epic
-        priority: Priority — low, normal, high, urgent
+        type: Type: Task, Milestone, Bug, Feature, Epic
+        priority: Priority: low, normal, high, urgent
     """
     data = {
         "subject": subject,
@@ -124,7 +133,7 @@ def list_work_packages(project_id: str, status: str = "") -> str:
     """
     endpoint = f"projects/{project_id}/work_packages"
     if status:
-        endpoint += f"?filters=[{{\"status\":{{\"operator\":\"=\",\"values\":[\"{status}\"]}}}}]"
+        endpoint += f'?filters=[{{"status":{{"operator":"=","values":["{status}"]}}}}]'
     result = op_get(endpoint)
     packages = [
         {
@@ -136,7 +145,10 @@ def list_work_packages(project_id: str, status: str = "") -> str:
         }
         for wp in result.get("_embedded", {}).get("elements", [])
     ]
-    return json.dumps({"project_id": project_id, "work_packages": packages, "count": len(packages)}, indent=2)
+    return json.dumps(
+        {"project_id": project_id, "work_packages": packages, "count": len(packages)},
+        indent=2,
+    )
 
 
 # ---- S3 Tools ----
@@ -169,8 +181,13 @@ def list_s3_objects(bucket: str, prefix: str = "", max_keys: int = 50) -> str:
         for o in response.get("Contents", [])
     ]
     return json.dumps(
-        {"bucket": bucket, "prefix": prefix, "objects": objects,
-         "count": len(objects), "truncated": response.get("IsTruncated", False)},
+        {
+            "bucket": bucket,
+            "prefix": prefix,
+            "objects": objects,
+            "count": len(objects),
+            "truncated": response.get("IsTruncated", False),
+        },
         indent=2,
     )
 
@@ -186,11 +203,14 @@ def get_s3_object(bucket: str, key: str) -> str:
     response = s3_client.get_object(Bucket=bucket, Key=key)
     content = response["Body"].read().decode("utf-8", errors="replace")
     return json.dumps(
-        {"bucket": bucket, "key": key,
-         "content_type": response.get("ContentType", "unknown"),
-         "size": response["ContentLength"],
-         "content": content[:10000],
-         "truncated": len(content) > 10000},
+        {
+            "bucket": bucket,
+            "key": key,
+            "content_type": response.get("ContentType", "unknown"),
+            "size": response["ContentLength"],
+            "content": content[:10000],
+            "truncated": len(content) > 10000,
+        },
         indent=2,
     )
 
@@ -201,7 +221,7 @@ def search_s3_objects(query: str, bucket: str = "") -> str:
 
     Args:
         query: Search query matched against object keys (case-insensitive)
-        bucket: Specific bucket to search (optional; searches all configured buckets if omitted)
+        bucket: Specific bucket to search (searches all configured buckets if omitted)
     """
     buckets_to_search = [bucket] if bucket else S3_BUCKETS
     results = []
@@ -209,8 +229,12 @@ def search_s3_objects(query: str, bucket: str = "") -> str:
         try:
             for page in s3_client.get_paginator("list_objects_v2").paginate(Bucket=b, MaxKeys=1000):
                 results += [
-                    {"bucket": b, "key": o["Key"], "size": o["Size"],
-                     "last_modified": o["LastModified"].isoformat()}
+                    {
+                        "bucket": b,
+                        "key": o["Key"],
+                        "size": o["Size"],
+                        "last_modified": o["LastModified"].isoformat(),
+                    }
                     for o in page.get("Contents", [])
                     if query.lower() in o["Key"].lower()
                 ]
@@ -224,22 +248,20 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         if not MCP_API_KEY:
             return await call_next(request)
-        key = (
-            request.query_params.get("key")
-            or request.headers.get("x-mcp-key")
-        )
+        path = request.url.path
+        # /mcp/messages/ carries a session_id issued after SSE auth — allow through
+        # /health is public for monitoring
+        if "/messages/" in path or path.endswith("/health"):
+            return await call_next(request)
+        key = request.query_params.get("key") or request.headers.get("x-mcp-key")
         if key != MCP_API_KEY:
             return Response("Unauthorized", status_code=401)
         return await call_next(request)
 
 
 # ---- ASGI App (SSE transport) ----
-mcp_app = mcp.sse_app()
-
-app = Starlette(
-    routes=[Mount("/", app=mcp_app)],
-)
-app.add_middleware(APIKeyMiddleware)
+app = mcp.sse_app()
+app.add_middleware(APIKeyMiddleware)  # type: ignore[attr-defined]
 
 
 if __name__ == "__main__":

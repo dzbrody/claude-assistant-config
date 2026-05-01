@@ -1,34 +1,58 @@
-# Scheduled Task Prompts
+# Scheduled Tasks
 
-Prompts for Claude Desktop's Scheduled Tasks feature. Each file is a self-contained prompt that Claude runs automatically on a set schedule.
+Automated prompts that run on a schedule via Claude Desktop's Scheduled Tasks feature.
 
 ## Active Tasks
 
 | File | Schedule | Summary |
 |------|----------|---------|
-| `morning-briefing.md` | Weekdays, 7:00 AM ET | Scans Gmail since 5 PM yesterday, reviews today's calendar, creates Google Tasks for action items, writes a briefing file, sends a WhatsApp summary |
-| `evening-wrap-up.md` | Weekdays, 6:00 PM ET | Reviews sent mail, checks task status, scans modified files, previews tomorrow's calendar, sends a WhatsApp wrap-up |
-| `weekly-review.md` | Sundays, 10:00 AM ET | Reads all daily briefings from the past week, aggregates by org (4ward.earth / XGC / AXINA), flags stale tasks, sends a WhatsApp summary |
+| `morning-briefing.md` | Weekdays, 7:00 AM ET | Scans Gmail since 5 PM, reviews today's calendar, creates Google Tasks for action items, writes a briefing file, sends WhatsApp summary |
+| `evening-wrap-up.md` | Weekdays, 6:00 PM ET | Reviews sent mail, checks task status, scans modified Drive files, previews tomorrow's calendar, sends WhatsApp wrap-up |
+| `weekly-review.md` | Sundays, 10:00 AM ET | Reads all daily briefings from the past week, aggregates by org (4ward / XGC / AXINA), flags stale tasks, sends WhatsApp summary |
 
-All output files are written to `~/Documents/daily_briefs/`.
+All output files are written to `~/Documents/daily_briefs/YYYY-MM-DD.md`.
 
-## How to Load a Prompt
+---
+
+## Required MCP Servers
+
+These tasks use the following MCP servers — confirm all are connected (`claude mcp list`) before scheduling:
+
+| Server | Used for |
+|--------|---------|
+| `google-workspace` | Gmail, Google Calendar, Google Tasks |
+| `filesystem` | Writing briefing files to `~/Documents/daily_briefs/` |
+| `whatsapp` | Sending summary messages |
+
+---
+
+## How to Load a Task
 
 1. Open **Claude Desktop**
-2. Click **Schedule** in the sidebar
+2. Click **Schedule** in the left sidebar
 3. Click **+ New task**
-4. Paste the prompt text from the relevant `.md` file (the contents of the `## Prompt` section)
-5. Set the frequency and time
-6. Click **Run once** to test and approve MCP permissions before the first scheduled run
+4. Open the relevant `.md` file, copy everything under the `## Prompt` heading
+5. Paste into the task input
+6. Set the frequency and time
+7. Click **Run once** to test before enabling the schedule — this also triggers the MCP permission dialogs so you can approve tool access
 
-## MCP Tools Used
+---
 
-These tasks rely on the following MCP servers being installed and authenticated:
+## First-Run Permissions
 
-| Tool | Used By |
-|------|---------|
-| `google-workspace` | All three tasks (Gmail, Calendar, Tasks) |
-| `whatsapp` | All three tasks (summary messages) |
-| `filesystem` | All three tasks (write briefing files) |
+On the first scheduled run, Claude Desktop will prompt you to approve each MCP tool call. Run each task manually once (**Run once**) and approve all prompts. After that, subsequent scheduled runs proceed automatically.
 
-Run `claude mcp list` to confirm all servers are registered.
+---
+
+## Output Format
+
+Each briefing file follows this structure:
+
+```
+~/Documents/daily_briefs/
+├── 2026-05-01.md
+├── 2026-05-02.md
+└── ...
+```
+
+The `weekly-review.md` prompt reads these files to generate the Sunday rollup.

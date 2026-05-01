@@ -1,154 +1,115 @@
 # MCP Servers
 
-MCP servers extend Claude with tools for email, calendar, messaging, files, and browser automation.
+MCP servers extend Claude with tools for email, calendar, messaging, files, browser automation, and project management.
 
-## Installed Servers
+## Current Servers
 
-| Server | Purpose | Transport |
-|--------|---------|-----------|
-| `google-workspace` | Gmail, Google Calendar, Drive, Tasks | stdio |
-| `whatsapp` | WhatsApp messaging (outbound) | stdio |
-| `document-loader` | Read Office/PDF files | stdio |
-| `filesystem` | Controlled file access — see paths below | stdio |
-| `playwright` | Browser automation | stdio |
-| `office365-local` | Control Word/Excel/PowerPoint desktop apps | stdio (manual) |
-| `openproject` | OpenProject project management at projects.axinagroup.com | stdio |
+| Server | Transport | Package / Command | What It Does |
+|--------|-----------|------------------|--------------|
+| `google-workspace` | stdio | `@alanxchen/google-workspace-mcp` | Gmail, Calendar, Drive, Tasks |
+| `whatsapp` | stdio | local Python script | WhatsApp outbound messages |
+| `document-loader` | stdio | `@anthropic/mcp-document-loader` | Read PDF/Office files |
+| `filesystem` | stdio | `@modelcontextprotocol/server-filesystem` | Controlled file access |
+| `playwright` | stdio | `@anthropic-ai/mcp-server-playwright` | Browser automation |
+| `aws-s3-local` | stdio | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access (local/CLI) |
+| `openproject-remote` | SSE | EC2 FastMCP server | OpenProject + S3 (remote, works anywhere) |
 
-## Filesystem Paths
+---
 
-The `filesystem` server is granted access to these directories:
-
-### Personal
-| Path | Notes |
-|------|-------|
-| `~/Documents` | Personal documents |
-| `~/Downloads` | General staging |
-| `~/Desktop` | Desktop staging |
-
-### Google Drive — db@xgccorp.com (`~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/`)
-| Path | Org | Notes |
-|------|-----|-------|
-| `My Drive` | XGC | db@xgccorp.com personal drive |
-| `Shared drives/XGC` | XGC | Main XGC company files |
-| `Shared drives/AXINAGRP` | AXINA | AXINA group files |
-| `Shared drives/CCCL` | XGC | CCCL shared drive |
-| `Shared drives/Development` | XGC | Development shared drive |
-| `Shared drives/dnloadfiles` | XGC | Download staging |
-| `Shared drives/XGC-WORKING_FILES` | XGC | Active working files |
-
-### Google Drive — Personal Accounts
-| Path | Account | Notes |
-|------|---------|-------|
-| `GoogleDrive-daniel@brody.ca/My Drive` | daniel@brody.ca | Personal / 4ward.earth work |
-| `GoogleDrive-dzbrody99@gmail.com/My Drive` | dzbrody99@gmail.com | Personal Gmail drive |
-
-### OneDrive
-| Path | Notes |
-|------|-------|
-| `OneDrive-Personal` | Personal OneDrive |
-| `~/OneDrive` | Synced org / Microsoft Teams files |
-
-## Install All
+## Install All Local Servers
 
 ```bash
 bash install-all.sh
 ```
 
-## Add a Server
+This registers all local (stdio) servers with Claude CLI at user scope.
 
+---
+
+## Remote MCP Server (AXINA)
+
+The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and works from **any device** — Mac, mobile, or any MCP client.
+
+**Tools available:**
+
+| Tool | Description |
+|------|-------------|
+| `list_projects` | List all OpenProject projects |
+| `get_project` | Get project details |
+| `create_work_package` | Create a task / bug / feature in a project |
+| `list_work_packages` | List work packages in a project (with optional status filter) |
+| `list_s3_buckets` | List accessible S3 buckets |
+| `list_s3_objects` | List files in a bucket |
+| `get_s3_object` | Read a text file from S3 (truncated at 10KB) |
+| `search_s3_objects` | Search file names across S3 buckets |
+
+**Connect via Claude CLI:**
 ```bash
-# npm package
-claude mcp add --transport stdio <name> -- npx -y <package-name>
-
-# Python script (via uv)
-claude mcp add --transport stdio <name> -- uv --directory /path/to/project run main.py
-
-# HTTP remote server
-claude mcp add --transport http <name> <url> --header "Authorization: Bearer TOKEN"
+claude mcp add --transport sse --scope user openproject-remote \
+  "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
 ```
 
-## Remove a Server
-
-```bash
-claude mcp remove <name>
-```
-
-## List All Servers
-
-```bash
-claude mcp list
-```
-
-## OpenProject MCP
-
-**Server:** [AndyEverything/openproject-mcp-server](https://github.com/AndyEverything/openproject-mcp-server)  
-**Cloned to:** `~/.claude-assistant/mcp-servers/openproject-mcp/`  
-**Script:** `openproject-mcp-fastmcp.py`  
-**Transport:** stdio (runs locally on Mac, connects to remote OpenProject via HTTPS)
-
-### Setup
-
-```bash
-cd ~/.claude-assistant/mcp-servers
-git clone https://github.com/AndyEverything/openproject-mcp-server.git openproject-mcp
-cd openproject-mcp
-uv sync
-cp env_example.txt .env
-# Edit .env — add your API key (never commit this file)
-```
-
-### Generate API Key
-
-1. Log into https://projects.axinagroup.com
-2. Avatar → **My account** → **Access tokens** → **+ Add**
-3. Name: "Claude MCP", copy the 40-character token
-4. Paste into `~/.claude-assistant/mcp-servers/openproject-mcp/.env`
-
-### Register with Claude CLI
-
-```bash
-claude mcp add --transport stdio openproject \
-  --env OPENPROJECT_URL=https://projects.axinagroup.com \
-  --env OPENPROJECT_API_KEY=<your-40-char-token> \
-  -- uv --directory ~/.claude-assistant/mcp-servers/openproject-mcp run openproject-mcp-fastmcp.py
-```
-
-### Claude Desktop Config
-
-Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
-
+**Connect via Kiro** — add to `~/.kiro/settings/mcp.json`:
 ```json
-{
-  "mcpServers": {
-    "openproject": {
-      "command": "/Users/dzbrody/.local/bin/uv",
-      "args": [
-        "--directory",
-        "/Users/dzbrody/.claude-assistant/mcp-servers/openproject-mcp",
-        "run",
-        "openproject-mcp-fastmcp.py"
-      ],
-      "env": {
-        "OPENPROJECT_URL": "https://projects.axinagroup.com",
-        "OPENPROJECT_API_KEY": "<your-40-char-token>"
-      }
-    }
-  }
+"axina-mcp": {
+  "command": "uvx",
+  "args": ["mcp-proxy@latest", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"],
+  "env": {}
 }
 ```
 
-### Verify
+**Connect via Claude Mobile:**
+- Settings → MCP Servers → Add Server
+- URL: `https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>`
+
+**API key:** stored in 1Password as **AXINA MCP API Key** — ask Daniel if you don't have access.
+
+Server source code: `remote-mcp-server/server.py`
+Infrastructure details: `../infrastructure/README.md`
+
+---
+
+## Filesystem Paths
+
+The `filesystem` MCP server has access to these directories. Adjust for your own username when setting up:
+
+### Standard (all team members)
+| Path | Purpose |
+|------|---------|
+| `~/Documents` | Local documents |
+| `~/Downloads` | Staging/downloads |
+| `~/Desktop` | Desktop files |
+
+### Daniel's Extended Access (db@xgccorp.com drives)
+The `install-all.sh` script includes the full Google Drive + OneDrive path list for `db@xgccorp.com`. Team members should edit `install-all.sh` to use their own drive paths.
+
+---
+
+## Add / Remove Servers
 
 ```bash
+# Add a stdio server (npm package)
+claude mcp add --transport stdio --scope user <name> -- npx -y <package>
+
+# Add a stdio server (Python via uv)
+claude mcp add --transport stdio --scope user <name> -- uv --directory /path/to/project run main.py
+
+# Add a remote SSE server
+claude mcp add --transport sse --scope user <name> "https://your-server/sse"
+
+# Remove a server
+claude mcp remove <name>
+
+# List all servers and check health
 claude mcp list
-# openproject: ... - ✓ Connected
 ```
 
-Then in a Claude session: *"List my OpenProject projects"*
+---
 
-## Planned / Not Yet Configured
+## Planned / Not Yet Active
 
 | Server | Notes |
 |--------|-------|
-| `github` | For XGC and AXINA project/issue tracking |
-| `notion` | Requires Notion API key and MCP server setup |
+| `github` | GitHub issues/PRs — needs GitHub PAT |
+| `notion` | Notion pages — needs Notion API key |
+| `aws-s3-remote` | S3 via remote endpoint (alternate to local) |
