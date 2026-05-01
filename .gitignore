@@ -3,3 +3,4 @@
 .env
 .env.
 claude-config.json
+mcp-servers/openproject-mcp/
