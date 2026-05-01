@@ -1,0 +1,29 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# terraform.tfvars is gitignored — never commit it.
+
+# ---- AWS Networking ----
+# Find VPC: aws ec2 describe-vpcs --query 'Vpcs[?IsDefault].VpcId' --output text
+vpc_id = "vpc-xxxxxxxxxxxxxxxxx"
+
+# Find subnet: aws ec2 describe-subnets --filters Name=vpc-id,Values=<vpc-id> --query 'Subnets[0].SubnetId' --output text
+subnet_id = "subnet-xxxxxxxxxxxxxxxxx"
+
+# ---- Route53 ----
+# Find hosted zone: aws route53 list-hosted-zones-by-name --dns-name yourdomain.com --query 'HostedZones[0].Id' --output text
+hosted_zone_id = "ZXXXXXXXXXXXXXXXXXXXXX"
+
+# ---- Domain ----
+domain_name       = "projects.yourdomain.com"
+letsencrypt_email = "you@yourdomain.com"
+
+# ---- EC2 Key Pair ----
+# Must already exist in AWS: aws ec2 describe-key-pairs --query 'KeyPairs[].KeyName'
+key_name = "your-key-pair-name"
+
+# ---- SSH Access ----
+# Your current IPv4 with /32: curl -4 ifconfig.me && echo /32
+my_ipv4 = "1.2.3.4/32"
+
+# Your IPv6 with /128 (optional — leave as "" if you don't use IPv6):
+# curl -6 ifconfig.me && echo /128
+my_ipv6 = ""

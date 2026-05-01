@@ -1,290 +1,373 @@
-# Claude Personal Assistant — AXINA / XGC / 4ward.earth
+# Claude Personal Assistant — AXINA Group Infrastructure
 
-AI coworker setup for Claude CLI, Claude Desktop, and Kiro IDE across three organizations.
+A complete AI-powered personal assistant ecosystem built with Claude Code, Claude Desktop, and Claude Mobile. This project provisions and manages all infrastructure, MCP servers, scheduled automations, and project management tooling for AXINA Group and its subsidiary organizations (4ward.earth, XGC).
 
-**What this gives you:**
-- Claude connected to Gmail, Google Calendar, WhatsApp, Google Drive, OneDrive, and S3
-- Claude connected to OpenProject at https://projects.axinagroup.com from any device
-- Automated morning briefings, evening wrap-ups, and weekly reviews
-- Kiro IDE with AWS tools and AXINA MCP server
+> **Author**: dzbrody
+> **Infrastructure**: AWS us-east-1
+> **Status**: Active
 
 ---
 
-## Repository Structure
+## Table of Contents
+
+- [What This Project Does](#what-this-project-does)
+- [Architecture Overview](#architecture-overview)
+- [Project Structure](#project-structure)
+- [Core Capabilities](#core-capabilities)
+- [Infrastructure](#infrastructure)
+- [MCP Server Ecosystem](#mcp-server-ecosystem)
+- [Scheduled Automations](#scheduled-automations)
+- [Quick Start](#quick-start)
+- [Security Design](#security-design)
+- [License](#license)
+
+---
+
+## What This Project Does
+
+This repository is the complete configuration, infrastructure-as-code, and documentation for using Claude AI as a personal executive assistant.
+
+**Every morning at 7:00 AM**, Claude scans overnight emails, reviews the day's calendar, flags urgent items, creates Google Calendar tasks, saves a structured briefing to `~/Documents/daily_briefs/`, and sends a summary via WhatsApp.
+
+**Throughout the day**, Claude manages projects in OpenProject, searches files across S3 and local storage, and coordinates work across three organizations (4ward.earth, XGC, AXINA).
+
+**Every evening at 6:00 PM**, Claude compiles a wrap-up: emails sent, meetings attended, files modified, tasks completed, and a preview of tomorrow.
+
+**Every Sunday**, Claude generates a weekly review aggregated by organization with week-over-week comparisons.
+
+All of this runs on AWS infrastructure defined as Terraform and deployed with Docker Compose.
+
+---
+
+## Architecture Overview
 
 ```
-.claude-assistant/
-├── README.md                        ← This file — start here
-├── mcp-servers/
-│   ├── README.md                    ← MCP server reference
-│   ├── install-all.sh               ← Register all local servers with Claude CLI
-│   └── remote-mcp-server/           ← AXINA remote MCP server (runs on EC2)
-│       ├── server.py
-│       └── Dockerfile
-├── scheduled-tasks/
-│   ├── README.md                    ← How to load into Claude Desktop
-│   ├── morning-briefing.md          ← Weekday 7 AM brief
-│   ├── evening-wrap-up.md           ← Weekday 6 PM wrap-up
-│   └── weekly-review.md             ← Sunday 10 AM weekly review
-├── infrastructure/
-│   ├── README.md                    ← EC2 server ops reference
-│   ├── terraform/                   ← AWS infrastructure as code
-│   └── docker/                      ← Docker compose + bootstrap scripts
-├── settings/
-│   └── README.md                    ← Settings reference (no secrets committed)
-└── scripts/
-    ├── health-check.sh
-    ├── ssm-mcp-tunnel.sh
-    └── sync-nextcloud-to-openproject.sh
+┌─────────────────────────────────────────────────────────────────┐
+│                         YOUR MAC                                │
+│                                                                 │
+│  ┌─────────────────────────┐    ┌──────────────────────────┐   │
+│  │    Claude Desktop        │    │    Claude Code CLI       │   │
+│  │  (UI + Scheduled Tasks)  │    │  (Terminal + Cowork)     │   │
+│  └──────────┬──────────────┘    └──────────┬───────────────┘   │
+│             │                              │                    │
+│             │    Local MCP Servers (stdio)  │                    │
+│             ├──────────────────────────────┤                    │
+│             │  • google-workspace          │                    │
+│             │  • whatsapp                  │                    │
+│             │  • filesystem                │                    │
+│             │  • document-loader           │                    │
+│             │  • playwright                │                    │
+│             │  • aws-s3-local              │                    │
+│             └──────────────────────────────┘                    │
+│                                                                 │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  Background Services (launchd — start at login)          │   │
+│  │  • whatsapp-bridge (Go) — persistent WhatsApp session    │   │
+│  └──────────────────────────────────────────────────────────┘   │
+└─────────────────────────────┬───────────────────────────────────┘
+                              │
+                    HTTPS (443) + API Key
+                              │
+┌─────────────────────────────┴───────────────────────────────────┐
+│                    AWS us-east-1 (EC2)                           │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │  Docker Containers                                       │    │
+│  │                                                         │    │
+│  │  ┌──────────┐ ┌─────────┐ ┌──────────┐ ┌──────────┐   │    │
+│  │  │OpenProject│ │PostgreSQL│ │ Memcached│ │  Nginx   │   │    │
+│  │  │  :8080   │ │ :5432   │ │ :11211   │ │:80/:443  │   │    │
+│  │  └──────────┘ └─────────┘ └──────────┘ └────┬─────┘   │    │
+│  │                                              │          │    │
+│  │  ┌──────────┐                    ┌───────────┴──────┐   │    │
+│  │  │ Certbot  │                    │  Remote MCP Server│   │    │
+│  │  │SSL renew │                    │  (SSE) :39128    │   │    │
+│  │  └──────────┘                    │  • OpenProject   │   │    │
+│  │                                  │  • AWS S3        │   │    │
+│  │                                  └──────────────────┘   │    │
+│  └─────────────────────────────────────────────────────────┘    │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │  AWS Services                                            │    │
+│  │  • Route53: projects.axinagroup.com                     │    │
+│  │  • SES: SMTP email (no-reply@axinagroup.com)            │    │
+│  │  • S3: xgccloud-openproject-files (attachments, backups)│    │
+│  └─────────────────────────────────────────────────────────┘    │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                    HTTPS (443) + API Key
+                              │
+┌─────────────────────────────┴───────────────────────────────────┐
+│                    CLAUDE MOBILE                                 │
+│  (Connect from anywhere — same remote MCP server)               │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Team Setup Guide
+## Project Structure
 
-> **For new team members** — see the full step-by-step guide: **[mcp-servers/TEAM-INSTALL.md](mcp-servers/TEAM-INSTALL.md)**
+```
+~/.claude-assistant/
+├── README.md                           # This file
+├── .gitignore                          # Secrets, .env, tokens excluded
+│
+├── infrastructure/                     # AWS Infrastructure as Code
+│   ├── terraform/
+│   │   ├── main.tf                     # EC2, Security Group, EIP, Route53, S3, IAM
+│   │   ├── variables.tf                # All configurable values
+│   │   └── outputs.tf                  # Connection strings, instance IDs
+│   ├── docker/
+│   │   ├── user-data.sh               # EC2 bootstrap (Docker, nginx, SSL, MCP)
+│   │   ├── post-bootstrap.sh          # MCP server setup after first login
+│   │   └── .env.example               # Environment variable template (no secrets)
+│   └── README.md                      # Deployment and operations guide
+│
+├── mcp-servers/                        # MCP Server Configurations
+│   ├── README.md                      # Complete server inventory + WhatsApp arch
+│   ├── TEAM-INSTALL.md                # Step-by-step new user setup guide
+│   ├── install-all.sh                 # One-command install for all local servers
+│   └── remote-mcp-server/
+│       ├── server.py                  # Custom Remote MCP server (OpenProject + S3)
+│       └── Dockerfile                 # Container definition
+│
+├── scheduled-tasks/                    # Claude Desktop Scheduled Task Prompts
+│   ├── README.md                      # How to load + WhatsApp prerequisites
+│   ├── morning-briefing.md            # 7:00 AM weekday briefing
+│   ├── evening-wrap-up.md             # 6:00 PM weekday wrap-up
+│   └── weekly-review.md               # Sunday 10:00 AM weekly review
+│
+├── scripts/                            # Utility Scripts
+│   ├── health-check.sh                # Verify all MCP servers and directories
+│   ├── ssm-mcp-tunnel.sh             # SSM tunnel for secure MCP access
+│   ├── sync-nextcloud-to-openproject.sh  # NextCloud → S3 migration
+│   └── decommission-nextcloud.sh      # NextCloud cleanup
+│
+└── settings/                           # Reference Configuration
+    └── README.md                      # Settings documentation
+```
 
-Quick summary:
+---
+
+## Core Capabilities
+
+### AI Assistant Features
+- **Daily Briefings**: Email scanning, calendar review, task creation, WhatsApp delivery
+- **Evening Wrap-Ups**: Sent email summaries, file change tracking, next-day preview
+- **Weekly Reviews**: Cross-organization aggregation with week-over-week comparisons
+- **File Intelligence**: Search S3 buckets, local documents, OneDrive, and Google Drive
+- **Browser Automation**: Web scraping and automated web interactions via Playwright
+- **Multi-Organization**: Separate tracking for 4ward.earth, XGC, and AXINA
+
+### File Storage & Search
+- **Local Files**: Controlled access to Desktop, Documents, Downloads
+- **S3 Storage**: OpenProject attachments + file search
+- **Google Drive**: Deep search and document editing via OAuth MCP
+
+### Communication
+- **Email**: Full Gmail integration (read, search, send)
+- **Calendar**: Google Calendar management with task creation
+- **Messaging**: WhatsApp send/receive via Go bridge + Python MCP server
+- **Notifications**: SES SMTP for system emails (`no-reply@axinagroup.com`)
+
+### Project Management
+- **OpenProject**: Self-hosted at `projects.axinagroup.com` with 8 remote MCP tools
+- **GitHub Integration**: PR linking, branch creation snippets, status tracking
+- **Projects**: AXINA Group Admin, AXERP, AXINA Group Website
+
+---
+
+## Infrastructure
+
+### AWS Resources
+
+| Resource | Detail |
+|----------|--------|
+| **EC2** | `t3.large`, Amazon Linux 2023, EBS gp3 (30GB root + 100GB data) |
+| **Domain** | `projects.axinagroup.com` (Route53 hosted zone: `axinagroup.com`) |
+| **DNS** | Route53 A record → Elastic IP |
+| **SSL** | Let's Encrypt via Certbot (auto-renewing) |
+| **Email** | SES SMTP (`email-smtp.us-east-1.amazonaws.com`) |
+| **Storage** | S3 bucket `xgccloud-openproject-files` (SSE-S3, versioned, CORS) |
+| **Backup** | Daily API-pulled backups to S3 with 30-day lifecycle |
+| **IAM** | `axina-openproject-role` with S3 + SSM policies |
+| **Instance ID** | `terraform output instance_id` |
+| **Elastic IP** | `terraform output public_ip` |
+
+### Docker Containers (EC2)
+
+| Container | Image | Port | Purpose |
+|-----------|-------|------|---------|
+| `openproject-app` | `openproject/openproject:17` | 8080 (internal) | Project management |
+| `openproject-postgres` | `postgres:14` | 5432 (internal) | Database |
+| `openproject-cache` | `memcached:alpine` | 11211 (internal) | Rails cache |
+| `openproject-nginx` | `nginx:alpine` | 80/443 (public) | Proxy + SSL |
+| `openproject-certbot` | `certbot/certbot` | — | SSL auto-renewal |
+| `openproject-mcp-server` | Custom Python 3.11 | 39128 (internal) | Remote MCP endpoint |
+
+---
+
+## MCP Server Ecosystem
+
+### Local Servers (Mac — stdio transport)
+
+| Server | Command | Purpose |
+|--------|---------|---------|
+| `google-workspace` | `npx @alanxchen/google-workspace-mcp` | Gmail, Calendar, Tasks |
+| `whatsapp` | `uv run main.py` (requires Go bridge) | WhatsApp messaging |
+| `document-loader` | `npx @anthropic/mcp-document-loader` | Read PDF, Word, Excel |
+| `filesystem` | `npx @modelcontextprotocol/server-filesystem` | Desktop/Documents/Downloads |
+| `playwright` | `npx @anthropic-ai/mcp-server-playwright` | Browser automation |
+| `aws-s3-local` | `npx @iflow-mcp/samuraikun-aws-s3-mcp` | S3 operations (CLI) |
+
+### Remote Server (EC2 — SSE transport, API key required)
+
+| Server | Endpoint | Tools |
+|--------|----------|-------|
+| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects` |
+
+### WhatsApp Architecture
+
+WhatsApp requires two components on your Mac:
+
+```
+Claude → whatsapp-mcp-server (Python, stdio)
+              │  HTTP :8080
+              ▼
+         whatsapp-bridge (Go, launchd service)   ← persistent session
+              │  WebSocket
+              ▼
+         WhatsApp servers
+```
+
+The Go bridge runs as a **launchd background service** (starts at login, restarts on crash). The QR code link is **one-time only** — the session persists in `~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db`. The 8 AM briefing sends WhatsApp messages automatically with no manual intervention.
+
+```bash
+# Check bridge status anytime
+curl http://localhost:8080/api/health
+# → {"connected":true,"status":"ok","timestamp":...}
+```
+
+See `mcp-servers/TEAM-INSTALL.md` for full setup including launchd service installation.
+
+### Connection Reference
+
+```bash
+# Register remote MCP with Claude CLI
+claude mcp add --transport sse --scope user openproject-remote \
+  "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
+
+# Kiro IDE — add to ~/.kiro/settings/mcp.json
+"axina-mcp": {
+  "command": "uvx",
+  "args": ["mcp-proxy@latest", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"],
+  "env": {}
+}
+
+# Claude Mobile: Settings → MCP Servers → https://projects.axinagroup.com/mcp/sse?key=<KEY>
+```
+
+MCP API key is stored in 1Password as **AXINA MCP API Key**.
+
+---
+
+## Scheduled Automations
+
+| Task | Schedule | What It Does |
+|------|----------|-------------|
+| **Morning Briefing** | Weekdays, 7:00 AM ET | Scan email since 5 PM, review calendar, flag urgent items, create Google Tasks, write briefing file, send WhatsApp summary |
+| **Evening Wrap-Up** | Weekdays, 6:00 PM ET | Sent emails, meetings attended, files modified, tomorrow's preview, WhatsApp wrap-up |
+| **Weekly Review** | Sundays, 10:00 AM ET | Aggregate all daily briefs by org (4ward / XGC / AXINA), flag stale tasks, WhatsApp summary |
+
+All briefings are saved to `~/Documents/daily_briefs/YYYY-MM-DD.md`.
+
+Prompts live in `scheduled-tasks/`. Load via Claude Desktop → Schedule → + New task. The WhatsApp Go bridge must be running as a launchd service for automated delivery. See `scheduled-tasks/README.md`.
+
+---
+
+## Quick Start
 
 ### Prerequisites
+- macOS 13 or later
+- Anthropic account (claude.ai)
+- Access to AXINA team 1Password vault (MCP API key)
+- AWS CLI configured (`aws sso login --profile xgc-main`)
+- Terraform (`brew install terraform`)
+- Go (`brew install go`) — for WhatsApp bridge
+- SSH key: `aws-key-xgccloudcom`
 
-Install these before starting:
+### New Team Member Setup
 
+Full step-by-step instructions: **[mcp-servers/TEAM-INSTALL.md](mcp-servers/TEAM-INSTALL.md)**
+
+Quick summary:
 ```bash
-# Homebrew (if not installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
-# Node.js + npm
-brew install node
-
-# uv (Python package manager — faster than pip)
-brew install uv
-
-# Claude CLI
+# 1. Install tools
+brew install node uv awscli go
 npm install -g @anthropic/claude-code
 
-# AWS CLI (for S3 and infrastructure access)
-brew install awscli
-```
+# 2. Clone repo
+git clone https://github.com/dzbrody/claude-assistant-config.git ~/.claude-assistant
 
-You also need:
-- **Claude Desktop** — download from https://claude.ai/download
-- **Kiro** — download from https://kiro.dev (optional, for IDE integration)
+# 3. Register local MCP servers
+bash ~/.claude-assistant/mcp-servers/install-all.sh
 
----
-
-### Step 1 — Clone this repo
-
-```bash
-git clone <repo-url> ~/.claude-assistant
-cd ~/.claude-assistant
-```
-
----
-
-### Step 2 — Register local MCP servers with Claude CLI
-
-This registers the servers that run on your Mac (stdio transport):
-
-```bash
-bash mcp-servers/install-all.sh
-```
-
-Verify:
-```bash
-claude mcp list
-```
-
-You should see `google-workspace`, `whatsapp`, `document-loader`, `filesystem`, `playwright`, `aws-s3-local` all listed.
-
----
-
-### Step 3 — Connect to the AXINA remote MCP server
-
-The remote MCP server runs on EC2 at `projects.axinagroup.com`. It gives Claude access to OpenProject and S3 from anywhere — including mobile.
-
-**Get the API key from a current team member** (stored in 1Password under `AXINA MCP API Key` or ask Daniel).
-
-Then register it:
-
-```bash
-# Replace <KEY> with the actual key
+# 4. Add remote MCP server (get key from 1Password: "AXINA MCP API Key")
 claude mcp add --transport sse --scope user openproject-remote \
   "https://projects.axinagroup.com/mcp/sse?key=<KEY>"
-```
 
-Test it:
-```bash
-claude mcp list
-# openproject-remote should show ✓ Connected (may take a few seconds)
-```
-
-Then in any Claude session:
-> *"List my OpenProject projects"*
-
----
-
-### Step 4 — Configure Claude Desktop
-
-Update `~/Library/Application Support/Claude/claude_desktop_config.json` with the full server list. Use the template below — replace `<MCP_API_KEY>` with the team key:
-
-```json
-{
-  "mcpServers": {
-    "google-workspace": {
-      "command": "npx",
-      "args": ["-y", "@alanxchen/google-workspace-mcp"]
-    },
-    "whatsapp": {
-      "command": "uv",
-      "args": [
-        "--directory",
-        "/Users/<YOUR_USERNAME>/whatsapp-mcp/whatsapp-mcp-server",
-        "run",
-        "main.py"
-      ]
-    },
-    "document-loader": {
-      "command": "npx",
-      "args": ["-y", "@anthropic/mcp-document-loader"]
-    },
-    "filesystem": {
-      "command": "npx",
-      "args": [
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "/Users/<YOUR_USERNAME>/Documents",
-        "/Users/<YOUR_USERNAME>/Downloads",
-        "/Users/<YOUR_USERNAME>/Desktop"
-      ]
-    },
-    "aws-s3-local": {
-      "command": "npx",
-      "args": ["-y", "@iflow-mcp/samuraikun-aws-s3-mcp"],
-      "env": {
-        "AWS_REGION": "us-east-1",
-        "S3_BUCKETS": "xgccloud-openproject-files"
-      }
-    },
-    "openproject-remote": {
-      "type": "sse",
-      "url": "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
-    }
-  },
-  "preferences": {
-    "coworkScheduledTasksEnabled": true,
-    "coworkWebSearchEnabled": true,
-    "allowAllBrowserActions": true
-  }
-}
-```
-
-Restart Claude Desktop after saving.
-
----
-
-### Step 5 — Set up WhatsApp MCP (optional)
-
-The WhatsApp server requires a local bridge running on your Mac.
-
-```bash
+# 5. Set up WhatsApp (see TEAM-INSTALL.md Step 5 for full detail)
 git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
-cd ~/whatsapp-mcp/whatsapp-mcp-server
-uv sync
-python main.py   # scan the QR code with WhatsApp on your phone
+cd ~/whatsapp-mcp/whatsapp-bridge && go build -o whatsapp-bridge .
+# → scan QR once, then install as launchd service
+
+# 6. Verify
+claude mcp list
+curl http://localhost:8080/api/health
 ```
 
-Once paired, stop the process — Claude will start it automatically via the MCP config.
-
----
-
-### Step 6 — Configure Kiro IDE (optional)
-
-If you use Kiro, add the AXINA MCP server to `~/.kiro/settings/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "axina-mcp": {
-      "command": "uvx",
-      "args": [
-        "mcp-proxy@latest",
-        "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
-      ],
-      "env": {}
-    }
-  }
-}
-```
-
-Reload Kiro MCP servers: **Cmd+Shift+P → "Kiro: Reload MCP Servers"**
-
-You should see 8 tools appear: `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects`.
-
----
-
-### Step 7 — Load scheduled tasks into Claude Desktop (optional)
-
-Prompts live in `scheduled-tasks/`. To activate:
-
-1. Open **Claude Desktop**
-2. **Schedule** (sidebar) → **+ New task**
-3. Paste the prompt from the relevant `.md` file
-4. Set schedule and click **Run once** to test
-
-| File | Schedule | What it does |
-|------|----------|--------------|
-| `morning-briefing.md` | Weekdays 7:00 AM ET | Scans Gmail, calendar, Drive; writes brief; sends WhatsApp |
-| `evening-wrap-up.md` | Weekdays 6:00 PM ET | Reviews sent mail, open tasks, tomorrow's agenda |
-| `weekly-review.md` | Sundays 10:00 AM ET | Cross-org rollup across 4ward / XGC / AXINA |
-
-Requires `google-workspace` and `whatsapp` MCP servers to be connected.
-
----
-
-### Step 8 — Verify everything
+### Infrastructure Deployment (new server)
 
 ```bash
-bash scripts/health-check.sh
+cd ~/.claude-assistant/infrastructure/terraform
+terraform init
+terraform plan
+terraform apply
+
+# After EC2 boots, complete MCP setup
+aws ssm start-session --target <instance-id>
+echo "OPENPROJECT_ADMIN_API_KEY=<token>" >> /opt/openproject/.env
+echo "MCP_API_KEY=<key>" >> /opt/openproject/.env
+cd /opt/openproject && docker-compose up -d --build mcp-server
 ```
 
-Or manually:
-```bash
-claude mcp list                          # all servers listed
-claude "List my OpenProject projects"    # remote MCP working
-```
+---
+
+## Security Design
+
+- **MCP port never public**: The remote MCP server binds to `127.0.0.1:39128` only. All external access goes through nginx on HTTPS 443.
+- **API key authentication**: All `/mcp` endpoints require a 64-character hex key in `?key=` query param or `X-MCP-Key` header. Auth is enforced in the FastAPI middleware (not nginx), so both SSE and message endpoints are protected correctly.
+- **Session-based message routing**: After SSE authentication, subsequent POST requests to `/mcp/messages/?session_id=<id>` are allowed through — the session ID acts as a bearer token.
+- **SSM for server access**: No SSH port open. EC2 management is via AWS SSM Session Manager.
+- **No hardcoded secrets**: All credentials live in `.env` files (chmod 600) on the server, or macOS Keychain locally. Nothing committed.
+- **S3 encryption**: SSE-S3 enabled. Public access blocked. CORS restricted to `projects.axinagroup.com`.
+- **Let's Encrypt**: Auto-renewing SSL certificates via Certbot container.
+- **IAM least privilege**: EC2 role has only S3 access to the specific bucket + SSM managed instance policy.
+- **WhatsApp session isolation**: The Go bridge binds only to `127.0.0.1:8080`. Not reachable externally.
 
 ---
 
-## MCP Server Quick Reference
+## License
 
-| Server | Transport | Where It Runs | What It Does |
-|--------|-----------|--------------|--------------|
-| `google-workspace` | stdio | Mac | Gmail, Calendar, Drive, Tasks |
-| `whatsapp` | stdio | Mac | WhatsApp outbound messages |
-| `document-loader` | stdio | Mac | Read PDF/Office files |
-| `filesystem` | stdio | Mac | Documents, Downloads, Desktop |
-| `playwright` | stdio | Mac | Browser automation |
-| `aws-s3-local` | stdio | Mac | S3 file access (CLI use) |
-| `openproject-remote` | SSE | EC2 | OpenProject + S3 (works anywhere) |
+This project is provided as a reference configuration. Use at your own discretion. The MCP servers and OpenProject are subject to their respective licenses.
 
 ---
 
-## Remote MCP Server
+## Acknowledgments
 
-The AXINA remote MCP server runs on EC2 at `projects.axinagroup.com/mcp/`.
-
-- **Health check:** `curl https://projects.axinagroup.com/mcp/health`
-- **SSE endpoint:** `https://projects.axinagroup.com/mcp/sse?key=<KEY>`
-- **Tools:** OpenProject (list/create projects and work packages) + S3 (list/search/read files)
-- **Auth:** API key in URL query param `?key=` or `X-MCP-Key` header
-- **Infra:** See `infrastructure/README.md` for EC2/Docker/nginx details
-
----
-
-## Security
-
-- Never commit API keys, tokens, or `.env` files
-- The MCP API key is in 1Password: **AXINA MCP API Key**
-- The `openproject-mcp/.env` file is in `.gitignore`
-- See `settings/README.md` for the full security checklist
+- [OpenProject](https://www.openproject.org/) — Open-source project management
+- [Anthropic](https://www.anthropic.com/) — Claude AI
+- [Model Context Protocol](https://modelcontextprotocol.io/) — MCP specification
+- [lharries/whatsapp-mcp](https://github.com/lharries/whatsapp-mcp) — WhatsApp MCP bridge
+- AWS — Cloud infrastructure

@@ -10,6 +10,13 @@ mcp-servers/openproject-mcp/
 *.tfstate
 *.tfstate.*
 .terraform.lock.hcl
+terraform.tfvars
+
+# Logs
+logs/
+
+# WhatsApp session store
+store/
 crash.log
 crash.*.log
 override.tf

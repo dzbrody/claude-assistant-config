@@ -24,6 +24,20 @@ These tasks use the following MCP servers — confirm all are connected (`claude
 | `filesystem` | Writing briefing files to `~/Documents/daily_briefs/` |
 | `whatsapp` | Sending summary messages |
 
+### WhatsApp prerequisite
+
+The `whatsapp` MCP server requires the **Go bridge** to be running as a background service. It must be set up once before scheduled tasks will work end-to-end. See `mcp-servers/TEAM-INSTALL.md` Step 5 for full setup.
+
+Quick check:
+```bash
+curl http://localhost:8080/api/health
+# Must return: {"connected":true,...}
+```
+
+The bridge runs as a launchd service (`com.<user>.whatsapp-bridge`) — it starts at login and stays running. The 8 AM scheduled briefing works automatically as long as your Mac is awake and logged in.
+
+**The QR code scan is one-time only.** Once linked, the session persists in `~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db` across reboots and app restarts.
+
 ---
 
 ## How to Load a Task

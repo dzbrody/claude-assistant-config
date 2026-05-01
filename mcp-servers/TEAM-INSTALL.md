@@ -100,19 +100,98 @@ You should see your OpenProject projects listed.
 
 ## Step 5 — Set up WhatsApp (optional)
 
-The WhatsApp MCP server bridges Claude to your WhatsApp account. Requires WhatsApp on your phone.
+The WhatsApp integration has two parts:
+- **Go bridge** (`whatsapp-bridge`) — connects to WhatsApp's servers, runs as a persistent background service
+- **Python MCP server** (`whatsapp-mcp-server`) — Claude talks to this, which talks to the bridge
+
+### 5a — Clone and build
 
 ```bash
-# Clone the WhatsApp bridge
 git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
+
+# Build the Go bridge (requires Go — install with: brew install go)
+cd ~/whatsapp-mcp/whatsapp-bridge
+go build -o whatsapp-bridge .
+
+# Install Python MCP server dependencies
 cd ~/whatsapp-mcp/whatsapp-mcp-server
 uv sync
-
-# Start it and scan the QR code with WhatsApp on your phone
-python main.py
 ```
 
-Once the QR code is scanned and you see "Connected", press `Ctrl+C`. Claude will start the bridge automatically going forward.
+### 5b — First-time link (one-time only)
+
+The Go bridge needs to be linked to your WhatsApp account once. It opens a new Terminal window with a QR code:
+
+```bash
+osascript -e 'tell application "Terminal"
+  activate
+  do script "/Users/'$USER'/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge"
+end tell'
+```
+
+On your phone: **WhatsApp → Settings → Linked Devices → Link a Device** → scan the QR code.
+
+Once linked you'll see `"connected":true` from the health check:
+```bash
+curl http://localhost:8080/api/health
+# {"connected":true,"status":"ok","timestamp":...}
+```
+
+The session is saved to `~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db` — **you never need to scan a QR code again** on this machine.
+
+### 5c — Install as a background service (launchd)
+
+This keeps the bridge running permanently, auto-starting at every login:
+
+```bash
+mkdir -p ~/Library/LaunchAgents
+cat > ~/Library/LaunchAgents/com.$USER.whatsapp-bridge.plist << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.$USER.whatsapp-bridge</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/$USER/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/$USER/whatsapp-mcp/whatsapp-bridge</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/$USER/.claude-assistant/logs/whatsapp-bridge.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/$USER/.claude-assistant/logs/whatsapp-bridge.log</string>
+    <key>LimitLoadToSessionType</key>
+    <string>Aqua</string>
+</dict>
+</plist>
+EOF
+
+mkdir -p ~/.claude-assistant/logs
+launchctl load ~/Library/LaunchAgents/com.$USER.whatsapp-bridge.plist
+```
+
+Verify it's running:
+```bash
+launchctl list | grep whatsapp-bridge    # shows PID if running
+curl http://localhost:8080/api/health    # {"connected":true,...}
+```
+
+> **Note:** The bridge requires your Mac to be logged in. It will start automatically at login and stay running. The 8 AM scheduled briefing works as long as your Mac is awake — which it will be if you're at your desk.
+
+### Troubleshooting WhatsApp
+
+| Symptom | Fix |
+|---------|-----|
+| `"connected":false` on health check | Session expired — re-scan QR: `launchctl stop com.$USER.whatsapp-bridge && osascript -e 'tell app "Terminal" to do script "~/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge"'` |
+| Bridge not running after reboot | Run `launchctl load ~/Library/LaunchAgents/com.$USER.whatsapp-bridge.plist` |
+| MCP list_chats returns empty | Bridge is running but not yet synced — wait 10 seconds and retry |
+| QR code times out before scan | It refreshes every 20s and shows 6 codes before giving up — restart the bridge to get a fresh set |
 
 ---
 
@@ -260,7 +339,7 @@ claude "List files in my Documents folder"
 — The SSE connection health check can time out even when the server is working. Test it directly: `curl "https://projects.axinagroup.com/mcp/sse?key=<KEY>" --max-time 3`
 
 **WhatsApp shows disconnected**
-— Re-run `python ~/whatsapp-mcp/whatsapp-mcp-server/main.py` and scan the QR code again.
+— Check the bridge is running: `curl http://localhost:8080/api/health`. If `"connected":false`, the session may have expired. Stop the launchd service, start the bridge manually in a Terminal window to get a fresh QR code, scan it, then reload the service: `launchctl load ~/Library/LaunchAgents/com.$USER.whatsapp-bridge.plist`. You only need to do this if WhatsApp logs out the linked device (uncommon).
 
 **Google Workspace shows authentication error**
 — Run the server directly once to complete OAuth: `npx -y @alanxchen/google-workspace-mcp`

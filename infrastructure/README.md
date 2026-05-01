@@ -32,78 +32,80 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 ### Prerequisites
 - AWS CLI configured with `us-east-1`
 - Terraform installed (`brew install terraform`)
-- Your IP: 99.239.58.91 (IPv4), 2001:4860:7:704::f8 (IPv6)
+- Your IP: your IPv4 and IPv6 addresses (set in terraform.tfvars)
 - SSH key: `aws-key-xgccloudcom`
 
-### 1. Deploy Infrastructure
+### 1. Configure variables
+
 ```bash
 cd infrastructure/terraform
+cp terraform.tfvars.example terraform.tfvars
+# Edit terraform.tfvars — fill in your VPC, subnet, domain, key pair, and IP
+```
+
+### 2. Deploy
+
+```bash
 terraform init
 terraform plan
 terraform apply
 ```
 
-### 2. Get outputs
+### 3. Get outputs
+
 ```bash
 terraform output public_ip
 terraform output instance_id
 ```
 
-### 3. SSH into the server (initial setup)
-```bash
-ssh -i ~/.ssh/aws-key-xgccloudcom.pem ec2-user@<public_ip>
-```
+### 4. Add secrets to the server
 
-### 4. Add OpenProject API key
-After OpenProject is running, generate an API key in the web UI (Admin → API → Generate), then:
+After OpenProject finishes booting (allow ~5 minutes):
+
 ```bash
-echo "OPENPROJECT_API_KEY=<your-key>" >> /opt/openproject/.env
-docker-compose -f /opt/openproject/docker-compose-mcp.yml up -d
+# Connect via SSM (no SSH port needed)
+aws ssm start-session --target $(terraform output -raw instance_id)
+
+cd /opt/openproject
+
+# Generate an OpenProject admin API token:
+# OpenProject UI → My Account → Access tokens → + API token
+
+# Generate an MCP API key:
+MCP_API_KEY=$(openssl rand -hex 32)
+
+echo "OPENPROJECT_ADMIN_API_KEY=<your-op-api-token>" >> .env
+echo "MCP_API_KEY=$MCP_API_KEY" >> .env
+chmod 600 .env
+
+# Build and start the remote MCP server
+docker-compose up -d --build mcp-server
+
+# Verify
+curl https://<your-domain>/mcp/health -H "X-MCP-Key: $MCP_API_KEY"
 ```
 
 ### 5. IAM role
-Terraform creates `axina-openproject-role` with `AmazonSSMManagedInstanceCore` attached and wires it to the EC2 instance automatically. No manual IAM steps needed.
 
-### 6. Connect Claude CLI (via SSM Tunnel)
+Terraform creates `axina-openproject-role` with `AmazonSSMManagedInstanceCore` and scoped S3 access. No manual IAM steps needed.
 
-The MCP server is NOT publicly accessible. Port 39127 binds to `127.0.0.1` on the EC2 instance only.
+### 6. Connect Claude to the remote MCP server
 
 ```bash
-# 1. Get the instance ID
-cd infrastructure/terraform
-terraform output instance_id
+# Get the MCP API key you generated above, then:
+claude mcp add --transport sse --scope user openproject-remote \
+  "https://<your-domain>/mcp/sse?key=<MCP_API_KEY>"
 
-# 2. Start the SSM tunnel (keep this terminal open)
-../../scripts/ssm-mcp-tunnel.sh <instance-id>
-
-# 3. In another terminal, connect Claude
-claude mcp add --transport sse openproject http://localhost:39127/sse
+# Test it
+claude "List my OpenProject projects"
 ```
 
-To close: Ctrl+C the tunnel terminal. The MCP connection in Claude will drop until you reconnect.
+See `mcp-servers/README.md` for full client setup including Claude Desktop and Kiro.
 
 **Troubleshooting S3**: If attachments fail to upload, verify:
-1. EC2 can reach S3: `aws s3 ls s3://axina-openproject-files/` from the server
+1. EC2 can reach S3: `aws s3 ls s3://<your-bucket>/` from the server
 2. CORS is configured: AWS Console → S3 → bucket → Permissions → CORS
-3. IAM role policy is attached: AWS Console → IAM → `axina-openproject-role` → Permissions
-
-### 6. Connect Claude CLI (local MCP server)
-
-The MCP server runs locally on your Mac and connects to OpenProject over HTTPS — no SSM tunnel needed.
-
-```bash
-cd ~/.claude-assistant/mcp-servers
-git clone https://github.com/AndyEverything/openproject-mcp-server.git openproject-mcp
-cd openproject-mcp && uv sync
-cp env_example.txt .env   # edit .env with your API key
-
-claude mcp add --transport stdio openproject \
-  --env OPENPROJECT_URL=https://projects.axinagroup.com \
-  --env OPENPROJECT_API_KEY=<your-token> \
-  -- uv --directory ~/.claude-assistant/mcp-servers/openproject-mcp run openproject-mcp-fastmcp.py
-```
-
-See `mcp-servers/README.md` for full setup including API key generation and Claude Desktop config.
+3. IAM role policy is attached: AWS Console → IAM → role → Permissions
 
 ## Email (SES SMTP)
 
@@ -128,7 +130,7 @@ SMTP credentials are **different** from IAM access keys — the password is deri
 ### Apply to Running Server
 
 ```bash
-aws ssm start-session --target i-03a1a1d683b542d47
+aws ssm start-session --target <instance-id>
 cd /opt/openproject
 # Edit .env and add SMTP_USERNAME and SMTP_PASSWORD
 docker-compose up -d openproject
@@ -168,13 +170,13 @@ SES starts in sandbox — can only send to verified addresses.
 3. **Copy the token immediately** (shown only once)
 4. Add to server:
    ```bash
-   aws ssm start-session --target i-03a1a1d683b542d47
+   aws ssm start-session --target <instance-id>
    echo "OPENPROJECT_BACKUP_TOKEN=<paste-token>" >> /opt/openproject/.env.backup
    ```
 
 ### Manual Backup
 ```bash
-aws ssm start-session --target i-03a1a1d683b542d47
+aws ssm start-session --target <instance-id>
 /opt/openproject/scripts/backup-to-s3.sh
 ```
 
@@ -187,22 +189,28 @@ systemctl status openproject-backup.timer
 ### Restore
 ```bash
 aws s3 cp s3://axina-openproject-files/backups/YYYY/MM/DD/<file>.zip /tmp/
-aws ssm start-session --target i-03a1a1d683b542d47
+aws ssm start-session --target <instance-id>
 docker exec -it openproject-app bundle exec rake backup:restore BACKUP=/tmp/<file>.zip
 ```
 
 ## GitHub Integration
 
-- **OpenProject user**: `github-integration` (ID: 10) — makes automated PR comments
+- **OpenProject user**: `github-integration` — makes automated PR comments
 - **Role**: `GitHub Integration` — `view_work_packages` + `add_work_package_notes`
-- **Webhook token**: `opapi-7c7a4e7f650ead6e7e332042a270d8a250b556ea7b3b065358843f0c3c32b0ba`
-- **Webhook URL**: `https://projects.axinagroup.com/webhooks/github?key=opapi-7c7a4e7f650ead6e7e332042a270d8a250b556ea7b3b065358843f0c3c32b0ba`
-- **GitHub module enabled**: Demo project, Scrum project
+- **Webhook token**: stored in 1Password as **OpenProject GitHub Webhook Token**
+- **Webhook URL**: `https://projects.axinagroup.com/webhooks/github?key=<WEBHOOK_TOKEN>`
+- **GitHub module enabled**: per-project (enable via Administration → Modules)
+
+### Generate a Webhook Token
+
+1. OpenProject → **Administration** → **Webhooks** → **+ Webhook**
+2. Copy the generated token
+3. Store it in 1Password and in your GitHub repo webhook config
 
 ### Add a Webhook to a GitHub Repo
 
 1. GitHub repo → **Settings** → **Webhooks** → **Add webhook**
-2. Payload URL: `https://projects.axinagroup.com/webhooks/github?key=opapi-7c7a4e7f650ead6e7e332042a270d8a250b556ea7b3b065358843f0c3c32b0ba`
+2. Payload URL: `https://projects.axinagroup.com/webhooks/github?key=<WEBHOOK_TOKEN>`
 3. Content type: `application/json`
 4. Events: **Send me everything**
 5. Active: ✓ → **Add webhook**
@@ -217,7 +225,7 @@ The work package's **GitHub tab** will then show the PR and its status.
 ### Add a New Project
 
 ```bash
-aws ssm start-session --target i-03a1a1d683b542d47
+aws ssm start-session --target <instance-id>
 docker exec openproject-app bundle exec rails runner "
   user = User.find_by(login: 'github-integration')
   role = Role.find_by(name: 'GitHub Integration')
@@ -259,7 +267,7 @@ nginx (/mcp location) → openproject-mcp-server:39128
 ### First-Time Setup (on the running EC2)
 
 ```bash
-aws ssm start-session --target i-03a1a1d683b542d47
+aws ssm start-session --target <instance-id>
 cd /opt/openproject
 
 # 1. Generate MCP API key

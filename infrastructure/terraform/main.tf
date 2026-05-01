@@ -71,19 +71,22 @@ resource "aws_security_group" "openproject" {
 
   # ---- SSH ----
   ingress {
-    description = "SSH from dzbrody IPv4"
+    description = "SSH from admin IPv4"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["99.239.58.91/32"]
+    cidr_blocks = [var.my_ipv4]
   }
 
-  ingress {
-    description = "SSH from dzbrody IPv6"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    ipv6_cidr_blocks = ["2001:4860:7:704::f8/128"]
+  dynamic "ingress" {
+    for_each = var.my_ipv6 != "" ? [var.my_ipv6] : []
+    content {
+      description      = "SSH from admin IPv6"
+      from_port        = 22
+      to_port          = 22
+      protocol         = "tcp"
+      ipv6_cidr_blocks = [ingress.value]
+    }
   }
 
   # ---- HTTP/HTTPS ----
@@ -105,14 +108,14 @@ resource "aws_security_group" "openproject" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  # ---- OpenProject Direct (optional, keep internal/locked down) ----
+  # ---- OpenProject Direct (optional, admin only) ----
   ingress {
-    description = "OpenProject direct (your IP only)"
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["99.239.58.91/32"]
-    ipv6_cidr_blocks = ["2001:4860:7:704::f8/128"]
+    description      = "OpenProject direct (admin IP only)"
+    from_port        = 8080
+    to_port          = 8080
+    protocol         = "tcp"
+    cidr_blocks      = [var.my_ipv4]
+    ipv6_cidr_blocks = var.my_ipv6 != "" ? [var.my_ipv6] : []
   }
 
   # ---- Outbound (all) ----

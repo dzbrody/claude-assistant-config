@@ -7,25 +7,25 @@ variable "aws_region" {
 variable "vpc_id" {
   description = "VPC ID where the instance will be launched"
   type        = string
-  default     = "vpc-0f16147ed2d23dee1"
+  # Set in terraform.tfvars — find with: aws ec2 describe-vpcs --query 'Vpcs[?IsDefault].VpcId'
 }
 
 variable "subnet_id" {
   description = "Subnet ID for the instance"
   type        = string
-  default     = "subnet-0c23d4021f81edf63"
+  # Set in terraform.tfvars — find with: aws ec2 describe-subnets --query 'Subnets[0].SubnetId'
 }
 
 variable "hosted_zone_id" {
-  description = "Route53 hosted zone ID for axinagroup.com"
+  description = "Route53 hosted zone ID for your domain"
   type        = string
-  default     = "Z03662342MPWYW6ZEPJLC"
+  # Set in terraform.tfvars — find with: aws route53 list-hosted-zones-by-name --dns-name yourdomain.com
 }
 
 variable "key_name" {
   description = "EC2 key pair name"
   type        = string
-  default     = "aws-key-xgccloudcom"
+  # Set in terraform.tfvars — must already exist in AWS: aws ec2 describe-key-pairs
 }
 
 
@@ -49,26 +49,27 @@ variable "data_volume_size" {
 }
 
 variable "domain_name" {
-  description = "Full domain name for OpenProject"
+  description = "Full domain name for OpenProject (must be in the Route53 hosted zone)"
   type        = string
-  default     = "projects.axinagroup.com"
+  # Example: "projects.yourdomain.com"
 }
 
 variable "letsencrypt_email" {
-  description = "Email for Let's Encrypt SSL certificate notifications"
+  description = "Email for Let's Encrypt SSL certificate expiry notifications"
   type        = string
-  default     = "db@xgccorp.com"
+  # Use the domain owner's email
 }
 
-# Source IPs for security group (sensitive — use terraform.tfvars in practice)
+# Source IPs for SSH security group rules — set in terraform.tfvars, never hardcode here
 variable "my_ipv4" {
-  description = "Your IPv4 address for SSH and MCP access"
+  description = "Your IPv4 CIDR for SSH access (e.g. 1.2.3.4/32)"
   type        = string
-  default     = "99.239.58.91/32"
+  # Find your IP: curl -4 ifconfig.me && echo /32
 }
 
 variable "my_ipv6" {
-  description = "Your IPv6 address"
+  description = "Your IPv6 CIDR for SSH access (e.g. 2001:db8::/128)"
   type        = string
-  default     = "2001:4860:7:704::f8/128"
+  default     = ""
+  # Find your IP: curl -6 ifconfig.me && echo /128 — leave empty string if no IPv6
 }

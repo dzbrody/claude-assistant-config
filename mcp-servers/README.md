@@ -7,12 +7,37 @@ MCP servers extend Claude with tools for email, calendar, messaging, files, brow
 | Server | Transport | Package / Command | What It Does |
 |--------|-----------|------------------|--------------|
 | `google-workspace` | stdio | `@alanxchen/google-workspace-mcp` | Gmail, Calendar, Drive, Tasks |
-| `whatsapp` | stdio | local Python script | WhatsApp outbound messages |
+| `whatsapp` | stdio | local Python + Go bridge | WhatsApp outbound messages (bridge must be running) |
 | `document-loader` | stdio | `@anthropic/mcp-document-loader` | Read PDF/Office files |
 | `filesystem` | stdio | `@modelcontextprotocol/server-filesystem` | Controlled file access |
 | `playwright` | stdio | `@anthropic-ai/mcp-server-playwright` | Browser automation |
 | `aws-s3-local` | stdio | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access (local/CLI) |
 | `openproject-remote` | SSE | EC2 FastMCP server | OpenProject + S3 (remote, works anywhere) |
+
+---
+
+## WhatsApp Architecture
+
+WhatsApp requires two components running on your Mac:
+
+```
+Claude (MCP client)
+    │
+    ▼
+whatsapp-mcp-server (Python, stdio)   ← Claude talks to this
+    │  HTTP on localhost:8080
+    ▼
+whatsapp-bridge (Go, persistent)      ← this holds the WhatsApp session
+    │  WebSocket
+    ▼
+WhatsApp servers
+```
+
+**The Go bridge must be running** for WhatsApp tools to work. It is installed as a launchd service that starts at login and stays alive permanently. The QR code link is **one-time only** — the session is stored in `~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db`.
+
+Check bridge status anytime: `curl http://localhost:8080/api/health`
+
+Full setup: see `TEAM-INSTALL.md` Step 5.
 
 ---
 
