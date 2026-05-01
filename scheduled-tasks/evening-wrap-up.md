@@ -45,6 +45,31 @@ Group results by location and org. Flag any that look incomplete: tmp files, unt
 
 ---
 
+### Step 3.5: Scan AXINA-TSPG-TEAM WhatsApp Group (whatsapp + filesystem + openproject-remote)
+
+**Group JID:** `120363424688758322@g.us`
+
+**1. Get today's messages:**
+Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=today 07:00`, `limit=100`, `sort_by=oldest`.
+
+**2. Download any new documents or media:**
+For every message with a `media_type` received after 7:00 AM today:
+- Call `download_media` and copy to:
+  `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+- Use original filename, or `{YYYY-MM-DD}_{sender_short}_{media_type}.{ext}` if blank.
+
+**3. Extract new action items → OpenProject:**
+For any action items or follow-ups not yet captured this morning:
+- Check existing `[TSPG]` work packages with `list_work_packages` before creating to avoid duplicates.
+- Create new ones with project `axina-group-admin`, prefix `[TSPG]`, include message snippet in description.
+
+**4. Summarize for wrap-up:**
+- New messages since morning: N
+- New documents saved: list filenames (or "none")
+- New tasks created: list #ID + subject (or "none")
+
+---
+
 ### Step 4: Google Calendar Tasks — Status Check
 
 Using `google-workspace` MCP tools:
@@ -70,6 +95,11 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}-wrapup.md`
 | Event | Notes |
 |-------|-------|
 | ... | ... |
+
+## AXINA-TSPG-TEAM WhatsApp (today)
+| Sender | Summary | Doc Saved | Task Created |
+|--------|---------|-----------|-------------|
+| ... | ... | ... | ... |
 
 ## Files Modified Today
 - **Personal (Documents/Downloads/Desktop)**: ...
@@ -102,6 +132,7 @@ Using `whatsapp` MCP tools, send me:
 > 🌙 Wrap-up for {date}:
 > ✉️ [X] emails sent
 > 📅 [X] meetings completed
+> 💬 TSPG: [X] msgs, [X] docs saved, [X] tasks created (or "quiet today")
 > 📂 [X] files modified
 > ⚠️ [X] tasks carried to tomorrow
 > Full wrap-up saved to ~/Documents/daily_briefs/{date}-wrapup.md

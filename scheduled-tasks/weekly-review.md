@@ -23,6 +23,35 @@ Using `filesystem` MCP tools:
 
 ---
 
+### Step 1.5: AXINA-TSPG-TEAM WhatsApp Catch-Up (whatsapp + filesystem + openproject-remote)
+
+**Group JID:** `120363424688758322@g.us`
+
+**This runs weekly to catch anything missed during the week**, especially over weekends when daily briefings don't run.
+
+**1. Get all messages since last Friday 6 PM:**
+Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=last Friday 18:00`, `limit=200`, `sort_by=oldest`.
+
+**2. Download all documents and media not yet saved:**
+- Check what's already in `AXINAGRP/XGC-TSPG/whatsapp-docs/` using `filesystem` `list_directory`.
+- For each media message whose filename is NOT already in that folder:
+  - Call `download_media` and save to the folder.
+- Log: date, sender, filename.
+
+**3. Extract all action items for the week → OpenProject:**
+- Read all messages for the week.
+- Before creating any work package, call `list_work_packages` on `axina-group-admin` to check for existing `[TSPG]` items.
+- Create work packages only for items not already tracked.
+- Prefix `[TSPG]`, include sender and date in description.
+
+**4. Summarize:**
+- Total messages scanned
+- Documents saved this week (list by date)
+- Tasks created (list #ID + subject)
+- Tasks already existed / skipped
+
+---
+
 ### Step 2: Scan Drive Activity for the Week
 
 Using `filesystem` MCP tools, scan for files created or modified Mon–Fri this past week in:
@@ -60,6 +89,13 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/weekly-review-{da
 
 ```markdown
 # Weekly Review — Week of {monday date} to {friday date}
+
+## AXINA-TSPG-TEAM (WhatsApp)
+- **Messages this week**: [X]
+- **Documents saved**: [list filenames or "none"]
+- **OpenProject tasks created**: [list #ID + subject or "none"]
+- **Key themes**: [what was discussed — deals, docs, action items]
+- **Open items needing follow-up**: ...
 
 ## 4ward.earth
 - **Meetings**: [X]
@@ -99,6 +135,7 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/weekly-review-{da
 Using `whatsapp` MCP tools, send me:
 
 > 📊 Weekly review for {week range}:
+> 💬 TSPG: [X] messages, [X] docs saved, [X] tasks created
 > 🏢 4ward: [X] meetings, [X] emails, [X] open tasks
 > 🏢 XGC: [X] meetings, [X] emails, [X] open tasks
 > 🏢 AXINA: [X] meetings, [X] emails, [X] open tasks

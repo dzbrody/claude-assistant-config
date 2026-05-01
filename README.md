@@ -63,6 +63,8 @@ All of this runs on AWS infrastructure defined as Terraform and deployed with Do
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │  Background Services (launchd — start at login)          │   │
 │  │  • whatsapp-bridge (Go) — persistent WhatsApp session    │   │
+│  │  • openproject-notifier (Python) — every 15 min         │   │
+│  │    polls OpenProject → posts changes to TSPG WhatsApp   │   │
 │  └──────────────────────────────────────────────────────────┘   │
 └─────────────────────────────┬───────────────────────────────────┘
                               │
@@ -274,15 +276,23 @@ MCP API key is stored in 1Password as **AXINA MCP API Key**.
 
 ## Scheduled Automations
 
+### Claude Desktop (scheduled tasks)
+
 | Task | Schedule | What It Does |
 |------|----------|-------------|
-| **Morning Briefing** | Weekdays, 7:00 AM ET | Scan email since 5 PM, review calendar, flag urgent items, create Google Tasks, write briefing file, send WhatsApp summary |
-| **Evening Wrap-Up** | Weekdays, 6:00 PM ET | Sent emails, meetings attended, files modified, tomorrow's preview, WhatsApp wrap-up |
-| **Weekly Review** | Sundays, 10:00 AM ET | Aggregate all daily briefs by org (4ward / XGC / AXINA), flag stale tasks, WhatsApp summary |
+| **Morning Briefing** | Weekdays, 7:00 AM ET | Scan TSPG WhatsApp group (save docs to Drive, create OpenProject tasks), scan Gmail, extract Gemini meeting note tasks → OpenProject, review calendar, write briefing file, send WhatsApp summary |
+| **Evening Wrap-Up** | Weekdays, 6:00 PM ET | Scan TSPG group for daytime activity, sent emails, files modified, task status, tomorrow's preview, WhatsApp wrap-up |
+| **Weekly Review** | Sundays, 10:00 AM ET | Full TSPG catch-up since Friday, aggregate all daily briefs by org (4ward / XGC / AXINA), flag stale tasks, WhatsApp summary |
 
 All briefings are saved to `~/Documents/daily_briefs/YYYY-MM-DD.md`.
 
-Prompts live in `scheduled-tasks/`. Load via Claude Desktop → Schedule → + New task. The WhatsApp Go bridge must be running as a launchd service for automated delivery. See `scheduled-tasks/README.md`.
+### Background service (always on)
+
+| Service | Trigger | What It Does |
+|---------|---------|-------------|
+| **OpenProject Notifier** | Every 15 min | Polls `axina-group-admin` for new tasks, status changes, and assignment changes → posts to AXINA-TSPG-TEAM WhatsApp with direct link to each work package |
+
+The notifier runs as a launchd agent (`com.<user>.openproject-notifier`) alongside the WhatsApp bridge. Both start at login and stay running. See `scripts/README.md` and `scheduled-tasks/README.md`.
 
 ---
 
@@ -322,9 +332,13 @@ git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
 cd ~/whatsapp-mcp/whatsapp-bridge && go build -o whatsapp-bridge .
 # → scan QR once, then install as launchd service
 
-# 6. Verify
+# 6. Install OpenProject → WhatsApp notifier (see TEAM-INSTALL.md Step 10)
+launchctl load ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist
+
+# 7. Verify everything
 claude mcp list
 curl http://localhost:8080/api/health
+launchctl list | grep -E "whatsapp-bridge|openproject-notifier"
 ```
 
 ### Infrastructure Deployment (new server)

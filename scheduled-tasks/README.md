@@ -6,11 +6,43 @@ Automated prompts that run on a schedule via Claude Desktop's Scheduled Tasks fe
 
 | File | Schedule | Summary |
 |------|----------|---------|
-| `morning-briefing.md` | Weekdays, 7:00 AM ET | Scans Gmail since 5 PM, reviews today's calendar, creates Google Tasks for action items, writes a briefing file, sends WhatsApp summary |
-| `evening-wrap-up.md` | Weekdays, 6:00 PM ET | Reviews sent mail, checks task status, scans modified Drive files, previews tomorrow's calendar, sends WhatsApp wrap-up |
-| `weekly-review.md` | Sundays, 10:00 AM ET | Reads all daily briefings from the past week, aggregates by org (4ward / XGC / AXINA), flags stale tasks, sends WhatsApp summary |
+| `morning-briefing.md` | Weekdays, 7:00 AM ET | Scans AXINA-TSPG WhatsApp group (saves docs to Drive, creates OpenProject tasks), scans Gmail, extracts Gemini meeting note tasks → OpenProject, reviews calendar, writes briefing file, sends WhatsApp summary |
+| `evening-wrap-up.md` | Weekdays, 6:00 PM ET | Scans TSPG group for daytime activity, reviews sent mail, checks task status, scans modified Drive files, previews tomorrow's calendar, sends WhatsApp wrap-up |
+| `weekly-review.md` | Sundays, 10:00 AM ET | Full TSPG catch-up since Friday, reads all daily briefings, aggregates by org (4ward / XGC / AXINA), flags stale tasks, sends WhatsApp summary |
 
 All output files are written to `~/Documents/daily_briefs/YYYY-MM-DD.md`.
+
+---
+
+## Background Service: OpenProject → WhatsApp Notifier
+
+In addition to the scheduled tasks above, a **background service** runs every 15 minutes and posts OpenProject `axina-group-admin` changes directly to the TSPG WhatsApp group.
+
+| Event | WhatsApp message |
+|-------|-----------------|
+| New work package created | `🆕 New Task` + subject + assignee + link |
+| Status changed | `📋 OpenProject Update` + old → new status + link |
+| Assignee changed | `👤 OpenProject Assignment` + who → who + link |
+
+Every message includes a direct link: `https://projects.axinagroup.com/projects/axina-group-admin/work_packages/<id>`
+
+**This runs automatically** as a launchd service (`com.<user>.openproject-notifier`) — starts at login, no manual steps.
+
+```bash
+# Check it's running
+launchctl list | grep openproject-notifier
+
+# View live log
+tail -f ~/.claude-assistant/logs/op-notifier.log
+
+# Temporarily pause notifications
+launchctl unload ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist
+
+# Resume
+launchctl load ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist
+```
+
+See `scripts/README.md` for full configuration options.
 
 ---
 
@@ -21,8 +53,29 @@ These tasks use the following MCP servers — confirm all are connected (`claude
 | Server | Used for |
 |--------|---------|
 | `google-workspace` | Gmail, Google Calendar, Google Tasks |
-| `filesystem` | Writing briefing files to `~/Documents/daily_briefs/` |
-| `whatsapp` | Sending summary messages |
+| `filesystem` | Writing briefing files + saving WhatsApp documents to Google Drive |
+| `whatsapp` | Reading TSPG group messages, downloading attachments, sending summaries |
+| `openproject-remote` | Creating work packages from TSPG group activity and Gemini meeting notes |
+
+## Required Background Services
+
+These run independently of Claude Desktop and must be installed as launchd agents:
+
+| Service | Plist | What it does | Interval |
+|---------|-------|-------------|----------|
+| `whatsapp-bridge` | `com.<user>.whatsapp-bridge.plist` | Maintains WhatsApp session so MCP tools can read/send | Persistent |
+| `openproject-notifier` | `com.<user>.openproject-notifier.plist` | Posts OpenProject changes to TSPG WhatsApp group | Every 15 min |
+
+Both are installed in `~/Library/LaunchAgents/`. See `mcp-servers/TEAM-INSTALL.md` Steps 5 and 11 for setup.
+
+### AXINA-TSPG-TEAM group
+
+- **Chat JID**: `120363424688758322@g.us`
+- **Priority**: Highest — scanned first every morning (Step 1.5)
+- **Documents saved to**: `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+- **Tasks created in**: OpenProject `axina-group-admin` project, prefixed `[TSPG]`
+- **What gets saved**: All media types — PDFs, images, documents, audio
+- **What generates tasks**: Any action item, request, or follow-up directed at Daniel or the group
 
 ### WhatsApp prerequisite
 

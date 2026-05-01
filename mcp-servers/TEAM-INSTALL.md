@@ -307,7 +307,55 @@ Note: The briefing prompts reference specific email addresses and WhatsApp numbe
 
 ---
 
-## Step 10 — Final verification
+## Step 10 — Install OpenProject → WhatsApp Notifier
+
+This background service posts every `axina-group-admin` OpenProject change (new task, status change, assignment change) directly to the AXINA-TSPG-TEAM WhatsApp group with a link back to the task. It runs every 15 minutes automatically.
+
+**Requires:** WhatsApp bridge running (Step 5 above).
+
+```bash
+# Install the launchd service
+cat > ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.$USER.openproject-notifier</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/$USER/.claude-assistant/scripts/openproject-whatsapp-notifier.py</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>900</integer>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>/Users/$USER/.claude-assistant/logs/op-notifier.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/$USER/.claude-assistant/logs/op-notifier.log</string>
+    <key>LimitLoadToSessionType</key>
+    <string>Aqua</string>
+</dict>
+</plist>
+EOF
+
+mkdir -p ~/.claude-assistant/logs
+launchctl load ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist
+```
+
+Verify:
+```bash
+launchctl list | grep openproject-notifier   # shows entry (PID when running)
+tail -f ~/.claude-assistant/logs/op-notifier.log   # watch live
+```
+
+> **Note:** You need to edit `openproject-whatsapp-notifier.py` to set your own `OP_API_KEY` (generate in OpenProject: My Account → Access Tokens) before the service will work.
+
+---
+
+## Step 11 — Final verification
 
 ```bash
 bash ~/.claude-assistant/scripts/health-check.sh
