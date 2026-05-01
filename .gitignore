@@ -4,3 +4,15 @@
 .env.
 claude-config.json
 mcp-servers/openproject-mcp/
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
