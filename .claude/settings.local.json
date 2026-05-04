@@ -136,7 +136,14 @@
       "Bash(osascript *)",
       "Bash(echo \"test\")",
       "Bash(rm ~/Documents/daily_briefs/test.md)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(xargs git *)",
+      "Bash(git checkout *)",
+      "Bash(git rm *)",
+      "Bash(git remote *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(openssl rand *)"
     ]
   },
   "mcpServers": {
@@ -174,7 +181,7 @@
       "command": "/Users/dzbrody/.local/bin/uvx",
       "args": [
         "mcp-proxy",
-        "https://projects.axinagroup.com/mcp/sse?key=YOUR_MCP_API_KEY"
+        "https://projects.axinagroup.com/mcp/sse?key=4a31e0a2de0849c7de729dcaac9fe2ad0796b014a3e706930ed8e61f2fbdb051"
       ]
     },
     "document-loader": {
