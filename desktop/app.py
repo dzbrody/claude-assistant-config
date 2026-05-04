@@ -45,17 +45,20 @@ def run_task(task_key: str):
     tmp = Path(os.path.expanduser(f"~/.claude-assistant/desktop/.tmp_{task_key}.txt"))
     tmp.write_text(prompt)
 
-    # Open a new Terminal window, set AWS profile, launch claude interactively,
-    # then use keystroke to paste the prompt — gives claude a real TTY throughout
+    # Copy prompt to clipboard for instant paste (keystroke types char-by-char, too slow)
+    subprocess.run(["pbcopy"], input=prompt.encode(), check=True)
+
     setup_cmd = f"export AWS_PROFILE=xgc-main && cd {PROJ} && {CLAUDE} --dangerously-skip-permissions"
     script = f'''
 tell application "Terminal"
     activate
     do script "{setup_cmd}"
-    delay 6
+    -- Wait for claude to fully load including CLAUDE.md and MCP servers
+    delay 8
     tell application "System Events"
-        keystroke (do shell script "cat {tmp}")
-        delay 2
+        -- Cmd+V pastes the full prompt instantly from clipboard
+        keystroke "v" using command down
+        delay 1
         keystroke return
     end tell
 end tell
