@@ -50,8 +50,9 @@ fi
 echo "⏳ Starting claude..."
 echo ""
 
-# Run claude — simple, no pipes, no subshells
-"$CLAUDE" --dangerously-skip-permissions -p "$PROMPT" | tee "$LOG"
+# script -q gives claude a real PTY so it streams output instead of buffering
+script -q "$LOG" "$CLAUDE" --dangerously-skip-permissions -p "$PROMPT"
+EXIT_CODE=$?
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
