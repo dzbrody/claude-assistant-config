@@ -55,6 +55,7 @@ tell application "Terminal"
     delay 6
     tell application "System Events"
         keystroke (do shell script "cat {tmp}")
+        delay 2
         keystroke return
     end tell
 end tell
