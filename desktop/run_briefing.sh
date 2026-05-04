@@ -1,5 +1,4 @@
 #!/bin/bash
-set -euo pipefail
 
 TASK="$1"
 PROJ="/Users/dzbrody/.claude-assistant"
