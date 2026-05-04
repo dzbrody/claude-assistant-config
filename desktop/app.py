@@ -48,7 +48,7 @@ def run_task(task_key: str):
     script = f'''
 tell application "Terminal"
     activate
-    do script "cd {PROJ} && echo '🤖 {label} — {date_str}'; echo ''; {CLAUDE} --dangerously-skip-permissions -p \\"$(cat {tmp})\\" ; echo ''; echo '✅ Done. You can close this window.'"
+    do script "source ~/.zshrc && export AWS_PROFILE=xgc-main && cd {PROJ} && echo '🤖 {label} — {date_str}'; echo ''; {CLAUDE} --dangerously-skip-permissions -p \\"$(cat {tmp})\\" ; echo ''; echo '✅ Done. You can close this window.'"
 end tell
 '''
     subprocess.Popen(["osascript", "-e", script])
