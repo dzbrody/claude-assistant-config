@@ -47,8 +47,9 @@ echo "⏳ Running claude (output below)..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-"$CLAUDE" --dangerously-skip-permissions -p "$PROMPT" 2>&1
-EXIT_CODE=$?
+# unbuffer gives claude a PTY so it streams output instead of buffering until done
+unbuffer "$CLAUDE" --dangerously-skip-permissions -p "$PROMPT" 2>&1 | tee "$LOG"
+EXIT_CODE=${PIPESTATUS[0]}
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
