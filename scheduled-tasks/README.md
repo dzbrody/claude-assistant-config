@@ -8,6 +8,7 @@ Automated prompts that run on a schedule via Claude Desktop's Scheduled Tasks fe
 |------|----------|---------|
 | `morning-briefing.md` | Weekdays, 7:00 AM ET | Scans AXINA-TSPG WhatsApp group (saves docs to Drive, creates OpenProject tasks), scans Gmail, extracts Gemini meeting note tasks → OpenProject, reviews calendar, writes briefing file, sends WhatsApp summary |
 | `evening-wrap-up.md` | Weekdays, 6:00 PM ET | Scans TSPG group for daytime activity, reviews sent mail, checks task status, scans modified Drive files, previews tomorrow's calendar, sends WhatsApp wrap-up |
+| `weekend-briefing.md` | Sundays, 8:00 AM ET | Covers Fri 4 PM → Sun morning: TSPG WhatsApp catch-up (saves docs, creates OpenProject tasks), urgent email scan, Gemini meeting notes, weekend Drive activity, Monday preview, sends WhatsApp summary |
 | `weekly-review.md` | Sundays, 10:00 AM ET | Full TSPG catch-up since Friday, reads all daily briefings, aggregates by org (4ward / XGC / AXINA), flags stale tasks, sends WhatsApp summary |
 
 All output files are written to `~/Documents/daily_briefs/YYYY-MM-DD.md`.
@@ -33,7 +34,7 @@ Every message includes a direct link: `https://projects.axinagroup.com/projects/
 launchctl list | grep openproject-notifier
 
 # View live log
-tail -f ~/.claude-assistant/logs/op-notifier.log
+tail -f ~/logs/claude-assistant/op-notifier.log
 
 # Temporarily pause notifications
 launchctl unload ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist

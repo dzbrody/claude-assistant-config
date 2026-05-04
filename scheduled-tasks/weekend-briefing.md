@@ -1,22 +1,22 @@
-# Morning Briefing Task
+# Weekend Briefing Task
 
 ## Schedule
-- **Frequency**: Every weekday (Mon–Fri)
-- **Time**: 7:00 AM Eastern
+- **Frequency**: Every Sunday
+- **Time**: 8:00 AM Eastern
 - **App**: Claude Desktop (Scheduled Tasks)
 
 ---
 
 ## Prompt
 
-You are my executive assistant and AI coworker. It is now the morning of {date}. Work through each step below in order and compile a briefing. Use the MCP tools available to you — do not ask for confirmation between steps.
+You are my executive assistant and AI coworker. It is Sunday morning, {date}. Work through each step below covering the period from **Friday 4:00 PM through now**. Use the MCP tools available to you — do not ask for confirmation between steps.
 
 ---
 
-### Step 1: Scan Email (google-workspace)
+### Step 1: Scan Email Since Friday 4 PM (google-workspace)
 
 Using `google-workspace` MCP tools:
-- Retrieve all unread Gmail messages received since 5:00 PM yesterday.
+- Retrieve all unread Gmail messages received since Friday 4:00 PM.
 - Flag anything that is:
   - Marked urgent or high importance
   - From anyone at 4ward.earth, XGC, or AXINA domains
@@ -30,20 +30,19 @@ Using `google-workspace` MCP tools:
 
 **This is the highest-priority step.** Group JID: `120363424688758322@g.us`
 
-**1. Get overnight messages:**
-Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=yesterday 17:00`, `limit=100`, `sort_by=oldest`.
+**1. Get messages since Friday 4 PM:**
+Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=last Friday 16:00`, `limit=200`, `sort_by=oldest`.
 
 **2. Download documents and media:**
 For every message with a `media_type` (document, image, pdf, audio — skip video unless under 10MB):
 - Call `download_media` with the `message_id` and `chat_jid`.
 - Copy the downloaded file to:
   `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
-- Get the original filename from the WhatsApp bridge SQLite database before naming:
+- Get the original filename from the WhatsApp bridge SQLite database:
   `sqlite3 /Users/dzbrody/whatsapp-mcp/whatsapp-bridge/store/messages.db "SELECT filename FROM messages WHERE id='<message_id>'"`
 - Name the file: `{YYYY-MM-DD}_{original_filename}` — prepend date only, preserve original name and extension exactly.
-  - Example: `Agromerica_ V2.0 Bio-Agricultural Innovation.pptx` → `2026-05-03_Agromerica_ V2.0 Bio-Agricultural Innovation.pptx`
-  - If `original_filename` is blank in the DB, use `{YYYY-MM-DD}_{media_type}.{ext}` as fallback — no sender name.
-- **Never convert file formats.** Copy the file exactly as received — do not convert .docx to .pdf, .pptx to .pdf, etc.
+- If `original_filename` is blank in the DB, use `{YYYY-MM-DD}_{media_type}.{ext}` as fallback — no sender name.
+- **Never convert file formats.** Copy as-is.
 - Create the directory if it does not exist.
 
 **3. Extract action items → OpenProject:**
@@ -64,78 +63,63 @@ Read all text messages. For any action item, request, decision, or follow-up:
 
 ---
 
-### Step 2.5: Extract Tasks from Gemini Meeting Notes (google-workspace + openproject-remote)
+### Step 2: Review This Week's Calendar + Next Week Preview (google-workspace)
 
-Using `google-workspace` MCP tools, search for any emails from `gemini-notes@google.com` received since 5:00 PM yesterday.
+Using `google-workspace` MCP tools:
+- List any calendar events that occurred Friday after 4 PM or Saturday.
+- List all events for the coming Monday and Tuesday.
+- Flag any Monday events that start before 10:00 AM or leave fewer than 15 minutes between them.
+
+---
+
+### Step 3: Extract Tasks from Gemini Meeting Notes (google-workspace + openproject-remote)
+
+Using `google-workspace` MCP tools, search for any emails from `gemini-notes@google.com` received since Friday 4:00 PM.
 
 For each email found:
 1. Read the full email body — these are auto-generated meeting notes from Google Meet.
-2. Extract every action item, task, or follow-up mentioned. Look for phrases like:
-   - "action item", "follow up", "to do", "will", "needs to", "should", "by [date]", "assigned to"
-   - Any bullet points under sections titled "Action Items", "Next Steps", "Follow-ups"
+2. Extract every action item, task, or follow-up.
 3. For each extracted task:
-   - Determine the most relevant OpenProject project based on context (AXINA Group Admin, AXERP, AXINA Group Website — use `list_projects` if unsure)
-   - Determine the appropriate type: Task, Feature, Bug, or Milestone
-   - Set the subject to be clear and actionable (e.g. "Follow up with John re: contract draft")
+   - Determine the most relevant OpenProject project based on context.
    - Prefix with org if identifiable: `[4ward]`, `[XGC]`, or `[AXINA]`
-   - Create the work package using `openproject-remote` MCP tool `create_work_package`
+   - Create the work package using `openproject-remote`.
 4. Note the meeting title, date, and number of tasks created in the briefing.
 
 If no emails from `gemini-notes@google.com` are found, skip this step.
 
 ---
 
-### Step 2: Review Calendar (google-workspace)
+### Step 4: Scan Weekend Drive Activity
 
-Using `google-workspace` MCP tools:
-- Retrieve today's calendar events.
-- For each event, note: time, title, attendees, and whether a Google Meet link exists.
-- Flag any events that overlap or leave fewer than 15 minutes between them.
-
----
-
-### Step 3: Create Google Calendar Tasks
-
-For any flagged email or meeting item that requires action today:
-- Create a Google Calendar Task with a descriptive title and today's due date.
-- Prefix the task title with the relevant org if applicable: `[4ward]`, `[XGC]`, or `[AXINA]`.
-
----
-
-### Step 4: Scan Recent Drive Activity
-
-Using `filesystem` MCP tools, do a quick scan across org drives for any files modified since 5:00 PM yesterday that I should be aware of at the start of the day:
+Using `filesystem` MCP tools, scan for files modified since Friday 4:00 PM in:
 - `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC`
 - `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP`
 - `~/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive`
 - `~/OneDrive`
 
-Note any modified files by folder and org. Flag anything unexpected.
+Note modified files by folder and org. Flag anything unexpected.
 
 ---
 
-### Step 5: Write the Briefing File
+### Step 5: Write the Weekend Briefing File
 
-Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md` with this structure:
+Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}-weekend.md`:
 
 ```markdown
-# Daily Briefing — {date}
+# Weekend Briefing — {date} (Fri 4 PM → Sun Morning)
 
-## Today's Agenda
+## Monday Preview
 | Time | Event | Attendees | Meet Link |
 |------|-------|-----------|-----------|
 | ... | ... | ... | ... |
 
-## Urgent Email
+## Urgent Email (since Fri 4 PM)
 - **[From]**: [one-line summary] — Action needed: [yes/no + what]
 
 ## Alerts & Notices
 - ...
 
-## Tasks Created (Google Tasks)
-- [ ] [task title] (due today)
-
-## AXINA-TSPG-TEAM WhatsApp
+## AXINA-TSPG-TEAM WhatsApp (since Fri 4 PM)
 | Sender | Summary | Documents Saved | OpenProject Task |
 |--------|---------|----------------|-----------------|
 | [name] | [one-line] | [filename or —] | [#id or —] |
@@ -145,7 +129,7 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md` with t
 |---------|---------|-------------|-----|
 | [meeting title] | [project] | [subject] | #[id] |
 
-## Overnight Drive Activity
+## Weekend Drive Activity
 - **XGC Drive**: [files modified]
 - **AXINAGRP Drive**: [files modified]
 - **daniel@brody.ca Drive**: [files modified]
@@ -163,7 +147,7 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md` with t
 - [relevant emails, meetings, tasks, drive activity]
 
 ## AI Coworker Notes
-[Patterns noticed, scheduling conflicts, anything that needs follow-up today]
+[Patterns noticed, Monday priorities, anything that needs immediate attention]
 ```
 
 ---
@@ -172,10 +156,10 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md` with t
 
 Using `whatsapp` MCP tools, send me a WhatsApp message:
 
-> ☀️ Morning briefing for {date}:
-> 📅 [X] meetings today — first at [time]: [title]
-> 📬 [X] urgent emails flagged
-> 💬 TSPG: [X] messages, [X] docs saved, [X] tasks created (or "no activity" if quiet)
+> ☀️ Weekend briefing for {date}:
+> 📅 Monday preview — first event at [time]: [title]
+> 📬 [X] urgent emails since Friday 4 PM
+> 💬 TSPG: [X] messages, [X] docs saved, [X] tasks created (or "quiet weekend" if nothing)
 > 📝 [X] tasks created in OpenProject from meeting notes (or omit line if 0)
 > ⚠️ [critical alerts, one per line]
-> Full briefing saved to ~/Documents/daily_briefs/{date}.md
+> Full briefing saved to ~/Documents/daily_briefs/{date}-weekend.md

@@ -56,7 +56,11 @@ Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=today 07:00
 For every message with a `media_type` received after 7:00 AM today:
 - Call `download_media` and copy to:
   `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
-- Use original filename, or `{YYYY-MM-DD}_{sender_short}_{media_type}.{ext}` if blank.
+- Get the original filename from the WhatsApp bridge SQLite database:
+  `sqlite3 /Users/dzbrody/whatsapp-mcp/whatsapp-bridge/store/messages.db "SELECT filename FROM messages WHERE id='<message_id>'"`
+- Name the file: `{YYYY-MM-DD}_{original_filename}` — prepend date only, preserve original name and extension exactly.
+- If `original_filename` is blank, use `{YYYY-MM-DD}_{media_type}.{ext}` as fallback — no sender name.
+- **Never convert file formats.** Copy as-is.
 
 **3. Extract new action items → OpenProject:**
 For any action items or follow-ups not yet captured this morning:
