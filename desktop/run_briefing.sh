@@ -23,37 +23,53 @@ echo "🤖 $LABEL — $DATE"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# Validate prompt file
+# Validate prompt
 PROMPT=$(cat "$PROMPT_FILE" 2>/dev/null || true)
 if [ -z "$PROMPT" ]; then
     echo "❌ Error: prompt file empty or missing: $PROMPT_FILE"
     exit 1
 fi
 
-# Spinner
+LOG="$HOME/logs/claude-assistant/${TASK}-$(date +%H%M%S).log"
+mkdir -p "$HOME/logs/claude-assistant"
+echo "📋 Log: $LOG"
+echo ""
+
+# Spinner runs until claude produces first output, then clears itself
 spinner() {
     local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
     local i=0
     while true; do
-        printf "\r${frames[$i]} Working..." >&2
+        printf "\r${frames[$i]} Connecting to MCP servers and starting..."
         i=$(( (i + 1) % ${#frames[@]} ))
-        sleep 0.1
+        sleep 0.12
     done
 }
+
 spinner &
 SPIN_PID=$!
 
-"$CLAUDE" --dangerously-skip-permissions -p "$PROMPT"
-EXIT_CODE=$?
+# Run claude, capturing to log; as soon as first line arrives kill spinner and print cleanly
+"$CLAUDE" --dangerously-skip-permissions -p "$PROMPT" 2>&1 | while IFS= read -r line; do
+    # Kill spinner on first line of output
+    if [ -n "$SPIN_PID" ]; then
+        kill "$SPIN_PID" 2>/dev/null
+        printf "\r%-60s\r" ""
+        SPIN_PID=""
+    fi
+    echo "$line"
+    echo "$line" >> "$LOG"
+done
+EXIT_CODE=${PIPESTATUS[0]}
 
+# Ensure spinner is dead
 kill $SPIN_PID 2>/dev/null
-wait $SPIN_PID 2>/dev/null
-printf "\r%-40s\r" "" >&2
+printf "\r%-60s\r" ""
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 if [ $EXIT_CODE -eq 0 ]; then
-    echo "✅ Done. You can close this window."
+    echo "✅ Done. Log saved to: $LOG"
 else
-    echo "❌ claude exited with code $EXIT_CODE"
+    echo "❌ claude exited with code $EXIT_CODE — see log: $LOG"
 fi

@@ -49,7 +49,8 @@ def run_task(task_key: str):
     script = f'''
 tell application "Terminal"
     activate
-    do script "bash {runner} {task_key}"
+    set w to do script "bash {runner} {task_key}"
+    set current settings of w to settings set "Basic"
 end tell
 '''
     subprocess.Popen(["osascript", "-e", script])
