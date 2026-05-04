@@ -19,7 +19,7 @@ from pathlib import Path
 
 # ---- Config ----
 OP_URL = "https://projects.axinagroup.com"
-OP_API_KEY = "YOUR_OPENPROJECT_API_KEY"
+OP_API_KEY = os.environ.get("OPENPROJECT_API_KEY", "")
 WHATSAPP_BRIDGE = "http://localhost:8080"
 TSPG_JID = "120363424688758322@g.us"
 PROJECT_ID = 3
