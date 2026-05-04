@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/local/bin/python3.12
 """
 Claude Assistant — Mac menu bar app.
 Runs briefing tasks via the claude CLI in a new Terminal window.
