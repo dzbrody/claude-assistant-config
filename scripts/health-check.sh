@@ -46,6 +46,7 @@ echo "Scheduled Task Files:"
 TASKS=(
   "scheduled-tasks/morning-briefing.md"
   "scheduled-tasks/evening-wrap-up.md"
+  "scheduled-tasks/weekend-briefing.md"
   "scheduled-tasks/weekly-review.md"
 )
 for f in "${TASKS[@]}"; do
@@ -92,6 +93,18 @@ if [ -d "$HOME/OneDrive" ]; then
   echo "  ✓ ~/OneDrive (org/Teams)"
 else
   echo "  ✗ ~/OneDrive — NOT MOUNTED"
+fi
+echo ""
+
+# ---- Logs Directory ----
+echo "Logs Directory:"
+LOG_DIR="$HOME/logs/claude-assistant"
+if [ -d "$LOG_DIR" ]; then
+  COUNT=$(ls "$LOG_DIR" 2>/dev/null | wc -l | tr -d ' ')
+  echo "  ✓ $LOG_DIR exists ($COUNT files)"
+  ls -lt "$LOG_DIR" 2>/dev/null | head -5
+else
+  echo "  ⚠️  $LOG_DIR missing — will be created on first task run"
 fi
 echo ""
 

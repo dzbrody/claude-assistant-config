@@ -26,14 +26,14 @@ launchctl load ~/Library/LaunchAgents/com.dzbrody.openproject-notifier.plist
 launchctl list | grep openproject-notifier
 
 # View logs
-tail -f ~/.claude-assistant/logs/op-notifier.log
+tail -f ~/logs/claude-assistant/op-notifier.log
 
 # Reload after editing the script
 launchctl unload ~/Library/LaunchAgents/com.dzbrody.openproject-notifier.plist
 launchctl load ~/Library/LaunchAgents/com.dzbrody.openproject-notifier.plist
 ```
 
-**State file:** `~/.claude-assistant/logs/op-notifier-state.json` — stores last-run timestamp. Delete to reset.
+**State file:** `~/logs/claude-assistant/op-notifier-state.json` — stores last-run timestamp. Delete to reset.
 
 **Config** (edit top of script to change behaviour):
 - `NOTIFY_STATUSES` — status changes (default: on)

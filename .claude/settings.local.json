@@ -125,7 +125,18 @@
       "Bash(git add *)",
       "Bash(/Users/dzbrody/.local/bin/claude --help)",
       "Bash(jobs -l)",
-      "Bash(wait)"
+      "Bash(wait)",
+      "Bash(/usr/local/bin/python3.12 -)",
+      "Bash(mkdir -p ~/logs/claude-assistant)",
+      "Bash(bash /Users/dzbrody/.claude-assistant/desktop/run_briefing.sh morning)",
+      "Bash(echo \"PID: $!\")",
+      "Bash(wait 61661)",
+      "Bash(echo \"Exit: $?\")",
+      "Bash(brew install *)",
+      "Bash(osascript *)",
+      "Bash(echo \"test\")",
+      "Bash(rm ~/Documents/daily_briefs/test.md)",
+      "Bash(git push *)"
     ]
   },
   "mcpServers": {

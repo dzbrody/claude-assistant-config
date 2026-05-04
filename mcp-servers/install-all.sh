@@ -11,18 +11,18 @@ echo "============================================"
 echo ""
 
 # ---- Google Workspace (Email, Calendar, Tasks, Drive) ----
-echo "[1/6] Adding google-workspace..."
+echo "[1/7] Adding google-workspace..."
 claude mcp add --transport stdio google-workspace -- npx -y @alanxchen/google-workspace-mcp
 echo "  ✓ google-workspace added"
 
 # ---- WhatsApp Messaging ----
-echo "[2/6] Adding whatsapp..."
+echo "[2/7] Adding whatsapp..."
 claude mcp add --transport stdio whatsapp -- uv --directory /Users/dzbrody/whatsapp-mcp/whatsapp-mcp-server run main.py
 echo "  ✓ whatsapp added"
 
-# ---- Document Loader (read Office/PDF files) ----
-echo "[3/6] Adding document-loader..."
-claude mcp add --transport stdio document-loader -- npx -y @anthropic/mcp-document-loader
+# ---- Document Loader (read Office/PDF/Word files via markitdown) ----
+echo "[3/7] Adding document-loader..."
+claude mcp add --transport stdio document-loader -- uvx markitdown-mcp
 echo "  ✓ document-loader added"
 
 # ---- Filesystem ----
@@ -41,7 +41,7 @@ echo "  ✓ document-loader added"
 # OneDrive:
 #   OneDrive-Personal                   — personal OneDrive
 #   OneDrive                            — likely synced org/Teams files
-echo "[4/6] Adding filesystem..."
+echo "[4/7] Adding filesystem..."
 claude mcp add --transport stdio filesystem -- npx -y @modelcontextprotocol/server-filesystem \
   "$HOME/Documents" \
   "$HOME/Downloads" \
@@ -60,12 +60,29 @@ claude mcp add --transport stdio filesystem -- npx -y @modelcontextprotocol/serv
 echo "  ✓ filesystem added"
 
 # ---- Browser Automation ----
-echo "[5/6] Adding playwright..."
-claude mcp add --transport stdio playwright -- npx @anthropic-ai/mcp-server-playwright@latest
+echo "[5/7] Adding playwright..."
+claude mcp add --transport stdio playwright -- npx -y @playwright/mcp@latest
 echo "  ✓ playwright added"
 
+# ---- OpenProject + S3 Remote (EC2 — uses AWS Bedrock credits, not local) ----
+# Get the API key from macOS Keychain (set once with security add-generic-password)
+echo "[6/7] Adding openproject-remote..."
+MCP_API_KEY=$(security find-generic-password -s "openproject-mcp-api-key" -w 2>/dev/null || true)
+if [ -z "$MCP_API_KEY" ]; then
+  echo "  ⚠️  MCP API key not found in Keychain."
+  echo "  Add it once with:"
+  echo "    security add-generic-password -a \"\$USER\" -s openproject-mcp-api-key -w <key>"
+  echo "  Then re-run this script, or add manually:"
+  echo "    claude mcp add --transport sse --scope user openproject-remote \\"
+  echo "      \"https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>\""
+else
+  claude mcp add --transport sse --scope user openproject-remote \
+    "https://projects.axinagroup.com/mcp/sse?key=${MCP_API_KEY}"
+  echo "  ✓ openproject-remote added (EC2 remote, uses AWS Bedrock credits)"
+fi
+
 # ---- Office365 Local (control Word/Excel/PowerPoint desktop apps) ----
-echo "[6/6] office365-local..."
+echo "[7/7] office365-local..."
 echo "  NOTE: Requires cloning https://github.com/vAirpower/macos-office365-mcp-server first."
 echo "  Once cloned, run:"
 echo "    claude mcp add --transport stdio office365-local -- /path/to/server/start.sh"
@@ -81,4 +98,3 @@ echo "Not yet configured (manual setup required):"
 echo "  office365-local   — clone repo above, then add manually"
 echo "  notion            — requires Notion API key + MCP server"
 echo "  github            — for XGC/AXINA project tracking"
-echo "  openproject       — deploy on AWS, then add MCP server"

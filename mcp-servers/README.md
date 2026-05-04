@@ -8,9 +8,9 @@ MCP servers extend Claude with tools for email, calendar, messaging, files, brow
 |--------|-----------|------------------|--------------|
 | `google-workspace` | stdio | `@alanxchen/google-workspace-mcp` | Gmail, Calendar, Drive, Tasks |
 | `whatsapp` | stdio | local Python + Go bridge | WhatsApp outbound messages (bridge must be running) |
-| `document-loader` | stdio | `@anthropic/mcp-document-loader` | Read PDF/Office files |
+| `document-loader` | stdio | `uvx markitdown-mcp` | Read PDF/Office/Word files |
 | `filesystem` | stdio | `@modelcontextprotocol/server-filesystem` | Controlled file access |
-| `playwright` | stdio | `@anthropic-ai/mcp-server-playwright` | Browser automation |
+| `playwright` | stdio | `@playwright/mcp` | Browser automation |
 | `aws-s3-local` | stdio | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access (local/CLI) |
 | `openproject-remote` | SSE | EC2 FastMCP server | OpenProject + S3 (remote, works anywhere) |
 
@@ -72,6 +72,14 @@ The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and work
 ```bash
 claude mcp add --transport sse --scope user openproject-remote \
   "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
+```
+
+**Connect via Claude Desktop** — Claude Desktop only supports stdio, so use `mcp-proxy` as a bridge. Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+```json
+"openproject-remote": {
+  "command": "/Users/dzbrody/.local/bin/uvx",
+  "args": ["mcp-proxy", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"]
+}
 ```
 
 **Connect via Kiro** — add to `~/.kiro/settings/mcp.json`:
@@ -137,4 +145,3 @@ claude mcp list
 |--------|-------|
 | `github` | GitHub issues/PRs — needs GitHub PAT |
 | `notion` | Notion pages — needs Notion API key |
-| `aws-s3-remote` | S3 via remote endpoint (alternate to local) |

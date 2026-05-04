@@ -5,7 +5,7 @@ Polls axina-group-admin for status changes and assignment updates,
 posts a message with a link to the TSPG WhatsApp group.
 
 Runs as a launchd service every 15 minutes.
-State (last run timestamp) stored in ~/.claude-assistant/logs/op-notifier-state.json
+State (last run timestamp) stored in ~/logs/claude-assistant/op-notifier-state.json
 """
 
 import json
@@ -24,8 +24,8 @@ WHATSAPP_BRIDGE = "http://localhost:8080"
 TSPG_JID = "120363424688758322@g.us"
 PROJECT_ID = 3
 PROJECT_IDENTIFIER = "axina-group-admin"
-STATE_FILE = Path.home() / ".claude-assistant/logs/op-notifier-state.json"
-LOG_FILE = Path.home() / ".claude-assistant/logs/op-notifier.log"
+STATE_FILE = Path.home() / "logs/claude-assistant/op-notifier-state.json"
+LOG_FILE = Path.home() / "logs/claude-assistant/op-notifier.log"
 
 # Only notify for these change types
 NOTIFY_STATUSES = True       # status changes

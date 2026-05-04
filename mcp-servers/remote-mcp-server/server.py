@@ -35,6 +35,7 @@ _no_dns_rebind = TransportSecuritySettings(enable_dns_rebinding_protection=False
 # so mcp-proxy posts to the nginx-proxied path, not bare /messages/
 mcp = FastMCP(
     "AXINA Group MCP Server",
+    auth=None,
     host="0.0.0.0",
     port=39128,
     transport_security=_no_dns_rebind,
@@ -112,14 +113,27 @@ def create_work_package(
         type: Type: Task, Milestone, Bug, Feature, Epic
         priority: Priority: low, normal, high, urgent
     """
-    data = {
+    # Resolve type href from the project's available types
+    type_href = None
+    types_result = op_get(f"projects/{project_id}/types")
+    for t in types_result.get("_embedded", {}).get("elements", []):
+        if t.get("name", "").lower() == type.lower():
+            type_href = t.get("_links", {}).get("self", {}).get("href")
+            break
+    if not type_href:
+        elements = types_result.get("_embedded", {}).get("elements", [])
+        if elements:
+            type_href = elements[0].get("_links", {}).get("self", {}).get("href")
+
+    data: dict = {
         "subject": subject,
         "description": {"raw": description},
         "_links": {
             "project": {"href": f"/api/v3/projects/{project_id}"},
-            "type": {"href": f"/api/v3/types/by_name/{type}"},
         },
     }
+    if type_href:
+        data["_links"]["type"] = {"href": type_href}
     return json.dumps(op_post("work_packages", data), indent=2)
 
 
