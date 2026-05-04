@@ -14,15 +14,14 @@ PROMPTS_DIR = PROJ / "scheduled-tasks"
 CLAUDE = os.path.expanduser("~/.local/bin/claude")
 
 TASKS = {
-    "morning":  ("morning-briefing.md",  "☀️  Morning Briefing"),
-    "evening":  ("evening-wrap-up.md",   "🌙  Evening Wrap-Up"),
-    "weekend":  ("weekend-briefing.md",  "📅  Weekend Briefing"),
-    "weekly":   ("weekly-review.md",     "📊  Weekly Review"),
+    "morning": ("morning-briefing.md",  "☀️  Morning Briefing"),
+    "evening": ("evening-wrap-up.md",   "🌙  Evening Wrap-Up"),
+    "weekend": ("weekend-briefing.md",  "📅  Weekend Briefing"),
+    "weekly":  ("weekly-review.md",     "📊  Weekly Review"),
 }
 
 
 def extract_prompt(md_file: Path) -> str:
-    """Extract everything after the '## Prompt' heading."""
     text = md_file.read_text()
     marker = "## Prompt"
     idx = text.find(marker)
@@ -43,11 +42,9 @@ def run_task(task_key: str):
     date_str = datetime.now().strftime("%Y-%m-%d")
     prompt = prompt.replace("{date}", date_str)
 
-    # Write prompt to a temp file to avoid shell escaping issues
     tmp = Path(os.path.expanduser(f"~/.claude-assistant/desktop/.tmp_{task_key}.txt"))
     tmp.write_text(prompt)
 
-    # AppleScript: open new Terminal tab, run the task, keep window open
     script = f'''
 tell application "Terminal"
     activate
@@ -55,7 +52,7 @@ tell application "Terminal"
 end tell
 '''
     subprocess.Popen(["osascript", "-e", script])
-    rumps.notification("Claude Assistant", label, "Running — check Terminal window")
+    rumps.notification("Claude Assistant", label, "Running — check Terminal")
 
 
 class ClaudeAssistantApp(rumps.App):
@@ -66,13 +63,26 @@ class ClaudeAssistantApp(rumps.App):
             quit_button=None,
         )
         self.menu = [
-            rumps.MenuItem("☀️  Morning Briefing",  callback=lambda _: run_task("morning")),
-            rumps.MenuItem("🌙  Evening Wrap-Up",   callback=lambda _: run_task("evening")),
-            rumps.MenuItem("📅  Weekend Briefing",  callback=lambda _: run_task("weekend")),
-            rumps.MenuItem("📊  Weekly Review",     callback=lambda _: run_task("weekly")),
-            None,  # separator
+            rumps.MenuItem("☀️  Morning Briefing", callback=lambda _: run_task("morning")),
+            rumps.MenuItem("🌙  Evening Wrap-Up",  callback=lambda _: run_task("evening")),
+            rumps.MenuItem("📅  Weekend Briefing", callback=lambda _: run_task("weekend")),
+            rumps.MenuItem("📊  Weekly Review",    callback=lambda _: run_task("weekly")),
+            None,
             rumps.MenuItem("Quit", callback=rumps.quit_application),
         ]
+        # Hide from Dock once the run loop starts
+        self._hide_dock_timer = rumps.Timer(self._hide_from_dock, 0.1)
+        self._hide_dock_timer.start()
+
+    def _hide_from_dock(self, _):
+        try:
+            import AppKit
+            AppKit.NSApp.setActivationPolicy_(
+                AppKit.NSApplicationActivationPolicyAccessory
+            )
+        except Exception:
+            pass
+        self._hide_dock_timer.stop()
 
 
 if __name__ == "__main__":
