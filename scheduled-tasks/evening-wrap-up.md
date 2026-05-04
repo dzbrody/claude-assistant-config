@@ -34,11 +34,9 @@ Using `google-workspace` MCP tools:
 Using `filesystem` MCP tools, scan the following locations for files created or modified today:
 - `~/Documents` — personal
 - `~/Downloads` and `~/Desktop`
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/My Drive`
 - `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC`
 - `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP`
 - `~/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive`
-- `~/Library/CloudStorage/OneDrive-Personal`
 - `~/OneDrive`
 
 Group results by location and org. Flag any that look incomplete: tmp files, untitled documents, empty files.
