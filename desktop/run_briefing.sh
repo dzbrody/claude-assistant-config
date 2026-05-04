@@ -47,8 +47,8 @@ echo "⏳ Running claude (output below)..."
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# unbuffer gives claude a PTY so it streams output instead of buffering until done
-unbuffer "$CLAUDE" --dangerously-skip-permissions -p "$PROMPT" 2>&1 | tee "$LOG"
+# Feed prompt via stdin to interactive claude — same as typing it manually
+echo "$PROMPT" | "$CLAUDE" --dangerously-skip-permissions 2>&1 | tee "$LOG"
 EXIT_CODE=${PIPESTATUS[0]}
 
 echo ""
