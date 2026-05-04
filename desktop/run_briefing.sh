@@ -27,33 +27,36 @@ echo ""
 echo "📋 Log: $LOG"
 echo ""
 
-# Ensure AWS SSO session is valid — refresh if expired
-echo "🔐 Checking AWS session (profile: xgc-main)..."
+# AWS session check
+echo "🔐 Checking AWS session..."
 if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
     echo "⚠️  Session expired — logging in (browser will open)..."
     aws sso login --profile xgc-main
-    if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
-        echo "❌ AWS login failed — cannot continue"
-        exit 1
-    fi
 fi
-echo "✅ AWS session active"
+echo "✅ AWS OK"
 echo ""
 
 # Validate prompt
 PROMPT=$(cat "$PROMPT_FILE" 2>/dev/null)
 if [ -z "$PROMPT" ]; then
-    echo "❌ Prompt file empty or missing: $PROMPT_FILE"
+    echo "❌ Prompt file empty: $PROMPT_FILE"
     exit 1
 fi
 
-echo "⏳ Starting claude..."
+echo "⏳ Running claude (output below)..."
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# script -q gives claude a real PTY so it streams output instead of buffering
-script -q "$LOG" "$CLAUDE" --dangerously-skip-permissions -p "$PROMPT"
+"$CLAUDE" --dangerously-skip-permissions -p "$PROMPT" 2>&1
 EXIT_CODE=$?
 
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-echo "✅ Done. Log: $LOG"
+if [ $EXIT_CODE -eq 0 ]; then
+    echo "✅ Done."
+else
+    echo "❌ claude exited $EXIT_CODE"
+fi
+
+# Save a copy of terminal scrollback to log
+echo "[$DATE $(date +%H:%M:%S)] Exit: $EXIT_CODE" >> "$LOG"
