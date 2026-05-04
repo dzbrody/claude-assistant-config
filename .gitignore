@@ -1,3 +1,6 @@
+# Local Claude settings (contains API keys and personal paths)
+.claude/settings.local.json
+
 *.key
 .pem
 .env
