@@ -20,6 +20,18 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 - [Infrastructure](#infrastructure)
 - [Security Design](#security-design)
 
+### Sub-documentation
+
+| File | Contents |
+|------|----------|
+| [desktop/README.md](desktop/README.md) | Menu bar app install, accessibility setup, AWS session, CLI usage, logs |
+| [mcp-servers/TEAM-INSTALL.md](mcp-servers/TEAM-INSTALL.md) | Full 12-step new user setup guide — start here for a fresh Mac |
+| [mcp-servers/README.md](mcp-servers/README.md) | MCP server inventory, WhatsApp architecture, add/remove servers |
+| [scheduled-tasks/README.md](scheduled-tasks/README.md) | Briefing prompts, document saving rules, TSPG group config |
+| [scripts/README.md](scripts/README.md) | OpenProject notifier config, background service management |
+| [infrastructure/README.md](infrastructure/README.md) | Terraform deployment, EC2 operations, Docker containers |
+- [Security Design](#security-design)
+
 ---
 
 ## What This Does
