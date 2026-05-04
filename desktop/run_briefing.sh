@@ -27,6 +27,19 @@ echo ""
 echo "📋 Log: $LOG"
 echo ""
 
+# Ensure AWS SSO session is valid — refresh if expired
+echo "🔐 Checking AWS session (profile: xgc-main)..."
+if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
+    echo "⚠️  Session expired — logging in (browser will open)..."
+    aws sso login --profile xgc-main
+    if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
+        echo "❌ AWS login failed — cannot continue"
+        exit 1
+    fi
+fi
+echo "✅ AWS session active"
+echo ""
+
 # Validate prompt
 PROMPT=$(cat "$PROMPT_FILE" 2>/dev/null)
 if [ -z "$PROMPT" ]; then
