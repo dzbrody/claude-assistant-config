@@ -45,10 +45,11 @@ def run_task(task_key: str):
     tmp = Path(os.path.expanduser(f"~/.claude-assistant/desktop/.tmp_{task_key}.txt"))
     tmp.write_text(prompt)
 
+    runner = PROJ / "desktop" / "run_briefing.sh"
     script = f'''
 tell application "Terminal"
     activate
-    do script "source ~/.zshrc && export AWS_PROFILE=xgc-main && cd {PROJ} && echo '🤖 {label} — {date_str}'; echo ''; {CLAUDE} --dangerously-skip-permissions -p \\"$(cat {tmp})\\" ; echo ''; echo '✅ Done. You can close this window.'"
+    do script "bash {runner} {task_key}"
 end tell
 '''
     subprocess.Popen(["osascript", "-e", script])
