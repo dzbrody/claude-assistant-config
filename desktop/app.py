@@ -52,7 +52,7 @@ def run_task(task_key: str):
 tell application "Terminal"
     activate
     do script "{setup_cmd}"
-    delay 4
+    delay 6
     tell application "System Events"
         keystroke (do shell script "cat {tmp}")
         keystroke return
