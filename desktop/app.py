@@ -45,16 +45,22 @@ def run_task(task_key: str):
     tmp = Path(os.path.expanduser(f"~/.claude-assistant/desktop/.tmp_{task_key}.txt"))
     tmp.write_text(prompt)
 
-    runner = PROJ / "desktop" / "run_briefing.sh"
+    # Open a new Terminal window, set AWS profile, launch claude interactively,
+    # then use keystroke to paste the prompt — gives claude a real TTY throughout
+    setup_cmd = f"export AWS_PROFILE=xgc-main && cd {PROJ} && {CLAUDE} --dangerously-skip-permissions"
     script = f'''
 tell application "Terminal"
     activate
-    set w to do script "bash {runner} {task_key}"
-    set current settings of w to settings set "Basic"
+    do script "{setup_cmd}"
+    delay 4
+    tell application "System Events"
+        keystroke (do shell script "cat {tmp}")
+        keystroke return
+    end tell
 end tell
 '''
     subprocess.Popen(["osascript", "-e", script])
-    rumps.notification("Claude Assistant", label, "Running — check Terminal")
+    rumps.notification("Claude Assistant", label, "Starting — claude launching in Terminal")
 
 
 class ClaudeAssistantApp(rumps.App):
