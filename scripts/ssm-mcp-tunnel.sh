@@ -35,4 +35,5 @@ echo ""
 aws ssm start-session \
   --target "$INSTANCE_ID" \
   --document-name AWS-StartPortForwardingSession \
-  --parameters '{"portNumber":["39127"],"localPortNumber":["39127"]}'
+  --parameters '{"portNumber":["39127"],"localPortNumber":["39127"]}' \
+  --profile claude-assistant

@@ -43,7 +43,7 @@ PLIST
 cat > "$APP_PATH/Contents/MacOS/launch" << LAUNCHER
 #!/bin/bash
 # Kill any existing instance
-pkill -f "python3.*app.py" 2>/dev/null || true
+pkill -f "app.py" 2>/dev/null || true; sleep 1
 exec /usr/local/bin/python3.12 "$SCRIPT_DIR/app.py"
 LAUNCHER
 chmod +x "$APP_PATH/Contents/MacOS/launch"

@@ -143,7 +143,12 @@
       "Bash(git remote *)",
       "Bash(gh repo *)",
       "Bash(gh api *)",
-      "Bash(openssl rand *)"
+      "Bash(openssl rand *)",
+      "Bash(open \"/Users/dzbrody/Applications/Claude Assistant.app\")",
+      "Bash(kill 89539 81269 81265)",
+      "Bash(security add-generic-password *)",
+      "Bash(git -C /Users/dzbrody/.claude-assistant add -A)",
+      "Bash(git -C /Users/dzbrody/.claude-assistant status)"
     ]
   },
   "mcpServers": {
