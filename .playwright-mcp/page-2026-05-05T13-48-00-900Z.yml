@@ -1,0 +1,186 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "claude-assistant-config " [ref=e60] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Project settings" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/general
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Information" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/general
+                    - generic [ref=e77]: Information
+                - listitem [ref=e78]:
+                  - link "Project life cycle" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/life_cycle
+                    - generic [ref=e81]: Project life cycle
+                - listitem [ref=e82]:
+                  - link "Project attributes" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/project_custom_fields
+                    - generic [ref=e85]: Project attributes
+                - listitem [ref=e86]:
+                  - link "Project initiation request" [ref=e87] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/creation_wizard
+                    - generic [ref=e89]: Project initiation request
+                - listitem [ref=e90]:
+                  - link "Modules" [ref=e91] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/modules
+                    - generic [ref=e93]: Modules
+                - listitem [ref=e94]:
+                  - link "Template" [ref=e95] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/template
+                    - generic [ref=e97]: Template
+                - listitem [ref=e98]:
+                  - link "Subitems" [ref=e99] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/subitems
+                    - generic [ref=e101]: Subitems
+                - listitem [ref=e102]:
+                  - link "Work packages" [ref=e103] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/work_packages
+                    - generic [ref=e105]: Work packages
+                - listitem [ref=e106]:
+                  - link "Versions" [ref=e107] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/versions
+                    - generic [ref=e109]: Versions
+                - listitem [ref=e110]:
+                  - link "Time tracking activities" [ref=e111] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/time_entry_activities
+                    - generic [ref=e113]: Time tracking activities
+                - listitem [ref=e114]:
+                  - link "Backlogs" [ref=e115] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/backlogs
+                    - generic [ref=e117]: Backlogs
+                - listitem [ref=e118]:
+                  - link "Required disk storage" [ref=e119] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/storage
+                    - generic [ref=e121]: Required disk storage
+                - listitem [ref=e122]:
+                  - link "Files" [ref=e123] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/project_storages/external_file_storages
+                    - generic [ref=e125]: Files
+      - main [ref=e126]:
+        - generic [ref=e127]:
+          - heading "Content" [level=1] [ref=e128]
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - navigation "Breadcrumb" [ref=e132]:
+                - list [ref=e133]:
+                  - listitem [ref=e134]:
+                    - link "claude-assistant-config" [ref=e135] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e137]: claude-assistant-config
+                  - listitem [ref=e138]:
+                    - link "Project settings" [ref=e139] [cursor=pointer]:
+                      - /url: /projects/6/settings/general
+                      - generic [ref=e141]: Project settings
+                  - listitem [ref=e142]:
+                    - link "Modules" [ref=e143]:
+                      - /url: "#"
+                      - generic [ref=e145]: Modules
+              - heading "Modules" [level=2] [ref=e147]
+            - generic [ref=e148]:
+              - generic [ref=e149]:
+                - generic [ref=e150]: Activity
+                - checkbox "Activity" [ref=e153]
+              - generic [ref=e154]:
+                - generic [ref=e155]: Backlogs
+                - checkbox "Backlogs" [checked] [ref=e158]
+              - generic [ref=e159]:
+                - generic [ref=e160]: Boards
+                - checkbox "Boards" [checked] [ref=e163]
+              - generic [ref=e164]:
+                - generic [ref=e165]: Budgets
+                - checkbox "Budgets" [ref=e168]
+              - generic [ref=e169]:
+                - generic [ref=e170]: Calendars
+                - checkbox "Calendars" [ref=e173]
+              - generic [ref=e174]:
+                - generic [ref=e175]: Documents
+                - checkbox "Documents" [ref=e178]
+              - generic [ref=e179]:
+                - generic [ref=e180]: Forums
+                - checkbox "Forums" [ref=e183]
+              - generic [ref=e184]:
+                - generic [ref=e185]: Gantt charts
+                - checkbox "Gantt charts" [checked] [ref=e188]
+              - generic [ref=e189]:
+                - generic [ref=e190]: GitHub
+                - checkbox "GitHub" [ref=e193]
+              - generic [ref=e194]:
+                - generic [ref=e195]: GitLab
+                - checkbox "GitLab" [ref=e198]
+              - generic [ref=e199]:
+                - generic [ref=e200]: Meetings
+                - checkbox "Meetings" [checked] [ref=e203]
+              - generic [ref=e204]:
+                - generic [ref=e205]: News
+                - checkbox "News" [checked] [ref=e208]
+              - generic [ref=e209]:
+                - generic [ref=e210]: Repository
+                - checkbox "Repository" [ref=e213]
+              - generic [ref=e214]:
+                - generic [ref=e215]:
+                  - text: Team planners
+                  - img [ref=e216]
+                - checkbox "Team planners" [ref=e220]
+              - generic [ref=e221]:
+                - generic [ref=e222]: Time and costs
+                - checkbox "Time and costs" [checked] [ref=e225]
+              - generic [ref=e226]:
+                - generic [ref=e227]: Wiki
+                - checkbox "Wiki" [checked] [ref=e230]
+              - generic [ref=e231]:
+                - generic [ref=e232]: Work packages
+                - checkbox "Work packages" [checked] [ref=e235]
+              - paragraph [ref=e236]:
+                - button "Save" [ref=e237] [cursor=pointer]

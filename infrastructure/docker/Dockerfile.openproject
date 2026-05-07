@@ -1,0 +1,28 @@
+# Custom OpenProject image with GitHub Integration plugin
+#
+# The official openproject/openproject image ships WITHOUT the GitHub integration gem.
+# This Dockerfile adds it so that:
+#   - GitHub webhooks can link PRs/commits to work packages (e.g. "Closes OP#164")
+#   - Work packages show a GitHub tab with linked PRs and checks
+#
+# Build: docker build -f Dockerfile.openproject -t axina-openproject:latest .
+# Deploy: docker compose up -d --build openproject
+
+FROM openproject/openproject:17
+
+USER root
+
+# Write a Gemfile plugin entry and run bundler
+# openproject-github_integration is the official OpenProject plugin
+RUN echo 'gem "openproject-github_integration"' \
+      > /app/vendor/plugins/openproject-github_integration.gemspec && \
+    cd /app && \
+    bundle config set --local deployment 'false' && \
+    bundle add openproject-github_integration --skip-install 2>/dev/null || true
+
+# The supported approach for this OpenProject version is the OPENPROJECT_PLUGINS env var
+# which installs plugins at container startup via the entrypoint.
+# We set it here as a build ARG default; it can be overridden in docker-compose.
+ENV OPENPROJECT_PLUGINS="openproject-github_integration"
+
+USER app

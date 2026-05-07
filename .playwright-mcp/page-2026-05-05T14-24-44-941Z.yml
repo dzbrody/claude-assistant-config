@@ -1,0 +1,119 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Time and costs" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/costs
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "Defaults" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/costs
+                    - generic [ref=e43]: Defaults
+                - listitem [ref=e44]:
+                  - link "Cost types" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/cost_types
+                    - generic [ref=e47]: Cost types
+                - listitem [ref=e48]:
+                  - link "Time tracking activities" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/time_entry_activities
+                    - generic [ref=e51]: Time tracking activities
+      - main [ref=e52]:
+        - generic [ref=e53]:
+          - heading "Content" [level=1] [ref=e54]
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - navigation "Breadcrumb" [ref=e58]:
+                - list [ref=e59]:
+                  - listitem [ref=e60]:
+                    - link "Administration" [ref=e61] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e63]: Administration
+                  - listitem [ref=e64]:
+                    - link "Time and costs" [ref=e65] [cursor=pointer]:
+                      - /url: /admin/time
+                      - generic [ref=e67]: Time and costs
+                  - listitem [ref=e68]:
+                    - link "Cost types" [ref=e69] [cursor=pointer]:
+                      - /url: /admin/cost_types
+                      - generic [ref=e71]: Cost types
+                  - listitem [ref=e72]:
+                    - link "New Cost type" [ref=e73]:
+                      - /url: "#"
+                      - generic [ref=e75]: New Cost type
+              - heading "New Cost type" [level=2] [ref=e77]
+            - generic [ref=e78]:
+              - generic [ref=e79]:
+                - generic "Name" [ref=e80]: Name*
+                - textbox "Name*" [ref=e83]
+              - generic [ref=e84]:
+                - generic "Unit name" [ref=e85]: Unit name*
+                - textbox "Unit name*" [ref=e88]
+              - generic [ref=e89]:
+                - generic "Pluralized unit name" [ref=e90]: Pluralized unit name*
+                - textbox "Pluralized unit name*" [ref=e93]
+              - generic [ref=e94]:
+                - generic "Cost type by default" [ref=e95]
+                - checkbox "Cost type by default" [ref=e98]
+              - heading "Rate history" [level=3] [ref=e99]
+              - table [ref=e102]:
+                - rowgroup [ref=e107]:
+                  - row "Valid from Rate" [ref=e108]:
+                    - columnheader "Valid from" [ref=e109]:
+                      - generic [ref=e112]: Valid from
+                    - columnheader "Rate" [ref=e113]:
+                      - generic [ref=e116]: Rate
+                    - columnheader [ref=e117]
+                - rowgroup [ref=e119]:
+                  - row "Valid from Rate $" [ref=e120]:
+                    - cell "Valid from" [ref=e121]:
+                      - generic [ref=e122]: Valid from
+                    - cell "Rate $" [ref=e123]:
+                      - generic [ref=e124]:
+                        - generic [ref=e125]: Rate
+                        - textbox "Rate" [ref=e126]:
+                          - /placeholder: e.g., 1,000.50
+                        - generic [ref=e127]: $
+                    - cell [ref=e128]:
+                      - link [ref=e129] [cursor=pointer]:
+                        - /url: "#"
+                        - generic [ref=e130]: 
+              - generic [ref=e131]:
+                - generic [ref=e132]: Date for new rate
+                - link "Add rate" [ref=e133] [cursor=pointer]:
+                  - /url: "#"
+                  - generic [ref=e134]: 
+              - button "Save" [ref=e135] [cursor=pointer]

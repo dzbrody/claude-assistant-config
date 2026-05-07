@@ -1,0 +1,435 @@
+- generic [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e91]:
+        - button "Search" [ref=e92] [cursor=pointer]:
+          - generic [ref=e94]: 
+        - generic [ref=e97]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e102]
+          - status [ref=e103]
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - generic [ref=e19]:
+          - link "Notifications" [ref=e20] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e104]: "52"
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e105] [cursor=pointer]:
+          - img "User menu" [ref=e109]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - button "Collapse project menu" [expanded] [ref=e111] [cursor=pointer]:
+          - img [ref=e113]
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e118]:
+                - button "claude-assistant-config " [ref=e119] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e120]
+                  - generic [ref=e121]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+                - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Wiki" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - list [ref=e124]:
+                    - listitem [ref=e125]:
+                      - generic [ref=e126]:
+                        - link "Wiki - Claude Assistant" [ref=e127] [cursor=pointer]:
+                          - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant
+                        - button "Expanded. Click to collapse" [ref=e129]:
+                          - generic [ref=e130]: 
+                          - generic [ref=e131]: Expanded. Click to collapse
+                      - list [ref=e132]:
+                        - listitem [ref=e133]:
+                          - generic [ref=e134]:
+                            - link "Installation — Mac" [ref=e135] [cursor=pointer]:
+                              - /url: /projects/claude-assistant-config/wiki/installation-mac
+                            - button "Expanded. Click to collapse" [ref=e137]:
+                              - generic [ref=e138]: 
+                              - generic [ref=e139]: Expanded. Click to collapse
+                          - list [ref=e140]:
+                            - listitem [ref=e141]:
+                              - generic [ref=e142]:
+                                - link "Installation — Windows" [ref=e143] [cursor=pointer]:
+                                  - /url: /projects/claude-assistant-config/wiki/installation-windows
+                                - button "Expanded. Click to collapse" [ref=e145]:
+                                  - generic [ref=e146]: 
+                                  - generic [ref=e147]: Expanded. Click to collapse
+                              - list [ref=e148]:
+                                - listitem [ref=e149]:
+                                  - generic [ref=e150]:
+                                    - link "MCP Server Ecosystem" [ref=e151] [cursor=pointer]:
+                                      - /url: /projects/claude-assistant-config/wiki/mcp-server-ecosystem
+                                    - button "Expanded. Click to collapse" [ref=e153]:
+                                      - generic [ref=e154]: 
+                                      - generic [ref=e155]: Expanded. Click to collapse
+                                  - list [ref=e156]:
+                                    - listitem [ref=e157]:
+                                      - link "Scheduled Briefings" [ref=e159] [cursor=pointer]:
+                                        - /url: /projects/claude-assistant-config/wiki/scheduled-briefings
+      - main [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Content" [level=1] [ref=e43]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - navigation "Breadcrumb" [ref=e47]:
+                - list [ref=e48]:
+                  - listitem [ref=e49]:
+                    - link "claude-assistant-config" [ref=e50] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e52]: claude-assistant-config
+                  - listitem [ref=e53]:
+                    - link "Wiki" [ref=e54] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/index
+                      - generic [ref=e56]: Wiki
+                  - listitem [ref=e57]:
+                    - link "Create new wiki page" [ref=e58]:
+                      - /url: "#"
+                      - generic [ref=e60]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e62]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - generic "Page title" [ref=e65]: Page title*
+                - textbox "Page title*" [active] [ref=e68]
+              - generic [ref=e69]:
+                - generic "Page content" [ref=e70]
+                - generic [ref=e160]:
+                  - generic [ref=e163]:
+                    - toolbar "Editor toolbar" [ref=e165]:
+                      - generic [ref=e166]:
+                        - button "Heading 1, Heading" [ref=e168]:
+                          - generic [ref=e169]: Heading 1
+                          - img
+                        - button "Bold" [ref=e171]:
+                          - img [ref=e172]
+                        - button "Italic" [ref=e174]:
+                          - img [ref=e175]
+                        - button "Strikethrough" [ref=e177]:
+                          - img [ref=e178]
+                        - button "Code" [ref=e181]:
+                          - img [ref=e182]
+                        - button "Insert code snippet" [ref=e184]:
+                          - img [ref=e185]
+                        - button "Link" [ref=e191]:
+                          - img [ref=e192]
+                        - button "Bulleted List" [ref=e194]:
+                          - img [ref=e195]
+                        - button "Numbered List" [ref=e197]:
+                          - img [ref=e198]
+                        - button "To-do List" [ref=e200]:
+                          - img [ref=e201]
+                        - button "Upload image from computer" [ref=e203]:
+                          - img [ref=e204]
+                        - button "Block quote" [ref=e208]:
+                          - img [ref=e209]
+                        - button "Insert table" [ref=e213]:
+                          - img [ref=e214]
+                          - img
+                        - button "Macros" [ref=e217]:
+                          - generic [ref=e218]: Macros
+                          - img
+                        - button "Show local modifications" [ref=e221]:
+                          - img [ref=e222]
+                          - img
+                        - button "Undo" [disabled] [ref=e224]:
+                          - img [ref=e225]
+                        - button "Redo" [disabled] [ref=e227]:
+                          - img [ref=e228]
+                      - button "Show more items" [ref=e232]:
+                        - img [ref=e233]
+                    - textbox "Page content" [ref=e238]:
+                      - heading "Infrastructure" [level=1] [ref=e239]
+                      - paragraph [ref=e240]: The AXINA Claude Assistant backend runs on a single AWS EC2 instance in us-east-1. It hosts OpenProject, the remote MCP server, and supporting services — all in Docker containers behind nginx with SSL.
+                      - heading "AWS Resources" [level=2] [ref=e241]
+                      - figure [ref=e242]:
+                        - img [ref=e244]
+                        - table [ref=e250]:
+                          - rowgroup [ref=e251]:
+                            - row "Resource Detail" [ref=e252]:
+                              - textbox [ref=e253]:
+                                - generic [ref=e254]: Resource
+                              - textbox [ref=e255]:
+                                - generic [ref=e256]: Detail
+                          - rowgroup [ref=e257]:
+                            - row "EC2 instance t3.large, Amazon Linux 2023, 30 GB root + 100 GB data EBS" [ref=e258]:
+                              - textbox [ref=e259]:
+                                - generic [ref=e260]: EC2 instance
+                              - textbox [ref=e261]:
+                                - generic [ref=e262]:
+                                  - code [ref=e263]: t3.large
+                                  - text: ", Amazon Linux 2023, 30 GB root + 100 GB data EBS"
+                            - row "Domain projects.axinagroup.com (Route 53)" [ref=e264]:
+                              - textbox [ref=e265]:
+                                - generic [ref=e266]: Domain
+                              - textbox [ref=e267]:
+                                - generic [ref=e268]:
+                                  - code [ref=e269]: projects.axinagroup.com
+                                  - text: (Route 53)
+                            - row "SSL Let's Encrypt via Certbot (auto-renewing every 90 days)" [ref=e270]:
+                              - textbox [ref=e271]:
+                                - generic [ref=e272]: SSL
+                              - textbox [ref=e273]:
+                                - generic [ref=e274]: Let's Encrypt via Certbot (auto-renewing every 90 days)
+                            - row "Email SES SMTP no-reply@axinagroup.com" [ref=e275]:
+                              - textbox [ref=e276]:
+                                - generic [ref=e277]: Email
+                              - textbox [ref=e278]:
+                                - generic [ref=e279]:
+                                  - text: SES SMTP
+                                  - code [ref=e280]: no-reply@axinagroup.com
+                            - row "S3 bucket axina-openproject-files (versioned, SSE-S3, public access blocked)" [ref=e281]:
+                              - textbox [ref=e282]:
+                                - generic [ref=e283]: S3 bucket
+                              - textbox [ref=e284]:
+                                - generic [ref=e285]:
+                                  - code [ref=e286]: axina-openproject-files
+                                  - text: (versioned, SSE-S3, public access blocked)
+                            - row "IAM user claude-assistant — scoped S3 + SSM read-only policy, no console access" [ref=e287]:
+                              - textbox [ref=e288]:
+                                - generic [ref=e289]: IAM user
+                              - textbox [ref=e290]:
+                                - generic [ref=e291]:
+                                  - code [ref=e292]: claude-assistant
+                                  - text: — scoped S3 + SSM read-only policy, no console access
+                            - row "EC2 access AWS SSM Session Manager only — no SSH port open" [ref=e293]:
+                              - textbox [ref=e294]:
+                                - generic [ref=e295]: EC2 access
+                              - textbox [ref=e296]:
+                                - generic [ref=e297]: AWS SSM Session Manager only — no SSH port open
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Docker Containers" [level=2] [ref=e298]
+                      - figure [ref=e299]:
+                        - img [ref=e301]
+                        - table [ref=e307]:
+                          - rowgroup [ref=e308]:
+                            - row "Container Purpose Port" [ref=e309]:
+                              - textbox [ref=e310]:
+                                - generic [ref=e311]: Container
+                              - textbox [ref=e312]:
+                                - generic [ref=e313]: Purpose
+                              - textbox [ref=e314]:
+                                - generic [ref=e315]: Port
+                          - rowgroup [ref=e316]:
+                            - row "openproject-app OpenProject Rails app internal" [ref=e317]:
+                              - textbox [ref=e318]:
+                                - code [ref=e320]: openproject-app
+                              - textbox [ref=e321]:
+                                - generic [ref=e322]: OpenProject Rails app
+                              - textbox [ref=e323]:
+                                - generic [ref=e324]: internal
+                            - row "openproject-postgres PostgreSQL database internal" [ref=e325]:
+                              - textbox [ref=e326]:
+                                - code [ref=e328]: openproject-postgres
+                              - textbox [ref=e329]:
+                                - generic [ref=e330]: PostgreSQL database
+                              - textbox [ref=e331]:
+                                - generic [ref=e332]: internal
+                            - row "openproject-nginx Reverse proxy + SSL termination 443 public" [ref=e333]:
+                              - textbox [ref=e334]:
+                                - code [ref=e336]: openproject-nginx
+                              - textbox [ref=e337]:
+                                - generic [ref=e338]: Reverse proxy + SSL termination
+                              - textbox [ref=e339]:
+                                - generic [ref=e340]: 443 public
+                            - row "openproject-certbot Let's Encrypt SSL renewal —" [ref=e341]:
+                              - textbox [ref=e342]:
+                                - code [ref=e344]: openproject-certbot
+                              - textbox [ref=e345]:
+                                - generic [ref=e346]: Let's Encrypt SSL renewal
+                              - textbox [ref=e347]:
+                                - generic [ref=e348]: —
+                            - row "openproject-mcp-server Remote MCP SSE endpoint (FastMCP) 39128 internal only" [ref=e349]:
+                              - textbox [ref=e350]:
+                                - code [ref=e352]: openproject-mcp-server
+                              - textbox [ref=e353]:
+                                - generic [ref=e354]: Remote MCP SSE endpoint (FastMCP)
+                              - textbox [ref=e355]:
+                                - generic [ref=e356]: 39128 internal only
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Network Design" [level=2] [ref=e357]
+                      - list [ref=e358]:
+                        - listitem [ref=e359]:
+                          - generic [ref=e360]: Only port 443 (HTTPS) is open to the internet
+                        - listitem [ref=e361]:
+                          - generic [ref=e362]:
+                            - text: MCP server binds to
+                            - code [ref=e363]: 127.0.0.1:39128
+                            - text: — reachable only via nginx proxy at
+                            - code [ref=e364]: /mcp/
+                        - listitem [ref=e365]:
+                          - generic [ref=e366]: All inter-container traffic is on a private Docker network
+                        - listitem [ref=e367]:
+                          - generic [ref=e368]: "EC2 security group: inbound 443 from 0.0.0.0/0, no SSH (22) open"
+                      - heading "Deploying MCP Server Changes" [level=2] [ref=e369]
+                      - paragraph [ref=e370]:
+                        - text: The MCP server (
+                        - code [ref=e371]: server.py
+                        - text: ") is deployed via S3 + SSM — no direct SSH needed:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e372]:
+                        - text: "# 1. Upload updated server.py to S3 aws s3 cp ~/.claude-assistant/mcp-servers/remote-mcp-server/server.py s3://axina-openproject-files/tmp/server.py"
+                        - generic [ref=e373]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e374]
+                      - paragraph [ref=e375]:
+                        - strong [ref=e376]: Rebuild needed only for dependency changes
+                        - text: (new Python packages in requirements.txt). For
+                        - code [ref=e377]: server.py
+                        - text: edits, restart only.
+                      - heading "Connecting to EC2 (SSM)" [level=2] [ref=e378]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e379]:
+                        - text: "# Open an interactive shell on EC2 (no SSH key needed) aws ssm start-session --target i-XXXXXXXXXXXXXXXXX --profile claude-assistant"
+                        - generic [ref=e380]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e381]
+                      - heading "Terraform" [level=2] [ref=e382]
+                      - paragraph [ref=e383]:
+                        - text: The EC2 instance, security groups, Route 53 record, S3 bucket, and IAM policies are all defined in Terraform at
+                        - code [ref=e384]: ~/.claude-assistant/infrastructure/terraform/
+                        - text: .
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e385]:
+                        - text: cd ~/.claude-assistant/infrastructure/terraform terraform init terraform plan terraform apply
+                        - generic [ref=e386]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e387]:
+                        - strong [ref=e388]: "State file:"
+                        - text: stored in S3 (remote backend) — never commit
+                        - code [ref=e389]: .tfstate
+                        - text: files to git.
+                      - heading "Docker Compose" [level=2] [ref=e390]
+                      - paragraph [ref=e391]:
+                        - text: All containers are managed via Docker Compose at
+                        - code [ref=e392]: /data/docker-compose.yml
+                        - text: on EC2.
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e393]:
+                        - text: "# On EC2 (via SSM): cd /data docker compose ps # check container status docker compose logs -f mcp-server # tail MCP server logs docker compose restart openproject-app # restart OpenProject"
+                        - generic [ref=e394]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Backup" [level=2] [ref=e395]
+                      - list [ref=e396]:
+                        - listitem [ref=e397]:
+                          - generic [ref=e398]:
+                            - text: "PostgreSQL: daily dump via the"
+                            - code [ref=e399]: backup-bot
+                            - text: OpenProject user's scheduled task → S3
+                        - listitem [ref=e400]:
+                          - generic [ref=e401]: "S3 bucket: versioning enabled — all file versions retained"
+                        - listitem [ref=e402]:
+                          - generic [ref=e403]: "EBS: weekly snapshots via AWS Data Lifecycle Manager"
+                      - heading "Security Design" [level=2] [ref=e404]
+                      - list [ref=e405]:
+                        - listitem [ref=e406]:
+                          - generic [ref=e407]:
+                            - text: MCP server binds to
+                            - code [ref=e408]: 127.0.0.1
+                            - text: only — no direct internet access
+                        - listitem [ref=e409]:
+                          - generic [ref=e410]:
+                            - text: 64-char hex API key required on all
+                            - code [ref=e411]: /mcp
+                            - text: endpoints
+                        - listitem [ref=e412]:
+                          - generic [ref=e413]: No SSH port — EC2 managed via SSM only
+                        - listitem [ref=e414]:
+                          - generic [ref=e415]:
+                            - text: No hardcoded secrets — credentials in
+                            - code [ref=e416]: .env
+                            - text: (chmod 600) on server, macOS Keychain locally
+                        - listitem [ref=e417]:
+                          - generic [ref=e418]:
+                            - text: "S3: SSE-S3 encryption, public access blocked, CORS restricted to"
+                            - code [ref=e419]: projects.axinagroup.com
+                        - listitem [ref=e420]:
+                          - generic [ref=e421]:
+                            - code [ref=e422]: .gitignore
+                            - text: excludes
+                            - code [ref=e423]: .env
+                            - text: ", tokens, and"
+                            - code [ref=e424]: settings.local.json
+                      - paragraph [ref=e425]:
+                        - text: "GitHub:"
+                        - link "https://github.com/dzbrody/claude-assistant-config/tree/main/infrastructure" [ref=e426]:
+                          - /url: https://github.com/dzbrody/claude-assistant-config/tree/main/infrastructure
+                  - group "Attachments" [ref=e427]:
+                    - generic [ref=e428]: Attachments
+                    - generic [ref=e429]:
+                      - button "Attach files" [ref=e430] [cursor=pointer]:
+                        - img [ref=e431]
+                        - generic [ref=e434]: Drop files here or click to attach files.
+                      - button "Attach files" [ref=e436] [cursor=pointer]:
+                        - img [ref=e437]
+                        - generic [ref=e440]: Attach files
+              - generic [ref=e74]:
+                - generic "Parent page" [ref=e75]: Parent page*
+                - combobox [ref=e78]:
+                  - option "-- No parent page --"
+                  - option "Wiki - Claude Assistant"
+                  - option "» Installation — Mac"
+                  - option "» Installation — Windows"
+                  - option "» MCP Server Ecosystem"
+                  - option "» Scheduled Briefings" [selected]
+              - generic [ref=e79]:
+                - generic "Comment" [ref=e80]
+                - textbox "Comment" [ref=e83]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e84] [cursor=pointer]
+              - link "Cancel" [ref=e85] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

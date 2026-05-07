@@ -1,0 +1,496 @@
+- generic [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - generic [ref=e37]:
+          - link "Notifications" [ref=e38] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e213]: "52"
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e214]
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "claude-assistant-config " [ref=e60] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Wiki" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - list [ref=e217]:
+                    - listitem [ref=e218]:
+                      - generic [ref=e219]:
+                        - link "Wiki - Claude Assistant" [ref=e220] [cursor=pointer]:
+                          - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant
+                        - button "Expanded. Click to collapse" [ref=e222]:
+                          - generic [ref=e223]: 
+                          - generic [ref=e224]: Expanded. Click to collapse
+                      - list [ref=e225]:
+                        - listitem [ref=e226]:
+                          - generic [ref=e227]:
+                            - link "Installation — Mac" [ref=e228] [cursor=pointer]:
+                              - /url: /projects/claude-assistant-config/wiki/installation-mac
+                            - button "Expanded. Click to collapse" [ref=e230]:
+                              - generic [ref=e231]: 
+                              - generic [ref=e232]: Expanded. Click to collapse
+                          - list [ref=e233]:
+                            - listitem [ref=e234]:
+                              - generic [ref=e235]:
+                                - link "Installation — Windows" [ref=e236] [cursor=pointer]:
+                                  - /url: /projects/claude-assistant-config/wiki/installation-windows
+                                - button "Expanded. Click to collapse" [ref=e238]:
+                                  - generic [ref=e239]: 
+                                  - generic [ref=e240]: Expanded. Click to collapse
+                              - list [ref=e241]:
+                                - listitem [ref=e242]:
+                                  - link "MCP Server Ecosystem" [ref=e244] [cursor=pointer]:
+                                    - /url: /projects/claude-assistant-config/wiki/mcp-server-ecosystem
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - heading "Content" [level=1] [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - navigation "Breadcrumb" [ref=e81]:
+                - list [ref=e82]:
+                  - listitem [ref=e83]:
+                    - link "claude-assistant-config" [ref=e84] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e86]: claude-assistant-config
+                  - listitem [ref=e87]:
+                    - link "Wiki" [ref=e88] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/index
+                      - generic [ref=e90]: Wiki
+                  - listitem [ref=e91]:
+                    - link "Create new wiki page" [ref=e92]:
+                      - /url: "#"
+                      - generic [ref=e94]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e96]
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic "Page title" [ref=e99]: Page title*
+                - textbox "Page title*" [active] [ref=e102]
+              - generic [ref=e103]:
+                - generic "Page content" [ref=e104]
+                - generic [ref=e107]:
+                  - generic [ref=e110]:
+                    - toolbar "Editor toolbar" [ref=e112]:
+                      - generic [ref=e113]:
+                        - button "Heading 1, Heading" [ref=e245]:
+                          - generic [ref=e116]: Heading 1
+                          - img
+                        - button "Bold" [ref=e118]:
+                          - img [ref=e119]
+                        - button "Italic" [ref=e121]:
+                          - img [ref=e122]
+                        - button "Strikethrough" [ref=e124]:
+                          - img [ref=e125]
+                        - button "Code" [ref=e128]:
+                          - img [ref=e129]
+                        - button "Insert code snippet" [ref=e131]:
+                          - img [ref=e132]
+                        - button "Link" [ref=e138]:
+                          - img [ref=e139]
+                        - button "Bulleted List" [ref=e141]:
+                          - img [ref=e142]
+                        - button "Numbered List" [ref=e144]:
+                          - img [ref=e145]
+                        - button "To-do List" [ref=e147]:
+                          - img [ref=e148]
+                        - button "Upload image from computer" [ref=e150]:
+                          - img [ref=e151]
+                        - button "Block quote" [ref=e155]:
+                          - img [ref=e156]
+                        - button "Insert table" [ref=e160]:
+                          - img [ref=e161]
+                          - img
+                        - button "Macros" [ref=e164]:
+                          - generic [ref=e165]: Macros
+                          - img
+                        - button "Show local modifications" [ref=e168]:
+                          - img [ref=e169]
+                          - img
+                        - button "Undo" [disabled] [ref=e171]:
+                          - img [ref=e172]
+                        - button "Redo" [disabled] [ref=e174]:
+                          - img [ref=e175]
+                      - button "Show more items" [ref=e179]:
+                        - img [ref=e180]
+                    - textbox "Page content" [ref=e185]:
+                      - heading "Scheduled Briefings" [level=1] [ref=e246]
+                      - paragraph [ref=e186]: Four automated briefings run via the 🤖 Claude Assistant menu bar app. Each one reads a prompt file, opens a Terminal, launches Claude CLI with all MCP servers loaded, and streams output live. Typical runtime is 5–12 minutes per briefing.
+                      - heading "Briefing Summary" [level=2] [ref=e247]
+                      - figure [ref=e248]:
+                        - img [ref=e250]
+                        - table [ref=e256]:
+                          - rowgroup [ref=e257]:
+                            - row "Briefing Button When Runtime Output File" [ref=e258]:
+                              - textbox [ref=e259]:
+                                - generic [ref=e260]: Briefing
+                              - textbox [ref=e261]:
+                                - generic [ref=e262]: Button
+                              - textbox [ref=e263]:
+                                - generic [ref=e264]: When
+                              - textbox [ref=e265]:
+                                - generic [ref=e266]: Runtime
+                              - textbox [ref=e267]:
+                                - generic [ref=e268]: Output File
+                          - rowgroup [ref=e269]:
+                            - row "Morning Briefing ☀️ Weekdays ~7:00 AM 10–12 min YYYY-MM-DD.md" [ref=e270]:
+                              - textbox [ref=e271]:
+                                - generic [ref=e272]: Morning Briefing
+                              - textbox [ref=e273]:
+                                - generic [ref=e274]: ☀️
+                              - textbox [ref=e275]:
+                                - generic [ref=e276]: Weekdays ~7:00 AM
+                              - textbox [ref=e277]:
+                                - generic [ref=e278]: 10–12 min
+                              - textbox [ref=e279]:
+                                - code [ref=e281]: YYYY-MM-DD.md
+                            - row "Evening Wrap-Up 🌙 Weekdays ~6:00 PM 5–7 min YYYY-MM-DD-wrapup.md" [ref=e282]:
+                              - textbox [ref=e283]:
+                                - generic [ref=e284]: Evening Wrap-Up
+                              - textbox [ref=e285]:
+                                - generic [ref=e286]: 🌙
+                              - textbox [ref=e287]:
+                                - generic [ref=e288]: Weekdays ~6:00 PM
+                              - textbox [ref=e289]:
+                                - generic [ref=e290]: 5–7 min
+                              - textbox [ref=e291]:
+                                - code [ref=e293]: YYYY-MM-DD-wrapup.md
+                            - row "Weekend Briefing 📅 Sundays ~8:00 AM 8–10 min YYYY-MM-DD.md" [ref=e294]:
+                              - textbox [ref=e295]:
+                                - generic [ref=e296]: Weekend Briefing
+                              - textbox [ref=e297]:
+                                - generic [ref=e298]: 📅
+                              - textbox [ref=e299]:
+                                - generic [ref=e300]: Sundays ~8:00 AM
+                              - textbox [ref=e301]:
+                                - generic [ref=e302]: 8–10 min
+                              - textbox [ref=e303]:
+                                - code [ref=e305]: YYYY-MM-DD.md
+                            - row "Weekly Review 📊 Sundays ~10:00 AM 5–8 min YYYY-MM-DD-weekly.md" [ref=e306]:
+                              - textbox [ref=e307]:
+                                - generic [ref=e308]: Weekly Review
+                              - textbox [ref=e309]:
+                                - generic [ref=e310]: 📊
+                              - textbox [ref=e311]:
+                                - generic [ref=e312]: Sundays ~10:00 AM
+                              - textbox [ref=e313]:
+                                - generic [ref=e314]: 5–8 min
+                              - textbox [ref=e315]:
+                                - code [ref=e317]: YYYY-MM-DD-weekly.md
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e318]:
+                        - text: All output files are written to
+                        - code [ref=e319]: ~/Documents/daily_briefs/
+                        - text: and a WhatsApp summary is sent to Daniel's number at the end of every run.
+                      - heading "Morning Briefing" [level=2] [ref=e320]
+                      - paragraph [ref=e321]: The most comprehensive briefing — covers everything that happened overnight and sets up the day.
+                      - paragraph [ref=e322]:
+                        - strong [ref=e323]: "What it does (in order):"
+                      - list [ref=e324]:
+                        - listitem [ref=e325]:
+                          - generic [ref=e326]:
+                            - strong [ref=e327]: TSPG WhatsApp scan
+                            - text: — reads all messages from the AXINA-TSPG-TEAM group since yesterday evening. Downloads any documents/media with original filenames, saves to Google Drive at
+                            - code [ref=e328]: AXINAGRP/XGC-TSPG/whatsapp-docs/
+                            - text: ", creates"
+                            - code [ref=e329]: "[TSPG]"
+                            - text: OpenProject work packages for action items (deduplicates against existing tasks)
+                        - listitem [ref=e330]:
+                          - generic [ref=e331]:
+                            - strong [ref=e332]: Gmail scan
+                            - text: — flags urgent unread email from AXINA/XGC/4ward domains
+                        - listitem [ref=e333]:
+                          - generic [ref=e334]:
+                            - strong [ref=e335]: Meeting notes
+                            - text: — extracts action items from Gemini meeting notes in Drive → creates OpenProject tasks
+                        - listitem [ref=e336]:
+                          - generic [ref=e337]:
+                            - strong [ref=e338]: Calendar review
+                            - text: — today's schedule, flags conflicts and back-to-backs
+                        - listitem [ref=e339]:
+                          - generic [ref=e340]:
+                            - strong [ref=e341]: Write briefing file
+                            - text: — saves full summary to
+                            - code [ref=e342]: ~/Documents/daily_briefs/YYYY-MM-DD.md
+                        - listitem [ref=e343]:
+                          - generic [ref=e344]:
+                            - strong [ref=e345]: WhatsApp summary
+                            - text: — sends condensed bullet-point summary to your personal number
+                      - paragraph [ref=e346]:
+                        - strong [ref=e347]: "Prompt file:"
+                        - code [ref=e348]: ~/.claude-assistant/scheduled-tasks/morning-briefing.md
+                      - heading "Evening Wrap-Up" [level=2] [ref=e349]
+                      - paragraph [ref=e350]:
+                        - strong [ref=e351]: "What it does:"
+                      - list [ref=e352]:
+                        - listitem [ref=e353]:
+                          - generic [ref=e354]: TSPG afternoon messages — any docs or tasks since morning briefing
+                        - listitem [ref=e355]:
+                          - generic [ref=e356]: Sent email review — what went out today
+                        - listitem [ref=e357]:
+                          - generic [ref=e358]: Drive activity — modified/created files since morning
+                        - listitem [ref=e359]:
+                          - generic [ref=e360]: Open tasks check — overdue or due-today OpenProject work packages
+                        - listitem [ref=e361]:
+                          - generic [ref=e362]: Tomorrow preview — calendar + any deadlines
+                        - listitem [ref=e363]:
+                          - generic [ref=e364]: Write wrap-up file and send WhatsApp summary
+                      - paragraph [ref=e365]:
+                        - strong [ref=e366]: "Prompt file:"
+                        - code [ref=e367]: ~/.claude-assistant/scheduled-tasks/evening-wrap-up.md
+                      - heading "Weekend Briefing" [level=2] [ref=e368]
+                      - paragraph [ref=e369]: Covers Friday 4 PM through Sunday morning — a full catch-up after the weekend gap.
+                      - paragraph [ref=e370]:
+                        - strong [ref=e371]: "What it does:"
+                      - list [ref=e372]:
+                        - listitem [ref=e373]:
+                          - generic [ref=e374]: Full TSPG scan (Fri PM → Sun AM) — all messages, docs, action items
+                        - listitem [ref=e375]:
+                          - generic [ref=e376]: Urgent email scan
+                        - listitem [ref=e377]:
+                          - generic [ref=e378]: Gemini notes from any weekend meetings
+                        - listitem [ref=e379]:
+                          - generic [ref=e380]: Drive activity over the weekend
+                        - listitem [ref=e381]:
+                          - generic [ref=e382]: Monday calendar preview
+                        - listitem [ref=e383]:
+                          - generic [ref=e384]: Write briefing file and send WhatsApp summary
+                      - paragraph [ref=e385]:
+                        - strong [ref=e386]: "Prompt file:"
+                        - code [ref=e387]: ~/.claude-assistant/scheduled-tasks/weekend-briefing.md
+                      - heading "Weekly Review" [level=2] [ref=e388]
+                      - paragraph [ref=e389]: Runs Sunday morning. Reads all daily brief files from the past week and produces a structured rollup.
+                      - paragraph [ref=e390]:
+                        - strong [ref=e391]: "What it does:"
+                      - list [ref=e392]:
+                        - listitem [ref=e393]:
+                          - generic [ref=e394]:
+                            - text: Reads all
+                            - code [ref=e395]: ~/Documents/daily_briefs/YYYY-MM-DD*.md
+                            - text: files from the past 7 days
+                        - listitem [ref=e396]:
+                          - generic [ref=e397]: Aggregates activity by organisation (4ward / XGC / AXINA)
+                        - listitem [ref=e398]:
+                          - generic [ref=e399]: Flags stale OpenProject tasks (open for more than 2 weeks with no update)
+                        - listitem [ref=e400]:
+                          - generic [ref=e401]: Summarises wins, blockers, and next-week priorities
+                        - listitem [ref=e402]:
+                          - generic [ref=e403]: Writes weekly review file and sends WhatsApp summary
+                      - paragraph [ref=e404]:
+                        - strong [ref=e405]: "Prompt file:"
+                        - code [ref=e406]: ~/.claude-assistant/scheduled-tasks/weekly-review.md
+                      - heading "Document Saving Rules (TSPG WhatsApp)" [level=2] [ref=e407]
+                      - paragraph [ref=e408]: "Every briefing that scans TSPG follows the same document-saving convention:"
+                      - list [ref=e409]:
+                        - listitem [ref=e410]:
+                          - generic [ref=e411]:
+                            - text: Download media via
+                            - code [ref=e412]: whatsapp
+                            - text: MCP
+                            - code [ref=e413]: download_media
+                        - listitem [ref=e414]:
+                          - generic [ref=e415]: Look up the original filename from the WhatsApp bridge SQLite DB
+                        - listitem [ref=e416]:
+                          - generic [ref=e417]:
+                            - text: Save to Drive as
+                            - code [ref=e418]: YYYY-MM-DD_<original_filename>
+                            - text: — date prefix only, original name and extension preserved
+                        - listitem [ref=e419]:
+                          - generic [ref=e420]:
+                            - text: "Fallback if filename is blank:"
+                            - code [ref=e421]: YYYY-MM-DD_<media_type>.<ext>
+                            - text: — no sender name
+                        - listitem [ref=e422]:
+                          - generic [ref=e423]:
+                            - strong [ref=e424]: Never convert formats
+                            - text: —
+                            - code [ref=e425]: .docx
+                            - text: stays
+                            - code [ref=e426]: .docx
+                            - text: ","
+                            - code [ref=e427]: .pptx
+                            - text: stays
+                            - code [ref=e428]: .pptx
+                      - paragraph [ref=e429]:
+                        - text: "Save location:"
+                        - code [ref=e430]: ~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/
+                      - heading "TSPG Group Config" [level=2] [ref=e431]
+                      - figure [ref=e432]:
+                        - img [ref=e434]
+                        - table [ref=e440]:
+                          - rowgroup [ref=e441]:
+                            - row "Setting Value" [ref=e442]:
+                              - textbox [ref=e443]:
+                                - generic [ref=e444]: Setting
+                              - textbox [ref=e445]:
+                                - generic [ref=e446]: Value
+                          - rowgroup [ref=e447]:
+                            - row "Chat JID 120363424688758322@g.us" [ref=e448]:
+                              - textbox [ref=e449]:
+                                - generic [ref=e450]: Chat JID
+                              - textbox [ref=e451]:
+                                - code [ref=e453]: 120363424688758322@g.us
+                            - row "Priority Highest — runs before email in morning briefing" [ref=e454]:
+                              - textbox [ref=e455]:
+                                - generic [ref=e456]: Priority
+                              - textbox [ref=e457]:
+                                - generic [ref=e458]: Highest — runs before email in morning briefing
+                            - row "Docs saved to AXINAGRP/XGC-TSPG/whatsapp-docs/" [ref=e459]:
+                              - textbox [ref=e460]:
+                                - generic [ref=e461]: Docs saved to
+                              - textbox [ref=e462]:
+                                - code [ref=e464]: AXINAGRP/XGC-TSPG/whatsapp-docs/
+                            - row "Tasks created in OpenProject axina-group-admin, prefixed [TSPG]" [ref=e465]:
+                              - textbox [ref=e466]:
+                                - generic [ref=e467]: Tasks created in
+                              - textbox [ref=e468]:
+                                - generic [ref=e469]:
+                                  - text: OpenProject
+                                  - code [ref=e470]: axina-group-admin
+                                  - text: ", prefixed"
+                                  - code [ref=e471]: "[TSPG]"
+                            - row "Task dedup Checks existing [TSPG] WPs before creating new ones" [ref=e472]:
+                              - textbox [ref=e473]:
+                                - generic [ref=e474]: Task dedup
+                              - textbox [ref=e475]:
+                                - generic [ref=e476]:
+                                  - text: Checks existing
+                                  - code [ref=e477]: "[TSPG]"
+                                  - text: WPs before creating new ones
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "OpenProject → WhatsApp Notifier" [level=2] [ref=e478]
+                      - paragraph [ref=e479]: "A separate always-on background service (not part of the briefings) posts OpenProject changes to TSPG every 15 minutes:"
+                      - figure [ref=e480]:
+                        - img [ref=e482]
+                        - table [ref=e488]:
+                          - rowgroup [ref=e489]:
+                            - row "Event WhatsApp Message" [ref=e490]:
+                              - textbox [ref=e491]:
+                                - generic [ref=e492]: Event
+                              - textbox [ref=e493]:
+                                - generic [ref=e494]: WhatsApp Message
+                          - rowgroup [ref=e495]:
+                            - row "New work package 🆕 New Task + subject + link" [ref=e496]:
+                              - textbox [ref=e497]:
+                                - generic [ref=e498]: New work package
+                              - textbox [ref=e499]:
+                                - generic [ref=e500]: 🆕 New Task + subject + link
+                            - row "Status changed 📋 OpenProject Update + old → new + link" [ref=e501]:
+                              - textbox [ref=e502]:
+                                - generic [ref=e503]: Status changed
+                              - textbox [ref=e504]:
+                                - generic [ref=e505]: 📋 OpenProject Update + old → new + link
+                            - row "Assignee changed 👤 OpenProject Assignment + who → who + link" [ref=e506]:
+                              - textbox [ref=e507]:
+                                - generic [ref=e508]: Assignee changed
+                              - textbox [ref=e509]:
+                                - generic [ref=e510]: 👤 OpenProject Assignment + who → who + link
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e511]:
+                        - text: "launchctl list | grep openproject-notifier # check it's running tail -f ~/logs/claude-assistant/op-notifier.log # live log"
+                        - generic [ref=e512]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Updating Prompts" [level=2] [ref=e513]
+                      - paragraph [ref=e514]:
+                        - text: Edit the
+                        - code [ref=e515]: .md
+                        - text: files in
+                        - code [ref=e516]: ~/.claude-assistant/scheduled-tasks/
+                        - text: — the app reads them fresh on every click. No restart needed. The prompt content lives under the
+                        - code [ref=e517]: "## Prompt"
+                        - text: heading in each file.
+                      - paragraph [ref=e518]:
+                        - text: "GitHub:"
+                        - link "https://github.com/dzbrody/claude-assistant-config/tree/main/scheduled-tasks" [ref=e519]:
+                          - /url: https://github.com/dzbrody/claude-assistant-config/tree/main/scheduled-tasks
+                  - group "Attachments" [ref=e187]:
+                    - generic [ref=e188]: Attachments
+                    - generic [ref=e189]:
+                      - button "Attach files" [ref=e190] [cursor=pointer]:
+                        - img [ref=e191]
+                        - generic [ref=e194]: Drop files here or click to attach files.
+                      - button "Attach files" [ref=e196] [cursor=pointer]:
+                        - img [ref=e197]
+                        - generic [ref=e200]: Attach files
+              - generic [ref=e201]:
+                - generic "Parent page" [ref=e202]: Parent page*
+                - combobox [ref=e205]:
+                  - option "-- No parent page --"
+                  - option "Wiki - Claude Assistant"
+                  - option "» Installation — Mac"
+                  - option "» Installation — Windows"
+                  - option "» MCP Server Ecosystem" [selected]
+              - generic [ref=e206]:
+                - generic "Comment" [ref=e207]
+                - textbox "Comment" [ref=e210]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e211] [cursor=pointer]
+              - link "Cancel" [ref=e212] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

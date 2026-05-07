@@ -1,0 +1,108 @@
+version: '3.8'
+
+# To deploy: scp this file to EC2 via SSM, then docker compose up -d
+# See deploy-github-integration.sh for the full deploy workflow.
+
+services:
+
+  postgres:
+    image: postgres:14
+    container_name: openproject-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: openproject
+      POSTGRES_PASSWORD: ${OPENPROJECT_DB_PASSWORD}
+      POSTGRES_DB: openproject
+    volumes:
+      - /data/openproject/pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openproject"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  openproject:
+    # Custom image adds the GitHub Integration plugin.
+    # Build locally then push to ECR, or build on EC2 directly.
+    # Fallback: use official image without GitHub integration.
+    build:
+      context: .
+      dockerfile: Dockerfile.openproject
+    image: axina-openproject:latest
+    container_name: openproject-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      OPENPROJECT_HOST__NAME: ${DOMAIN_NAME}
+      OPENPROJECT_SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}
+      OPENPROJECT_DEFAULT__LANGUAGE: en
+      DATABASE_URL: "postgres://openproject:${OPENPROJECT_DB_PASSWORD}@postgres:5432/openproject"
+      RAILS_CACHE_STORE: memcache
+      OPENPROJECT_CACHE__MEMCACHE__SERVER: cache:11211
+      # SMTP (SES)
+      OPENPROJECT_EMAIL__DELIVERY__METHOD: smtp
+      OPENPROJECT_SMTP__ADDRESS: email-smtp.us-east-1.amazonaws.com
+      OPENPROJECT_SMTP__PORT: "587"
+      OPENPROJECT_SMTP__DOMAIN: axinagroup.com
+      OPENPROJECT_SMTP__AUTHENTICATION: login
+      OPENPROJECT_SMTP__USER__NAME: ${SMTP_USERNAME}
+      OPENPROJECT_SMTP__PASSWORD: ${SMTP_PASSWORD}
+      OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO: "true"
+      OPENPROJECT_SMTP__OPENSSL__VERIFY__MODE: peer
+      OPENPROJECT_MAIL__FROM: no-reply@axinagroup.com
+    volumes:
+      - /data/openproject/assets:/var/openproject/assets
+      - /data/openproject/config/configuration.yml:/app/config/configuration.yml:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      cache:
+        condition: service_started
+
+  cache:
+    image: memcached:alpine
+    container_name: openproject-cache
+    restart: unless-stopped
+    command: memcached -m 256
+
+  nginx:
+    image: nginx:alpine
+    container_name: openproject-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - certbot-conf:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    depends_on:
+      - openproject
+
+  certbot:
+    image: certbot/certbot
+    container_name: openproject-certbot
+    volumes:
+      - certbot-www:/var/www/certbot
+      - certbot-conf:/etc/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  mcp-server:
+    build:
+      context: /data/mcp-server
+    container_name: openproject-mcp-server
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:39128:39128"
+    environment:
+      OPENPROJECT_URL: https://${DOMAIN_NAME}
+      OPENPROJECT_API_KEY: ${OPENPROJECT_ADMIN_API_KEY}
+      AWS_REGION: us-east-1
+      S3_BUCKETS: axina-openproject-files
+    depends_on:
+      - openproject
+
+volumes:
+  certbot-www:
+  certbot-conf:

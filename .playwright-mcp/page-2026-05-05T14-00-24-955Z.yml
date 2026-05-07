@@ -1,0 +1,177 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Wiki" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e39]:
+                - listitem [ref=e40]
+      - main [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Content" [level=1] [ref=e43]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - navigation "Breadcrumb" [ref=e47]:
+                - list [ref=e48]:
+                  - listitem [ref=e49]:
+                    - link "claude-assistant-config" [ref=e50] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config
+                      - generic [ref=e52]: claude-assistant-config
+                  - listitem [ref=e53]:
+                    - link "Wiki" [ref=e54] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant/toc
+                      - generic [ref=e56]: Wiki
+                  - listitem [ref=e57]:
+                    - link "Wiki - Claude Assistant" [ref=e58]:
+                      - /url: "#"
+                      - generic [ref=e60]: Wiki - Claude Assistant
+              - generic [ref=e61]:
+                - heading "Wiki - Claude Assistant" [level=2] [ref=e62]
+                - generic [ref=e63]:
+                  - link "Edit" [ref=e64] [cursor=pointer]:
+                    - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant/edit
+                    - generic [ref=e65]:
+                      - generic:
+                        - img
+                      - generic [ref=e66]: Edit
+                  - link "Watch" [ref=e67] [cursor=pointer]:
+                    - /url: /wiki_pages/4/watch
+                    - generic [ref=e68]:
+                      - generic:
+                        - img
+                      - generic [ref=e69]: Watch
+                  - button "More" [ref=e71] [cursor=pointer]:
+                    - img
+            - link "Add a new wiki page" [ref=e74] [cursor=pointer]:
+              - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant/new
+              - generic [ref=e75]:
+                - generic:
+                  - img
+                - generic [ref=e76]: Wiki page
+            - generic [ref=e77]:
+              - heading "Claude Personal Assistant — AXINA Group Infrastructure" [level=1] [ref=e78]:  Claude Personal Assistant — AXINA Group Infrastructure
+              - paragraph [ref=e79]: A complete AI-powered personal assistant ecosystem built with Claude Code and Claude CLI. Runs morning briefings, evening wrap-ups, weekly reviews, and real-time OpenProject notifications — all from a native Mac menu bar app with one click.
+              - paragraph [ref=e80]:
+                - strong [ref=e81]: "GitHub:"
+                - link "https://github.com/dzbrody/claude-assistant-config" [ref=e82] [cursor=pointer]:
+                  - /url: https://github.com/dzbrody/claude-assistant-config
+                - strong [ref=e83]: "Infrastructure:"
+                - text: AWS us-east-1 |
+                - strong [ref=e84]: "Status:"
+                - text: Active |
+                - strong [ref=e85]: "Author:"
+                - text: Daniel Brody (
+                - link "db@axinagroup.com" [ref=e86] [cursor=pointer]:
+                  - /url: mailto:db@axinagroup.com
+                - text: )
+              - heading "What This Does" [level=2] [ref=e87]:  What This Does
+              - paragraph [ref=e88]:
+                - strong [ref=e89]: Click ☀️ in the menu bar
+                - text: "→ Terminal opens, claude launches, the full morning briefing runs automatically:"
+              - list [ref=e90]:
+                - listitem [ref=e91]:
+                  - paragraph [ref=e92]: Scans overnight TSPG WhatsApp messages — downloads and saves documents to Google Drive with original filenames, creates OpenProject work packages for action items
+                - listitem [ref=e93]:
+                  - paragraph [ref=e94]: Scans unread Gmail, flags urgent items from AXINA/XGC/4ward domains
+                - listitem [ref=e95]:
+                  - paragraph [ref=e96]: Extracts tasks from Gemini meeting notes → OpenProject
+                - listitem [ref=e97]:
+                  - paragraph [ref=e98]: Reviews today's calendar, flags conflicts
+                - listitem [ref=e99]:
+                  - paragraph [ref=e100]:
+                    - text: Writes
+                    - code [ref=e101]: ~/Documents/daily_briefs/YYYY-MM-DD.md
+                - listitem [ref=e102]:
+                  - paragraph [ref=e103]: Sends a WhatsApp summary to your number
+              - paragraph [ref=e104]:
+                - strong [ref=e105]: Click 🌙
+                - text: "→ Evening wrap-up: sent emails, Drive activity, TSPG afternoon messages, task status, tomorrow preview."
+                - strong [ref=e106]: Click 📅 / 📊
+                - text: → Weekend briefing and weekly review on Sundays.
+                - strong [ref=e107]: Always running in background
+                - text: → OpenProject notifier posts every new task, status change, and assignment to WhatsApp every 15 minutes.
+              - heading "Wiki Pages" [level=2] [ref=e108]:  Wiki Pages
+              - list [ref=e109]:
+                - listitem [ref=e110]:
+                  - paragraph [ref=e111]:
+                    - strong [ref=e112]: Installation — Mac
+                    - text: — Full setup guide for macOS (the primary platform)
+                - listitem [ref=e113]:
+                  - paragraph [ref=e114]:
+                    - strong [ref=e115]: Installation — Windows
+                    - text: — Setup guide for Windows users using WSL2
+                - listitem [ref=e116]:
+                  - paragraph [ref=e117]:
+                    - strong [ref=e118]: MCP Server Ecosystem
+                    - text: — All MCP servers, architecture, and how to add/remove them
+                - listitem [ref=e119]:
+                  - paragraph [ref=e120]:
+                    - strong [ref=e121]: Scheduled Briefings
+                    - text: — Morning, evening, weekend, and weekly review prompts
+                - listitem [ref=e122]:
+                  - paragraph [ref=e123]:
+                    - strong [ref=e124]: Infrastructure
+                    - text: — EC2, Docker, Terraform, S3, and deployment
+                - listitem [ref=e125]:
+                  - paragraph [ref=e126]:
+                    - strong [ref=e127]: Help & FAQ
+                    - text: — Troubleshooting, common problems, getting support
+              - heading "Architecture Overview" [level=2] [ref=e128]:  Architecture Overview
+              - paragraph [ref=e129]: "Claude Assistant connects a native macOS app to a suite of local and remote MCP servers, all orchestrated by the Claude CLI:"
+              - list [ref=e130]:
+                - listitem [ref=e131]:
+                  - paragraph [ref=e132]:
+                    - strong [ref=e133]: "Local MCP servers (stdio):"
+                    - text: google-workspace · whatsapp · filesystem · document-loader · aws-s3-local · playwright
+                - listitem [ref=e134]:
+                  - paragraph [ref=e135]:
+                    - strong [ref=e136]: "Remote MCP server (SSE):"
+                    - code [ref=e137]: https://projects.axinagroup.com/mcp/sse
+                    - text: — OpenProject + S3 tools, works from any device (Mac, mobile, IDE)
+                - listitem [ref=e138]:
+                  - paragraph [ref=e139]:
+                    - strong [ref=e140]: "Background services (launchd):"
+                    - text: whatsapp-bridge (Go, always-on) · openproject-notifier (Python, every 15 min) · claude-assistant app (menu bar)
+                - listitem [ref=e141]:
+                  - paragraph [ref=e142]:
+                    - strong [ref=e143]: "EC2 on AWS:"
+                    - text: OpenProject + remote MCP server in Docker behind nginx with SSL
+              - heading "How This Project Is Managed" [level=2] [ref=e144]:  How This Project Is Managed
+              - paragraph [ref=e145]: This project is itself a showcase of the system it documents. All work packages, bugs, and features are tracked here in OpenProject. Claude creates and updates work packages directly via the remote MCP server — no manual data entry needed. This is a practical demonstration of AI-assisted project management.
+              - paragraph [ref=e146]:
+                - strong [ref=e147]: "Work packages are organized as:"
+                - text: Features (capabilities) · Bugs (fixes) · Milestones (infrastructure) · Tasks (setup/ops)

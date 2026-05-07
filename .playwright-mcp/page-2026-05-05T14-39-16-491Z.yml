@@ -1,0 +1,298 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - generic [ref=e37]:
+          - link "Notifications" [ref=e38] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e39]: "52"
+        - button "Help" [ref=e41] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e42] [cursor=pointer]:
+          - img "User menu" [ref=e46]
+    - generic [ref=e47]:
+      - navigation "Side Menu" [ref=e48]:
+        - button "Collapse project menu" [expanded] [ref=e50] [cursor=pointer]:
+          - img [ref=e52]
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - generic [ref=e60]:
+                - button "All projects " [ref=e61] [cursor=pointer]:
+                  - generic "All projects" [ref=e62]
+                  - generic [ref=e63]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e65] [cursor=pointer]:
+                - img
+            - separator [ref=e66]
+          - list [ref=e67]:
+            - listitem [ref=e68]:
+              - link "Overview" [ref=e69] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin
+                - img [ref=e70]
+                - generic [ref=e73]: Overview
+            - listitem [ref=e74]:
+              - generic [ref=e75]:
+                - link "Users and permissions" [ref=e76] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/users
+                  - img [ref=e77]
+                  - generic [ref=e80]: Users and permissions
+                - button "Open Users and permissions sub-menu" [ref=e81] [cursor=pointer]:
+                  - img [ref=e82]
+            - listitem [ref=e84]:
+              - generic [ref=e85]:
+                - link "Work packages" [ref=e86] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/work_packages_general
+                  - img [ref=e87]
+                  - generic [ref=e91]: Work packages
+                - button "Open Work packages sub-menu" [ref=e92] [cursor=pointer]:
+                  - img [ref=e93]
+            - listitem [ref=e95]:
+              - generic [ref=e96]:
+                - link "Projects" [ref=e97] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/project_phase_definitions
+                  - img [ref=e98]
+                  - generic [ref=e101]: Projects
+                - button "Open Projects sub-menu" [ref=e102] [cursor=pointer]:
+                  - img [ref=e103]
+            - listitem [ref=e105]:
+              - link "Custom fields" [ref=e106] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/custom_fields
+                - img [ref=e107]
+                - generic [ref=e111]: Custom fields
+            - listitem [ref=e112]:
+              - link "Attribute help texts" [ref=e113] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/attribute_help_texts
+                - img [ref=e114]
+                - generic [ref=e117]: Attribute help texts
+            - listitem [ref=e118]:
+              - generic [ref=e119]:
+                - link "Calendars and dates" [ref=e120] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/working_days_and_hours
+                  - img [ref=e121]
+                  - generic [ref=e124]: Calendars and dates
+                - button "Open Calendars and dates sub-menu" [ref=e125] [cursor=pointer]:
+                  - img [ref=e126]
+            - listitem [ref=e128]:
+              - generic [ref=e129]:
+                - link "Artificial Intelligence (AI)" [ref=e130] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/mcp_configurations
+                  - img [ref=e131]
+                  - generic [ref=e134]: Artificial Intelligence (AI)
+                - button "Open Artificial Intelligence (AI) sub-menu" [ref=e135] [cursor=pointer]:
+                  - img [ref=e136]
+            - listitem [ref=e138]:
+              - generic [ref=e139]:
+                - link "System settings" [ref=e140] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/general
+                  - img [ref=e141]
+                  - generic [ref=e144]: System settings
+                - button "Open System settings sub-menu" [ref=e145] [cursor=pointer]:
+                  - img [ref=e146]
+            - listitem [ref=e148]:
+              - generic [ref=e149]:
+                - link "Emails and notifications" [ref=e150] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/aggregation
+                  - img [ref=e151]
+                  - generic [ref=e154]: Emails and notifications
+                - button "Open Emails and notifications sub-menu" [ref=e155] [cursor=pointer]:
+                  - img [ref=e156]
+            - listitem [ref=e158]:
+              - generic [ref=e159]:
+                - link "API and webhooks" [ref=e160] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/api
+                  - img [ref=e161]
+                  - generic [ref=e164]: API and webhooks
+                - button "Open API and webhooks sub-menu" [ref=e165] [cursor=pointer]:
+                  - img [ref=e166]
+            - listitem [ref=e168]:
+              - generic [ref=e169]:
+                - link "Authentication" [ref=e170] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/authentication
+                  - img [ref=e171]
+                  - generic [ref=e174]: Authentication
+                - button "Open Authentication sub-menu" [ref=e175] [cursor=pointer]:
+                  - img [ref=e176]
+            - listitem [ref=e178]:
+              - link "Announcement" [ref=e179] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/announcements/edit
+                - img [ref=e180]
+                - generic [ref=e185]: Announcement
+            - listitem [ref=e186]:
+              - link "Design" [ref=e187] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/design
+                - img [ref=e188]
+                - generic [ref=e190]:
+                  - generic [ref=e191]: Design
+                  - img [ref=e192]
+            - listitem [ref=e194]:
+              - link "Colors" [ref=e195] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/colors
+                - img [ref=e196]
+                - generic [ref=e199]: Colors
+            - listitem [ref=e200]:
+              - link "Enterprise edition" [ref=e201] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/enterprise_tokens
+                - img [ref=e202]
+                - generic [ref=e205]: Enterprise edition
+            - listitem [ref=e206]:
+              - generic [ref=e207]:
+                - link "Time and costs" [ref=e208] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/costs
+                  - img [ref=e209]
+                  - generic [ref=e213]: Time and costs
+                - button "Open Time and costs sub-menu" [ref=e214] [cursor=pointer]:
+                  - img [ref=e215]
+            - listitem [ref=e217]:
+              - link "Backlogs" [ref=e218] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/backlogs
+                - img [ref=e219]
+                - generic [ref=e223]: Backlogs
+            - listitem [ref=e224]:
+              - generic [ref=e225]:
+                - link "Documents" [ref=e226] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/document_types
+                  - img [ref=e227]
+                  - generic [ref=e230]: Documents
+                - button "Open Documents sub-menu" [ref=e231] [cursor=pointer]:
+                  - img [ref=e232]
+            - listitem [ref=e234]:
+              - generic [ref=e235]:
+                - link "Files" [ref=e236] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/storages
+                  - img [ref=e237]
+                  - generic [ref=e240]: Files
+                - button "Open Files sub-menu" [ref=e241] [cursor=pointer]:
+                  - img [ref=e242]
+            - listitem [ref=e244]:
+              - link "Plugins" [ref=e245] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/plugins
+                - img [ref=e246]
+                - generic [ref=e249]: Plugins
+            - listitem [ref=e250]:
+              - link "Backup" [ref=e251] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/backups
+                - img [ref=e252]
+                - generic [ref=e255]: Backup
+            - listitem [ref=e256]:
+              - link "Information" [ref=e257] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/info
+                - img [ref=e258]
+                - generic [ref=e261]: Information
+      - main [ref=e262]:
+        - generic [ref=e263]:
+          - heading "Content" [level=1] [ref=e264]
+          - generic [ref=e265]:
+            - generic [ref=e266]:
+              - navigation "Breadcrumb" [ref=e268]:
+                - list [ref=e269]:
+                  - listitem [ref=e270]:
+                    - link "Administration" [ref=e271] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e273]: Administration
+                  - listitem [ref=e274]:
+                    - link "Information" [ref=e275]:
+                      - /url: "#"
+                      - generic [ref=e277]: Information
+              - heading "Information" [level=2] [ref=e279]
+            - generic [ref=e281]:
+              - generic [ref=e282]:
+                - generic [ref=e283]: Product version
+                - link "refs/tags/v17.3.1" [ref=e287] [cursor=pointer]:
+                  - /url: https://github.com/opf/openproject/commits/refs/tags/v17.3.1
+              - generic [ref=e288]:
+                - generic [ref=e289]: Core version
+                - generic [ref=e291]: OpenProject 17.3.1
+              - generic [ref=e292]:
+                - generic [ref=e293]: PostgreSQL version
+                - generic [ref=e295]: "14.22"
+              - generic [ref=e296]:
+                - generic [ref=e297]: Deprecation warning
+                - generic [ref=e302]:
+                  - img [ref=e304]
+                  - paragraph [ref=e307]:
+                    - text: Starting with OpenProject 16.0, PostgreSQL 16 is required to use OpenProject. Your installation will remain functional with your current database, but anticipate incompatability in future releases.
+                    - text: We have prepared
+                    - link "upgrade guides for all installation methods" [ref=e308] [cursor=pointer]:
+                      - /url: https://www.openproject.org/docs/installation-and-operations/misc/migration-to-postgresql17/?go_to_locale=en
+                      - generic [ref=e309]:
+                        - text: upgrade guides for all installation methods
+                        - img [ref=e310]
+                    - text: . You can perform the upgrade ahead of the next release at any time by following the guides.
+              - link "" [ref=e318] [cursor=pointer]:
+                - /url: https://www.openproject.org/docs/system-admin-guide/information/?go_to_locale=en#security-badge
+              - generic [ref=e319]:
+                - generic [ref=e320]: Last change on
+                - generic [ref=e322]: 04/20/2026 07:17 AM
+            - generic [ref=e323]:
+              - heading "System" [level=3] [ref=e326]
+              - generic [ref=e327]:
+                - generic [ref=e328]:
+                  - generic [ref=e329]: Default administrator account changed
+                  - img "Yes" [ref=e333]
+                - generic [ref=e335]:
+                  - generic [ref=e336]: Database allows TSVector (optional)
+                  - img "Yes" [ref=e340]
+                - generic [ref=e342]:
+                  - generic [ref=e343]: Pdftotext available (optional)
+                  - img "Yes" [ref=e347]
+                - generic [ref=e349]:
+                  - generic [ref=e350]: Unrtf available (optional)
+                  - img "Yes" [ref=e354]
+                - generic [ref=e356]:
+                  - generic [ref=e357]: Catdoc available (optional)
+                  - img "Yes" [ref=e361]
+                - generic [ref=e363]:
+                  - generic [ref=e364]: Xls2csv available (optional)
+                  - img "Yes" [ref=e368]
+                - generic [ref=e370]:
+                  - generic [ref=e371]: Catppt available (optional)
+                  - img "Yes" [ref=e375]
+                - generic [ref=e377]:
+                  - generic [ref=e378]: Tesseract available (optional)
+                  - img "Yes" [ref=e382]
+                - generic [ref=e384]:
+                  - generic [ref=e385]: IFC conversion pipeline available
+                  - img "Yes" [ref=e389]
+                - generic [ref=e391]:
+                  - generic [ref=e392]: Imagemagick
+                  - img "Yes" [ref=e396]
+                - generic [ref=e398]:
+                  - generic [ref=e399]: Jemalloc memory allocator
+                  - img "No" [ref=e403]
+            - generic [ref=e405]:
+              - heading "Storage filesystem 1" [level=3] [ref=e408]
+              - generic [ref=e409]:
+                - generic [ref=e410]:
+                  - generic [ref=e411]: Encompasses storage for
+                  - generic [ref=e413]: Attachments
+                - generic [ref=e414]:
+                  - generic [ref=e415]: Remaining disk space
+                  - generic [ref=e417]: 99 GB
+                - generic [ref=e418]:
+                  - generic [ref=e419]: Used disk space
+                  - generic [ref=e421]: 840 MB(0.82)

@@ -1,0 +1,126 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Work packages" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/work_packages_general
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "General" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/work_packages_general
+                    - generic [ref=e43]: General
+                - listitem [ref=e44]:
+                  - link "Types" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/types
+                    - generic [ref=e47]: Types
+                - listitem [ref=e48]:
+                  - link "Statuses" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/statuses
+                    - generic [ref=e51]: Statuses
+                - listitem [ref=e52]:
+                  - link "Priorities" [ref=e53] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/work_package_priorities
+                    - generic [ref=e55]: Priorities
+                - listitem [ref=e56]:
+                  - link "Progress tracking" [ref=e57] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/progress_tracking
+                    - generic [ref=e59]: Progress tracking
+                - listitem [ref=e60]:
+                  - link "Workflows" [ref=e61] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/workflows
+                    - generic [ref=e63]: Workflows
+                - listitem [ref=e64]:
+                  - link "Custom actions" [ref=e65] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/custom_actions
+                    - generic [ref=e66]:
+                      - generic [ref=e67]: Custom actions
+                      - img [ref=e68]
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - heading "Content" [level=1] [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - navigation "Breadcrumb" [ref=e76]:
+                - list [ref=e77]:
+                  - listitem [ref=e78]:
+                    - link "Administration" [ref=e79] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e81]: Administration
+                  - listitem [ref=e82]:
+                    - link "Work packages" [ref=e83] [cursor=pointer]:
+                      - /url: /admin/settings/work_packages_general
+                      - generic [ref=e85]: Work packages
+                  - listitem [ref=e86]:
+                    - link "General" [ref=e87]:
+                      - /url: "#"
+                      - generic [ref=e89]: General
+              - heading "General" [level=2] [ref=e91]
+            - generic [ref=e92]:
+              - generic [ref=e93]:
+                - generic [ref=e94]:
+                  - generic "Allow cross-project work package relations" [ref=e95]
+                  - checkbox "Allow cross-project work package relations" [checked] [ref=e98]
+                - generic [ref=e99]:
+                  - generic "Display subprojects work packages on main projects by default" [ref=e100]
+                  - checkbox "Display subprojects work packages on main projects by default" [checked] [ref=e103]
+                - generic [ref=e104]:
+                  - generic "Use current date as start date for new work packages" [ref=e105]
+                  - checkbox "Use current date as start date for new work packages" [ref=e108]
+                - text: 
+                - generic [ref=e109]:
+                  - generic "Default highlighting mode" [ref=e110]
+                  - combobox "Default highlighting mode" [ref=e113]:
+                    - option "Highlight attribute(s) inline" [selected]
+                    - option "No highlighting"
+                    - option "Entire row by Status"
+                    - option "Entire row by Type"
+                    - option "Entire row by Priority"
+                  - generic [ref=e114]:
+                    - generic "Default inline highlighted attributes" [ref=e115]
+                    - generic [ref=e116]:
+                      - generic [ref=e117]:
+                        - checkbox "Status" [checked] [ref=e119]
+                        - text: Status
+                      - generic [ref=e120]:
+                        - checkbox "Priority" [checked] [ref=e122]
+                        - text: Priority
+                      - generic [ref=e123]:
+                        - checkbox "Finish date" [checked] [ref=e125]
+                        - text: Finish date
+              - group "Default work package lists columns" [ref=e127]:
+                - generic [ref=e128]: Default work package lists columns
+              - button "Save" [ref=e129] [cursor=pointer]

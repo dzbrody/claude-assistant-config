@@ -1,0 +1,111 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "claude-assistant-config " [ref=e60] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Wiki" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e73]:
+                - listitem [ref=e74]
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - heading "Content" [level=1] [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - navigation "Breadcrumb" [ref=e81]:
+                - list [ref=e82]:
+                  - listitem [ref=e83]:
+                    - link "claude-assistant-config" [ref=e84] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config
+                      - generic [ref=e86]: claude-assistant-config
+                  - listitem [ref=e87]:
+                    - link "Wiki" [ref=e88] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant/toc
+                      - generic [ref=e90]: Wiki
+                  - listitem [ref=e91]:
+                    - link "Wiki - Claude Assistant" [ref=e92]:
+                      - /url: "#"
+                      - generic [ref=e94]: Wiki - Claude Assistant
+              - generic [ref=e95]:
+                - heading "Wiki - Claude Assistant" [level=2] [ref=e96]
+                - generic [ref=e97]:
+                  - link "Edit" [ref=e98] [cursor=pointer]:
+                    - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant/edit
+                    - generic [ref=e99]:
+                      - generic:
+                        - img
+                      - generic [ref=e100]: Edit
+                  - link "Watch" [ref=e101] [cursor=pointer]:
+                    - /url: /wiki_pages/4/watch
+                    - generic [ref=e102]:
+                      - generic:
+                        - img
+                      - generic [ref=e103]: Watch
+                  - button "More" [ref=e105] [cursor=pointer]:
+                    - img
+            - link "Add a new wiki page" [ref=e108] [cursor=pointer]:
+              - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant/new
+              - generic [ref=e109]:
+                - generic:
+                  - img
+                - generic [ref=e110]: Wiki page
+            - generic [ref=e111]:
+              - paragraph [ref=e112]: A complete AI-powered personal assistant ecosystem built with Claude Code and Claude CLI. Runs morning briefings, evening wrap-ups, weekly reviews, and real-time OpenProject notifications — all from a native Mac menu bar app with one click.
+              - blockquote [ref=e113]:
+                - paragraph [ref=e114]:
+                  - strong [ref=e115]: Author
+                  - text: ": dzbrody"
+                  - strong [ref=e116]: Infrastructure
+                  - text: ": AWS us-east-1"
+                  - strong [ref=e117]: Status
+                  - text: ": Active"

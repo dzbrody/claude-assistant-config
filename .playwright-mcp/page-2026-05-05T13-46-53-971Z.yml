@@ -1,0 +1,42 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Help" [ref=e14] [cursor=pointer]:
+          - img
+        - button "Sign in" [ref=e15] [cursor=pointer]:
+          - generic [ref=e16]:
+            - generic [ref=e17]: Sign in
+            - generic:
+              - img
+    - main [ref=e19]:
+      - generic [ref=e20]:
+        - heading "Content" [level=1] [ref=e21]
+        - generic [ref=e23]:
+          - heading "Sign in" [level=1] [ref=e24]
+          - separator [ref=e25]
+          - generic [ref=e27]:
+            - generic [ref=e29]:
+              - generic [ref=e30]: Username *
+              - textbox "Username" [ref=e32]
+            - generic [ref=e34]:
+              - generic [ref=e35]: Password *
+              - textbox "Password" [ref=e37]
+            - generic [ref=e38]:
+              - button "Sign in" [ref=e40] [cursor=pointer]:
+                - generic [ref=e42]: Sign in
+              - generic [ref=e44]:
+                - link "Create a new account" [ref=e46] [cursor=pointer]:
+                  - /url: /account/register
+                - link "Forgot your password?" [ref=e48] [cursor=pointer]:
+                  - /url: /account/lost_password

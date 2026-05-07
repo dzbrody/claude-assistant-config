@@ -1,0 +1,133 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Work packages" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/work_packages_general
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "General" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/work_packages_general
+                    - generic [ref=e43]: General
+                - listitem [ref=e44]:
+                  - link "Types" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/types
+                    - generic [ref=e47]: Types
+                - listitem [ref=e48]:
+                  - link "Statuses" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/statuses
+                    - generic [ref=e51]: Statuses
+                - listitem [ref=e52]:
+                  - link "Priorities" [ref=e53] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/work_package_priorities
+                    - generic [ref=e55]: Priorities
+                - listitem [ref=e56]:
+                  - link "Progress tracking" [ref=e57] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/progress_tracking
+                    - generic [ref=e59]: Progress tracking
+                - listitem [ref=e60]:
+                  - link "Workflows" [ref=e61] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/workflows
+                    - generic [ref=e63]: Workflows
+                - listitem [ref=e64]:
+                  - link "Custom actions" [ref=e65] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/custom_actions
+                    - generic [ref=e66]:
+                      - generic [ref=e67]: Custom actions
+                      - img [ref=e68]
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - heading "Content" [level=1] [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - navigation "Breadcrumb" [ref=e76]:
+                - list [ref=e77]:
+                  - listitem [ref=e78]:
+                    - link "Administration" [ref=e79] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e81]: Administration
+                  - listitem [ref=e82]:
+                    - link "Work packages" [ref=e83] [cursor=pointer]:
+                      - /url: /admin/settings/work_packages_general
+                      - generic [ref=e85]: Work packages
+                  - listitem [ref=e86]:
+                    - link "Progress tracking" [ref=e87]:
+                      - /url: "#"
+                      - generic [ref=e89]: Progress tracking
+              - heading "Progress tracking" [level=2] [ref=e91]
+            - generic [ref=e94]:
+              - radiogroup "Progress calculation mode" [ref=e97]:
+                - generic [ref=e98]: Progress calculation mode
+                - generic [ref=e99]:
+                  - generic [ref=e100]:
+                    - radio "Work-based" [checked] [ref=e101] [cursor=pointer]
+                    - generic [ref=e102]:
+                      - generic [ref=e103] [cursor=pointer]: Work-based
+                      - generic [ref=e104]: "% Complete can be freely set to any value. If you optionally enter a value for Work, Remaining work will automatically be derived."
+                  - generic [ref=e105]:
+                    - radio "Status-based" [ref=e106] [cursor=pointer]
+                    - generic [ref=e107]:
+                      - generic [ref=e108] [cursor=pointer]: Status-based
+                      - generic [ref=e109]: Each status has a % Complete value associated with it. Changing status will change % Complete.
+              - radiogroup "Calculation of % Complete hierarchy totals" [ref=e112]:
+                - generic [ref=e113]: Calculation of % Complete hierarchy totals
+                - generic [ref=e114]:
+                  - generic [ref=e115]:
+                    - radio "Weighted by work" [checked] [ref=e116] [cursor=pointer]
+                    - generic [ref=e117]:
+                      - generic [ref=e118] [cursor=pointer]: Weighted by work
+                      - generic [ref=e119]: The total % Complete will be weighted against the Work of each work package in the hierarchy. Work packages without Work will be ignored.
+                  - generic [ref=e120]:
+                    - radio "Simple average" [ref=e121] [cursor=pointer]
+                    - generic [ref=e122]:
+                      - generic [ref=e123] [cursor=pointer]: Simple average
+                      - generic [ref=e124]: Work is ignored and the total % Complete will be a simple average of % Complete values of work packages in the hierarchy.
+              - radiogroup "% Complete when status is closed" [ref=e127]:
+                - generic [ref=e128]: "% Complete when status is closed"
+                - generic [ref=e129]:
+                  - generic [ref=e130]:
+                    - radio "No change" [checked] [ref=e131] [cursor=pointer]
+                    - generic [ref=e132]:
+                      - generic [ref=e133] [cursor=pointer]: No change
+                      - generic [ref=e134]: The value of % Complete will not change even when a work package is closed.
+                  - generic [ref=e135]:
+                    - radio "Automatically set to 100%" [ref=e136] [cursor=pointer]
+                    - generic [ref=e137]:
+                      - generic [ref=e138] [cursor=pointer]: Automatically set to 100%
+                      - generic [ref=e139]: A closed work package is considered complete.
+              - button "Save" [ref=e141] [cursor=pointer]:
+                - generic [ref=e143]: Save

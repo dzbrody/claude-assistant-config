@@ -85,6 +85,32 @@ If no emails from `gemini-notes@google.com` are found, skip this step.
 
 ---
 
+### Step 2.6: Scan ZOOM-MEETINGS Drive Folder for AI Notes (google-workspace + openproject-remote)
+
+Using `google-workspace` MCP tools, scan the Zoom Meetings Gemini folder for new notes:
+
+1. **List recent files**: Call `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` — this is `db@xgccorp.com/My Drive/ZOOM-MEETINGS/gemini`. Look for files created or modified since 5:00 PM yesterday.
+
+2. **For each new meeting notes file**:
+   - Read the full file content using `get_file_content`.
+   - Extract every action item, task, decision, or follow-up. Look for:
+     - Phrases: "action item", "follow up", "to do", "will", "needs to", "should", "by [date]", "assigned to"
+     - Sections titled: "Action Items", "Next Steps", "Follow-ups", "Decisions"
+   - For each extracted task:
+     - Determine the most relevant OpenProject project based on context — use `list_projects` if unsure; default to `axina-group-admin`
+     - Type: Task (default), Milestone if a hard deadline is stated
+     - Subject: clear and actionable (e.g. "Follow up with Raj re: contract draft")
+     - Prefix with org if identifiable: `[4ward]`, `[XGC]`, or `[AXINA]`
+     - Description: include meeting title, file date, and the exact excerpt from the notes
+     - **Do not duplicate**: call `list_work_packages` first to check for an existing work package with a matching subject before creating
+     - Create using `openproject-remote` tool `create_work_package`
+
+3. **Note in briefing**: meeting title, file date, and number of tasks created per meeting.
+
+If no new files are found in the folder, skip this step.
+
+---
+
 ### Step 2: Review Calendar (google-workspace)
 
 Using `google-workspace` MCP tools:
@@ -140,7 +166,12 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md` with t
 |--------|---------|----------------|-----------------|
 | [name] | [one-line] | [filename or —] | [#id or —] |
 
-## Tasks Created in OpenProject (from Gemini Notes)
+## Tasks Created in OpenProject (from Gemini Notes — Google Meet)
+| Meeting | Project | Work Package | ID |
+|---------|---------|-------------|-----|
+| [meeting title] | [project] | [subject] | #[id] |
+
+## Tasks Created in OpenProject (from Zoom AI Notes)
 | Meeting | Project | Work Package | ID |
 |---------|---------|-------------|-----|
 | [meeting title] | [project] | [subject] | #[id] |
@@ -176,6 +207,6 @@ Using `whatsapp` MCP tools, send me a WhatsApp message:
 > 📅 [X] meetings today — first at [time]: [title]
 > 📬 [X] urgent emails flagged
 > 💬 TSPG: [X] messages, [X] docs saved, [X] tasks created (or "no activity" if quiet)
-> 📝 [X] tasks created in OpenProject from meeting notes (or omit line if 0)
+> 📝 [X] tasks from Gemini notes, [X] from Zoom AI notes (or omit if 0)
 > ⚠️ [critical alerts, one per line]
 > Full briefing saved to ~/Documents/daily_briefs/{date}.md

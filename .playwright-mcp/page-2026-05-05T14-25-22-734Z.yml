@@ -1,0 +1,107 @@
+- generic [active] [ref=e214]:
+  - text: 
+  - generic [ref=e218]: Open link in a new tab
+  - generic [ref=e219]:
+    - banner [ref=e220]:
+      - generic [ref=e221]:
+        - link "Click here to skip over the menu and go to the content" [ref=e222] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e223]:
+          - button "Global modules" [ref=e224] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e226] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e230]:
+        - button "Search" [ref=e231] [cursor=pointer]:
+          - generic [ref=e233]: 
+        - generic [ref=e236]:
+          - generic [ref=e238]:
+            - generic [ref=e239]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e241]
+          - status [ref=e242]
+      - generic [ref=e243]:
+        - button "Add…" [ref=e245] [cursor=pointer]:
+          - generic [ref=e246]:
+            - generic:
+              - img
+            - img "Add…" [ref=e248]
+        - generic [ref=e250]:
+          - link "Notifications" [ref=e251] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e252]: "52"
+        - button "Help" [ref=e254] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e255] [cursor=pointer]:
+          - img "User menu" [ref=e259]
+    - generic [ref=e260]:
+      - navigation "Side Menu" [ref=e261]:
+        - button "Collapse project menu" [expanded] [ref=e263] [cursor=pointer]:
+          - img [ref=e265]
+        - generic [ref=e267]:
+          - generic [ref=e268]:
+            - generic [ref=e269]:
+              - generic [ref=e273]:
+                - button "All projects " [ref=e274] [cursor=pointer]:
+                  - generic "All projects" [ref=e275]
+                  - generic [ref=e276]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e278] [cursor=pointer]:
+                - img
+            - separator [ref=e279]
+          - list [ref=e280]:
+            - listitem [ref=e281]:
+              - generic [ref=e282]:
+                - link "Go back one menu level" [ref=e283] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e284]
+                - link "Time and costs" [ref=e286] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/costs
+              - list [ref=e287]:
+                - listitem [ref=e288]:
+                  - link "Defaults" [ref=e289] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/costs
+                    - generic [ref=e291]: Defaults
+                - listitem [ref=e292]:
+                  - link "Cost types" [ref=e293] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/cost_types
+                    - generic [ref=e295]: Cost types
+                - listitem [ref=e296]:
+                  - link "Time tracking activities" [ref=e297] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/time_entry_activities
+                    - generic [ref=e299]: Time tracking activities
+      - main [ref=e300]:
+        - generic [ref=e301]:
+          - heading "Content" [level=1] [ref=e302]
+          - generic [ref=e303]:
+            - generic [ref=e304]:
+              - navigation "Breadcrumb" [ref=e306]:
+                - list [ref=e307]:
+                  - listitem [ref=e308]:
+                    - link "Administration" [ref=e309] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e311]: Administration
+                  - listitem [ref=e312]:
+                    - link "Time and costs" [ref=e313] [cursor=pointer]:
+                      - /url: /admin/time
+                      - generic [ref=e315]: Time and costs
+                  - listitem [ref=e316]:
+                    - link "Time tracking activities" [ref=e317] [cursor=pointer]:
+                      - /url: /admin/settings/time_entry_activities
+                      - generic [ref=e319]: Time tracking activities
+                  - listitem [ref=e320]:
+                    - link "Specification" [ref=e321]:
+                      - /url: "#"
+                      - generic [ref=e323]: Specification
+              - heading "Specification" [level=2] [ref=e325]
+              - generic [ref=e326]: Changes to this time entry activity will be reflected in all projects where it is enabled.
+            - generic [ref=e329]:
+              - generic [ref=e331]:
+                - generic [ref=e332]: Name *
+                - textbox "Name" [ref=e334]: Specification
+              - generic [ref=e336]:
+                - checkbox "Active" [checked] [ref=e337] [cursor=pointer]
+                - generic [ref=e339] [cursor=pointer]: Active
+              - button "Save" [ref=e341] [cursor=pointer]:
+                - generic [ref=e343]: Save

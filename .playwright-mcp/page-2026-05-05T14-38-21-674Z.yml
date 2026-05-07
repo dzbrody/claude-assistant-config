@@ -1,0 +1,168 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Projects" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/project_phase_definitions
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Project life cycle" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/project_phase_definitions
+                    - generic [ref=e77]: Project life cycle
+                - listitem [ref=e78]:
+                  - link "Project attributes" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/project_custom_fields
+                    - generic [ref=e81]: Project attributes
+                - listitem [ref=e82]:
+                  - link "New project" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/new_project
+                    - generic [ref=e85]: New project
+                - listitem [ref=e86]:
+                  - link "Project lists" [ref=e87] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/projects
+                    - generic [ref=e89]: Project lists
+      - main [ref=e90]:
+        - generic [ref=e91]:
+          - heading "Content" [level=1] [ref=e92]
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - navigation "Breadcrumb" [ref=e96]:
+                - list [ref=e97]:
+                  - listitem [ref=e98]:
+                    - link "Administration" [ref=e99] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e101]: Administration
+                  - listitem [ref=e102]:
+                    - link "Projects" [ref=e103] [cursor=pointer]:
+                      - /url: /admin/settings/project_custom_fields
+                      - generic [ref=e105]: Projects
+                  - listitem [ref=e106]:
+                    - link "New project" [ref=e107]:
+                      - /url: "#"
+                      - generic [ref=e109]: New project
+              - heading "New project" [level=2] [ref=e111]
+              - list [ref=e114]:
+                - listitem [ref=e115]:
+                  - link "Settings" [ref=e116] [cursor=pointer]:
+                    - /url: /admin/settings/new_project?tab=settings
+                - listitem [ref=e117]:
+                  - link "Notifications" [ref=e118] [cursor=pointer]:
+                    - /url: /admin/settings/new_project?tab=notifications
+            - generic [ref=e121]:
+              - generic [ref=e123]:
+                - checkbox "New projects are public by default" [ref=e124] [cursor=pointer]
+                - generic [ref=e126] [cursor=pointer]: New projects are public by default
+              - group "Default enabled modules for new projects" [ref=e129]:
+                - generic [ref=e130]: Default enabled modules for new projects
+                - generic [ref=e131]:
+                  - generic [ref=e132]:
+                    - checkbox "Activity" [ref=e133] [cursor=pointer]
+                    - generic [ref=e135] [cursor=pointer]: Activity
+                  - generic [ref=e136]:
+                    - checkbox "Backlogs" [checked] [ref=e137] [cursor=pointer]
+                    - generic [ref=e139] [cursor=pointer]: Backlogs
+                  - generic [ref=e140]:
+                    - checkbox "Boards" [checked] [ref=e141] [cursor=pointer]
+                    - generic [ref=e143] [cursor=pointer]: Boards
+                  - generic [ref=e144]:
+                    - checkbox "Budgets" [ref=e145] [cursor=pointer]
+                    - generic [ref=e147] [cursor=pointer]: Budgets
+                  - generic [ref=e148]:
+                    - checkbox "Calendars" [ref=e149] [cursor=pointer]
+                    - generic [ref=e151] [cursor=pointer]: Calendars
+                  - generic [ref=e152]:
+                    - checkbox "Documents" [ref=e153] [cursor=pointer]
+                    - generic [ref=e155] [cursor=pointer]: Documents
+                  - generic [ref=e156]:
+                    - checkbox "Forums" [ref=e157] [cursor=pointer]
+                    - generic [ref=e159] [cursor=pointer]: Forums
+                  - generic [ref=e160]:
+                    - checkbox "Gantt charts" [checked] [ref=e161] [cursor=pointer]
+                    - generic [ref=e163] [cursor=pointer]: Gantt charts
+                  - generic [ref=e164]:
+                    - checkbox "GitHub" [ref=e165] [cursor=pointer]
+                    - generic [ref=e167] [cursor=pointer]: GitHub
+                  - generic [ref=e168]:
+                    - checkbox "GitLab" [ref=e169] [cursor=pointer]
+                    - generic [ref=e171] [cursor=pointer]: GitLab
+                  - generic [ref=e172]:
+                    - checkbox "Meetings" [checked] [ref=e173] [cursor=pointer]
+                    - generic [ref=e175] [cursor=pointer]: Meetings
+                  - generic [ref=e176]:
+                    - checkbox "News" [checked] [ref=e177] [cursor=pointer]
+                    - generic [ref=e179] [cursor=pointer]: News
+                  - generic [ref=e180]:
+                    - checkbox "Repository" [ref=e181] [cursor=pointer]
+                    - generic [ref=e183] [cursor=pointer]: Repository
+                  - generic [ref=e184]:
+                    - checkbox "Team planners" [ref=e185] [cursor=pointer]
+                    - generic [ref=e187] [cursor=pointer]: Team planners
+                  - generic [ref=e188]:
+                    - checkbox "Time and costs" [checked] [ref=e189] [cursor=pointer]
+                    - generic [ref=e191] [cursor=pointer]: Time and costs
+                  - generic [ref=e192]:
+                    - checkbox "Wiki" [checked] [ref=e193] [cursor=pointer]
+                    - generic [ref=e195] [cursor=pointer]: Wiki
+                  - generic [ref=e196]:
+                    - checkbox "Work packages" [checked] [ref=e197] [cursor=pointer]
+                    - generic [ref=e199] [cursor=pointer]: Work packages
+              - generic [ref=e201]:
+                - generic [ref=e202]: Role given to a non-admin user who creates a project
+                - combobox "Role given to a non-admin user who creates a project" [ref=e204]:
+                  - option "Please select"
+                  - option "Member"
+                  - option "Reader"
+                  - option "Project admin" [selected]
+              - button "Save" [ref=e206] [cursor=pointer]:
+                - generic [ref=e208]: Save

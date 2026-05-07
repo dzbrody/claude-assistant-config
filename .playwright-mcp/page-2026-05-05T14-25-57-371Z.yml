@@ -1,0 +1,333 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Users and permissions" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/users
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "Users settings" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/users
+                    - generic [ref=e43]: Users settings
+                - listitem [ref=e44]:
+                  - link "Users" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/users
+                    - generic [ref=e47]: Users
+                - listitem [ref=e48]:
+                  - link "Placeholder users" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/placeholder_users
+                    - generic [ref=e50]:
+                      - generic [ref=e51]: Placeholder users
+                      - img [ref=e52]
+                - listitem [ref=e54]:
+                  - link "Groups" [ref=e55] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/groups
+                    - generic [ref=e57]: Groups
+                - listitem [ref=e58]:
+                  - link "Roles and permissions" [ref=e59] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/roles
+                    - generic [ref=e61]: Roles and permissions
+                - listitem [ref=e62]:
+                  - link "Permissions report" [ref=e63] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/roles/report
+                    - generic [ref=e65]: Permissions report
+                - listitem [ref=e66]:
+                  - link "Avatars" [ref=e67] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/plugin/openproject_avatars
+                    - generic [ref=e69]: Avatars
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - heading "Content" [level=1] [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - navigation "Breadcrumb" [ref=e76]:
+                - list [ref=e77]:
+                  - listitem [ref=e78]:
+                    - link "Administration" [ref=e79] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e81]: Administration
+                  - listitem [ref=e82]:
+                    - link "Users and permissions" [ref=e83] [cursor=pointer]:
+                      - /url: /admin/settings/users
+                      - generic [ref=e85]: Users and permissions
+                  - listitem [ref=e86]:
+                    - link "Users" [ref=e87] [cursor=pointer]:
+                      - /url: /users
+                      - generic [ref=e89]: Users
+                  - listitem [ref=e90]:
+                    - link "Dan Brody" [ref=e91]:
+                      - /url: "#"
+                      - generic [ref=e93]: Dan Brody
+              - generic [ref=e94]:
+                - heading "Dan Brody" [level=2] [ref=e95]
+                - link "Profile" [ref=e97] [cursor=pointer]:
+                  - /url: /users/5
+                  - generic [ref=e98]:
+                    - generic:
+                      - img
+                    - generic [ref=e99]: Profile
+              - list [ref=e102]:
+                - listitem [ref=e103]:
+                  - link "General" [ref=e104] [cursor=pointer]:
+                    - /url: /users/5/edit/general
+                - listitem [ref=e105]:
+                  - link "Projects" [ref=e106] [cursor=pointer]:
+                    - /url: /users/5/edit/memberships
+                - listitem [ref=e107]:
+                  - link "Groups" [ref=e108] [cursor=pointer]:
+                    - /url: /users/5/edit/groups
+                - listitem [ref=e109]:
+                  - link "Global roles" [ref=e110] [cursor=pointer]:
+                    - /url: /users/5/edit/global_roles
+                - listitem [ref=e111]:
+                  - link "Notification settings" [ref=e112] [cursor=pointer]:
+                    - /url: /users/5/edit/notifications
+                - listitem [ref=e113]:
+                  - link "Email reminders" [ref=e114] [cursor=pointer]:
+                    - /url: /users/5/edit/reminders
+                - listitem [ref=e115]:
+                  - link "Rate history" [ref=e116] [cursor=pointer]:
+                    - /url: /users/5/edit/rates
+                - listitem [ref=e117]:
+                  - link "Avatar" [ref=e118] [cursor=pointer]:
+                    - /url: /users/5/edit/avatar
+                - listitem [ref=e119]:
+                  - link "Two-factor authentication" [ref=e120] [cursor=pointer]:
+                    - /url: /users/5/edit/two_factor_authentication
+            - generic [ref=e121]:
+              - generic [ref=e123]:
+                - generic "Status" [ref=e124]
+                - generic [ref=e126]: active
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - generic [ref=e129]:
+                    - generic "Username" [ref=e130]: Username*
+                    - textbox "Username*" [disabled] [ref=e133]: db@axinagroup.com
+                  - generic [ref=e134]:
+                    - generic "First name" [ref=e135]: First name*
+                    - textbox "First name*" [ref=e138]: Dan
+                  - generic [ref=e139]:
+                    - generic "Last name" [ref=e140]: Last name*
+                    - textbox "Last name*" [ref=e143]: Brody
+                  - generic [ref=e144]:
+                    - generic "Email" [ref=e145]: Email*
+                    - textbox "Email*" [ref=e148]: db@axinagroup.com
+                  - generic [ref=e149]:
+                    - generic "Language" [ref=e150]
+                    - combobox "Language" [ref=e153]:
+                      - option "English" [selected]
+                      - option "Español"
+                      - option "Français"
+                      - option "Italiano"
+                      - option "Português europeu"
+                      - option "Беларуская"
+                      - option "Български"
+                      - option "Русский"
+                      - option "Српски"
+                      - option "Українська"
+                      - option "Қазақ тілі"
+                      - option "עברית"
+                  - generic [ref=e154]:
+                    - generic "Administrator" [ref=e155]
+                    - checkbox "Administrator" [checked] [disabled] [ref=e158]
+                - generic [ref=e159]:
+                  - heading "Authentication" [level=3] [ref=e160]
+                  - generic [ref=e161]:
+                    - generic [ref=e162]:
+                      - generic "Assign random password (sent to user via email)" [ref=e163]
+                      - checkbox "Assign random password (sent to user via email)" [ref=e166]
+                    - generic [ref=e167]:
+                      - generic "Password" [ref=e168]
+                      - textbox "Password" [ref=e171]
+                      - emphasis [ref=e173]: Must be at least 10 characters long.
+                    - generic [ref=e174]:
+                      - generic "Confirmation" [ref=e175]
+                      - textbox "Confirmation" [ref=e178]
+                    - generic [ref=e179]:
+                      - generic "Send new credentials to the user" [ref=e180]
+                      - checkbox "Send new credentials to the user" [checked] [ref=e183]
+                    - generic [ref=e184]:
+                      - generic "Enforce password change on next login" [ref=e185]
+                      - checkbox "Enforce password change on next login" [ref=e188]
+                - generic [ref=e189]:
+                  - heading "Preferences" [level=3] [ref=e190]
+                  - generic [ref=e191]:
+                    - generic "Time zone" [ref=e192]
+                    - combobox "Time zone" [ref=e195]:
+                      - option "(UTC-12:00) International Date Line West"
+                      - option "(UTC-11:00) American Samoa, Midway Island"
+                      - option "(UTC-10:00) Hawaii"
+                      - option "(UTC-09:00) Alaska"
+                      - option "(UTC-08:00) Pacific Time (US & Canada)"
+                      - option "(UTC-08:00) Tijuana"
+                      - option "(UTC-07:00) Arizona"
+                      - option "(UTC-07:00) Mazatlan"
+                      - option "(UTC-07:00) Mountain Time (US & Canada)"
+                      - option "(UTC-06:00) Central America"
+                      - option "(UTC-06:00) Central Time (US & Canada)"
+                      - option "(UTC-06:00) Chihuahua"
+                      - option "(UTC-06:00) Mexico City"
+                      - option "(UTC-06:00) Monterrey"
+                      - option "(UTC-06:00) Saskatchewan"
+                      - option "(UTC-05:00) Bogota"
+                      - option "(UTC-05:00) Eastern Time (US & Canada)" [selected]
+                      - option "(UTC-05:00) Indiana (East)"
+                      - option "(UTC-05:00) Lima"
+                      - option "(UTC-04:00) Atlantic Time (Canada)"
+                      - option "(UTC-04:00) Caracas"
+                      - option "(UTC-04:00) Georgetown"
+                      - option "(UTC-04:00) La Paz"
+                      - option "(UTC-04:00) Puerto Rico"
+                      - option "(UTC-04:00) Santiago"
+                      - option "(UTC-03:30) Newfoundland"
+                      - option "(UTC-03:00) Asuncion"
+                      - option "(UTC-03:00) Brasilia"
+                      - option "(UTC-03:00) Buenos Aires"
+                      - option "(UTC-03:00) Montevideo"
+                      - option "(UTC-02:00) Greenland"
+                      - option "(UTC-02:00) Mid-Atlantic"
+                      - option "(UTC-01:00) Azores"
+                      - option "(UTC-01:00) Cape Verde Is."
+                      - option "(UTC+00:00) London"
+                      - option "(UTC+00:00) Lisbon"
+                      - option "(UTC+00:00) Monrovia"
+                      - option "(UTC+00:00) UTC"
+                      - option "(UTC+01:00) Amsterdam, Brussels"
+                      - option "(UTC+01:00) Belgrade, Ljubljana, Sarajevo, Skopje, Zagreb"
+                      - option "(UTC+01:00) Berlin, Copenhagen, Stockholm"
+                      - option "(UTC+01:00) Zurich"
+                      - option "(UTC+01:00) Bratislava, Prague"
+                      - option "(UTC+01:00) Budapest"
+                      - option "(UTC+01:00) Casablanca"
+                      - option "(UTC+01:00) Dublin"
+                      - option "(UTC+01:00) Madrid"
+                      - option "(UTC+01:00) Paris"
+                      - option "(UTC+01:00) Rome"
+                      - option "(UTC+01:00) Vienna"
+                      - option "(UTC+01:00) Warsaw"
+                      - option "(UTC+01:00) West Central Africa"
+                      - option "(UTC+02:00) Athens"
+                      - option "(UTC+02:00) Bucharest"
+                      - option "(UTC+02:00) Cairo"
+                      - option "(UTC+02:00) Harare"
+                      - option "(UTC+02:00) Helsinki"
+                      - option "(UTC+02:00) Jerusalem"
+                      - option "(UTC+02:00) Kaliningrad"
+                      - option "(UTC+02:00) Kyiv"
+                      - option "(UTC+02:00) Pretoria"
+                      - option "(UTC+02:00) Riga"
+                      - option "(UTC+02:00) Sofia"
+                      - option "(UTC+02:00) Tallinn"
+                      - option "(UTC+02:00) Vilnius"
+                      - option "(UTC+03:00) Baghdad"
+                      - option "(UTC+03:00) Istanbul"
+                      - option "(UTC+03:00) Kuwait, Riyadh"
+                      - option "(UTC+03:00) Minsk"
+                      - option "(UTC+03:00) Moscow"
+                      - option "(UTC+03:00) Nairobi"
+                      - option "(UTC+03:00) Volgograd"
+                      - option "(UTC+03:30) Tehran"
+                      - option "(UTC+04:00) Muscat"
+                      - option "(UTC+04:00) Baku"
+                      - option "(UTC+04:00) Samara"
+                      - option "(UTC+04:00) Tbilisi"
+                      - option "(UTC+04:00) Yerevan"
+                      - option "(UTC+04:30) Kabul"
+                      - option "(UTC+05:00) Almaty"
+                      - option "(UTC+05:00) Ekaterinburg"
+                      - option "(UTC+05:00) Karachi"
+                      - option "(UTC+05:00) Tashkent"
+                      - option "(UTC+05:30) Kolkata"
+                      - option "(UTC+05:30) Sri Jayawardenepura"
+                      - option "(UTC+05:45) Kathmandu"
+                      - option "(UTC+06:00) Dhaka"
+                      - option "(UTC+06:00) Urumqi"
+                      - option "(UTC+06:30) Rangoon"
+                      - option "(UTC+07:00) Bangkok"
+                      - option "(UTC+07:00) Jakarta"
+                      - option "(UTC+07:00) Krasnoyarsk"
+                      - option "(UTC+07:00) Novosibirsk"
+                      - option "(UTC+08:00) Beijing, Chongqing"
+                      - option "(UTC+08:00) Hong Kong"
+                      - option "(UTC+08:00) Irkutsk"
+                      - option "(UTC+08:00) Kuala Lumpur, Singapore"
+                      - option "(UTC+08:00) Perth"
+                      - option "(UTC+08:00) Taipei"
+                      - option "(UTC+08:00) Ulaanbaatar"
+                      - option "(UTC+09:00) Tokyo"
+                      - option "(UTC+09:00) Seoul"
+                      - option "(UTC+09:00) Yakutsk"
+                      - option "(UTC+09:30) Adelaide"
+                      - option "(UTC+09:30) Darwin"
+                      - option "(UTC+10:00) Brisbane"
+                      - option "(UTC+10:00) Canberra, Sydney"
+                      - option "(UTC+10:00) Guam"
+                      - option "(UTC+10:00) Hobart"
+                      - option "(UTC+10:00) Melbourne"
+                      - option "(UTC+10:00) Port Moresby"
+                      - option "(UTC+10:00) Vladivostok"
+                      - option "(UTC+11:00) Magadan"
+                      - option "(UTC+11:00) New Caledonia"
+                      - option "(UTC+11:00) Solomon Is."
+                      - option "(UTC+11:00) Srednekolymsk"
+                      - option "(UTC+12:00) Auckland"
+                      - option "(UTC+12:00) Fiji"
+                      - option "(UTC+12:00) Kamchatka"
+                      - option "(UTC+12:00) Marshall Is."
+                      - option "(UTC+12:45) Chatham Is."
+                      - option "(UTC+13:00) Nuku'alofa"
+                      - option "(UTC+13:00) Samoa"
+                      - option "(UTC+13:00) Tokelau Is."
+                  - generic [ref=e196]:
+                    - generic "Color mode" [ref=e197]
+                    - combobox "Color mode" [ref=e200]:
+                      - option "Light" [selected]
+                      - option "Dark"
+                      - option "Automatic (match OS color mode)"
+                    - generic [ref=e201]: Some modes will overwrite custom theme colors for accessibility and legibility. Please select Light mode for full custom theme support.
+                  - generic [ref=e202]:
+                    - generic "Disable keyboard shortcuts" [ref=e203]
+                    - checkbox "Disable keyboard shortcuts" [ref=e206]
+                    - generic [ref=e207]:
+                      - text: You can choose to disable default
+                      - link "keyboard shortcuts" [ref=e208] [cursor=pointer]:
+                        - /url: https://www.openproject.org/docs/user-guide/keyboard-shortcuts-access-keys/?go_to_locale=en
+                        - generic [ref=e209]:
+                          - text: keyboard shortcuts
+                          - img [ref=e210]
+                      - text: if you use a screen reader or want to avoid accidentally triggering an action with a shortcut.
+                - button "Save" [ref=e212] [cursor=pointer]

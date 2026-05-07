@@ -1,0 +1,64 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - main [ref=e25]:
+      - generic [ref=e26]:
+        - heading "Content" [level=1] [ref=e27]
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - navigation "Breadcrumb" [ref=e31]:
+              - list [ref=e32]:
+                - listitem [ref=e33]:
+                  - link "Default rate history for Dan Brody" [ref=e34]:
+                    - /url: "#"
+                    - generic [ref=e36]: Default rate history for Dan Brody
+            - heading "Default rate history for Dan Brody" [level=2] [ref=e38]
+          - generic [ref=e39]:
+            - table [ref=e42]:
+              - rowgroup [ref=e47]:
+                - row "Valid from Rate" [ref=e48]:
+                  - columnheader "Valid from" [ref=e49]:
+                    - generic [ref=e52]: Valid from
+                  - columnheader "Rate" [ref=e53]:
+                    - generic [ref=e56]: Rate
+                  - columnheader [ref=e57]
+              - rowgroup [ref=e59]:
+                - row "Valid from Rate $" [ref=e60]:
+                  - cell "Valid from" [ref=e61]:
+                    - generic [ref=e62]: Valid from
+                  - cell "Rate $" [ref=e63]:
+                    - generic [ref=e64]:
+                      - generic [ref=e65]: Rate
+                      - textbox "Rate" [ref=e66]
+                      - generic [ref=e67]: $
+                  - cell [ref=e68]:
+                    - link [ref=e69] [cursor=pointer]:
+                      - /url: "#"
+                      - generic [ref=e70]: 
+            - link "Add rate" [ref=e72] [cursor=pointer]:
+              - /url: "#"
+              - generic [ref=e73]: 
+              - text: Add rate
+            - button "Save" [ref=e75] [cursor=pointer]

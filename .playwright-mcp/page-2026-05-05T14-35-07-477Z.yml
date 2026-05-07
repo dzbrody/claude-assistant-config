@@ -1,0 +1,186 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "System settings" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/general
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "General" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/general
+                    - generic [ref=e77]: General
+                - listitem [ref=e78]:
+                  - link "Languages" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/languages
+                    - generic [ref=e81]: Languages
+                - listitem [ref=e82]:
+                  - link "External links" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/external_links
+                    - generic [ref=e85]: External links
+                - listitem [ref=e86]:
+                  - link "Repositories" [ref=e87] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/repositories
+                    - generic [ref=e89]: Repositories
+      - main [ref=e90]:
+        - generic [ref=e91]:
+          - heading "Content" [level=1] [ref=e92]
+          - generic [ref=e93]:
+            - generic [ref=e94]:
+              - navigation "Breadcrumb" [ref=e96]:
+                - list [ref=e97]:
+                  - listitem [ref=e98]:
+                    - link "Administration" [ref=e99] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e101]: Administration
+                  - listitem [ref=e102]:
+                    - link "System settings" [ref=e103] [cursor=pointer]:
+                      - /url: /admin/settings/general
+                      - generic [ref=e105]: System settings
+                  - listitem [ref=e106]:
+                    - link "Repositories" [ref=e107]:
+                      - /url: "#"
+                      - generic [ref=e109]: Repositories
+              - heading "Repositories" [level=2] [ref=e111]
+            - generic [ref=e113]:
+              - generic [ref=e114]:
+                - generic [ref=e116]:
+                  - checkbox "Autofetch repository changes" [checked] [ref=e117] [cursor=pointer]
+                  - generic [ref=e118]:
+                    - generic [ref=e119] [cursor=pointer]: Autofetch repository changes
+                    - paragraph [ref=e121]:
+                      - text: Check this if you want repositories to be updated automatically when accessing the repository module page.
+                      - text: This encompasses the retrieval of commits from the repository and refreshing the required disk storage.
+                - generic [ref=e123]:
+                  - generic [ref=e124]: Repository disk size cache
+                  - generic [ref=e125]:
+                    - spinbutton "Repository disk size cache" [ref=e126]: "720"
+                    - generic:
+                      - generic:
+                        - generic: minutes
+                  - paragraph [ref=e128]:
+                    - text: Keep the last required disk space information for a repository for N minutes.
+                    - text: As counting the required disk space of a repository may be costly, increase this value to reduce performance impact.
+                - generic [ref=e130]:
+                  - checkbox "Enable repository management web service" [ref=e131] [cursor=pointer]
+                  - generic [ref=e132]:
+                    - generic [ref=e133] [cursor=pointer]: Enable repository management web service
+                    - generic [ref=e134]: The repository management web service provides integration and user authorization for accessing repositories.
+                - group "Enabled SCM" [ref=e137]:
+                  - generic [ref=e138]: Enabled SCM
+                  - generic [ref=e139]:
+                    - generic [ref=e140]:
+                      - checkbox "Subversion" [checked] [ref=e141] [cursor=pointer]
+                      - generic [ref=e143] [cursor=pointer]: Subversion
+                    - generic [ref=e144]:
+                      - checkbox "Git" [checked] [ref=e145] [cursor=pointer]
+                      - generic [ref=e147] [cursor=pointer]: Git
+                - generic [ref=e149]:
+                  - generic [ref=e150]: Automatic repository vendor type
+                  - combobox "Automatic repository vendor type" [ref=e152]:
+                    - option "Disable automatic creation" [selected]
+                  - generic [ref=e153]: By setting a vendor here, newly created projects will automatically receive a managed repository of this vendor.
+                - generic [ref=e155]:
+                  - generic [ref=e156]: Repositories encodings
+                  - textbox "Repositories encodings" [ref=e158]
+                  - generic [ref=e159]: Multiple values allowed (comma separated).
+                - generic [ref=e161]:
+                  - generic [ref=e162]: Maximum number of revisions displayed on file log
+                  - spinbutton "Maximum number of revisions displayed on file log" [ref=e164]: "100"
+                - generic [ref=e166]:
+                  - generic [ref=e167]: Maximum number of files displayed in the repository browser
+                  - spinbutton "Maximum number of files displayed in the repository browser" [ref=e169]: "500"
+              - heading "Checkout instructions" [level=3] [ref=e171]
+              - button "Subversion" [ref=e174] [cursor=pointer]:
+                - generic [ref=e175]:
+                  - heading "Subversion" [level=4] [ref=e177]
+                  - img [ref=e179]
+              - button "Git" [ref=e183] [cursor=pointer]:
+                - generic [ref=e184]:
+                  - heading "Git" [level=4] [ref=e186]
+                  - img [ref=e188]
+              - heading "Referencing and fixing work packages in commit messages" [level=3] [ref=e191]
+              - generic [ref=e192]:
+                - generic [ref=e193]:
+                  - generic [ref=e195]:
+                    - generic [ref=e196]: Referencing keywords
+                    - textbox "Referencing keywords" [ref=e198]: refs,references,IssueID
+                    - generic [ref=e199]: Multiple values allowed (comma separated).
+                  - generic [ref=e200]:
+                    - generic [ref=e201]:
+                      - generic [ref=e202]: "Fixing keywords: Keywords"
+                      - 'textbox "Fixing keywords: Keywords" [ref=e204]': fixes,closes
+                      - generic [ref=e205]: Multiple values allowed (comma separated).
+                    - generic [ref=e206]:
+                      - generic [ref=e207]: "Fixing keywords: Applied status"
+                      - 'combobox "Fixing keywords: Applied status" [ref=e209]':
+                        - option "--- Please select ---"
+                        - option "New"
+                        - option "In specification"
+                        - option "Specified"
+                        - option "Confirmed"
+                        - option "To be scheduled"
+                        - option "Scheduled"
+                        - option "In progress"
+                        - option "Developed"
+                        - option "In testing"
+                        - option "Tested"
+                        - option "Test failed"
+                        - option "Closed" [selected]
+                        - option "On hold"
+                        - option "Rejected"
+                  - generic [ref=e211]:
+                    - checkbox "Enable time logging" [ref=e212] [cursor=pointer]
+                    - generic [ref=e214] [cursor=pointer]: Enable time logging
+                - button "Save" [ref=e217] [cursor=pointer]:
+                  - generic [ref=e219]: Save

@@ -1,0 +1,88 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Emails and notifications" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/aggregation
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "Aggregation" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/aggregation
+                    - generic [ref=e43]: Aggregation
+                - listitem [ref=e44]:
+                  - link "Email notifications" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/mail_notifications
+                    - generic [ref=e47]: Email notifications
+                - listitem [ref=e48]:
+                  - link "Incoming emails" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/incoming_mails
+                    - generic [ref=e51]: Incoming emails
+      - main [ref=e52]:
+        - generic [ref=e53]:
+          - heading "Content" [level=1] [ref=e54]
+          - generic [ref=e55]:
+            - generic [ref=e56]:
+              - navigation "Breadcrumb" [ref=e58]:
+                - list [ref=e59]:
+                  - listitem [ref=e60]:
+                    - link "Administration" [ref=e61] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e63]: Administration
+                  - listitem [ref=e64]:
+                    - link "Emails and notifications" [ref=e65] [cursor=pointer]:
+                      - /url: /admin/settings/aggregation
+                      - generic [ref=e67]: Emails and notifications
+                  - listitem [ref=e68]:
+                    - link "Incoming emails" [ref=e69]:
+                      - /url: "#"
+                      - generic [ref=e71]: Incoming emails
+              - heading "Incoming emails" [level=2] [ref=e73]
+            - generic [ref=e76]:
+              - generic [ref=e79]:
+                - generic [ref=e80]: Truncate emails after one of these lines
+                - textbox "Truncate emails after one of these lines" [ref=e82]
+                - generic [ref=e83]: Multiple values allowed (one line for each value).
+              - generic [ref=e85]:
+                - generic [ref=e86]: Truncate emails matching this regex
+                - textbox "Truncate emails matching this regex" [ref=e88]
+                - generic [ref=e89]: The regex is applied in a multi-line mode. e.g., ^---\s+
+              - generic [ref=e92]:
+                - generic [ref=e93]: Ignored mail attachments
+                - textbox "Ignored mail attachments" [ref=e95]: signature.asc
+                - generic [ref=e96]: Specify a list of names to ignore when processing attachments for incoming mails (e.g., signatures or icons). Enter one filename per line.
+              - button "Save" [ref=e98] [cursor=pointer]:
+                - generic [ref=e100]: Save

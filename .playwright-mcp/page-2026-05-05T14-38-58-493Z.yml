@@ -1,0 +1,112 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Time and costs" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/costs
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Defaults" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/costs
+                    - generic [ref=e77]: Defaults
+                - listitem [ref=e78]:
+                  - link "Cost types" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/cost_types
+                    - generic [ref=e81]: Cost types
+                - listitem [ref=e82]:
+                  - link "Time tracking activities" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/time_entry_activities
+                    - generic [ref=e85]: Time tracking activities
+      - main [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Content" [level=1] [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - navigation "Breadcrumb" [ref=e92]:
+                - list [ref=e93]:
+                  - listitem [ref=e94]:
+                    - link "Administration" [ref=e95] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e97]: Administration
+                  - listitem [ref=e98]:
+                    - link "Time and costs" [ref=e99] [cursor=pointer]:
+                      - /url: /admin/time
+                      - generic [ref=e101]: Time and costs
+                  - listitem [ref=e102]:
+                    - link "Defaults" [ref=e103]:
+                      - /url: "#"
+                      - generic [ref=e105]: Defaults
+              - heading "Defaults" [level=2] [ref=e107]
+              - list [ref=e110]:
+                - listitem [ref=e111]:
+                  - link "Time" [ref=e112] [cursor=pointer]:
+                    - /url: /admin/time
+                - listitem [ref=e113]:
+                  - link "Costs" [ref=e114] [cursor=pointer]:
+                    - /url: /admin/costs
+            - generic [ref=e117]:
+              - generic [ref=e118]:
+                - heading "Costs" [level=3] [ref=e119]
+                - generic [ref=e120]: Define the desired format for the costs in all projects.
+              - generic [ref=e122]:
+                - generic [ref=e123]: Currency
+                - textbox "Currency" [ref=e125]: $
+                - generic [ref=e126]: This is the unit of currency. It can be a three-letter ISO code like EUR, USD or JPY or a symbol like €, $ or ¥.
+              - generic [ref=e128]:
+                - generic [ref=e129]: Currency format
+                - combobox "Currency format" [ref=e131]:
+                  - option "Before the number (e.g. EUR 100)" [selected]
+                  - option "After the number (e.g. 100 EUR)"
+              - button "Save" [ref=e133] [cursor=pointer]:
+                - generic [ref=e135]: Save

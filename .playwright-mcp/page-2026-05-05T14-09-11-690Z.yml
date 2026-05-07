@@ -1,0 +1,237 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - link "Overview" [ref=e68] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin
+                - img [ref=e69]
+                - generic [ref=e72]: Overview
+            - listitem [ref=e73]:
+              - generic [ref=e74]:
+                - link "Users and permissions" [ref=e75] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/users
+                  - img [ref=e76]
+                  - generic [ref=e79]: Users and permissions
+                - button "Open Users and permissions sub-menu" [ref=e80] [cursor=pointer]:
+                  - img [ref=e81]
+            - listitem [ref=e83]:
+              - generic [ref=e84]:
+                - link "Work packages" [ref=e85] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/work_packages_general
+                  - img [ref=e86]
+                  - generic [ref=e90]: Work packages
+                - button "Open Work packages sub-menu" [ref=e91] [cursor=pointer]:
+                  - img [ref=e92]
+            - listitem [ref=e94]:
+              - generic [ref=e95]:
+                - link "Projects" [ref=e96] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/project_phase_definitions
+                  - img [ref=e97]
+                  - generic [ref=e100]: Projects
+                - button "Open Projects sub-menu" [ref=e101] [cursor=pointer]:
+                  - img [ref=e102]
+            - listitem [ref=e104]:
+              - link "Custom fields" [ref=e105] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/custom_fields
+                - img [ref=e106]
+                - generic [ref=e110]: Custom fields
+            - listitem [ref=e111]:
+              - link "Attribute help texts" [ref=e112] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/attribute_help_texts
+                - img [ref=e113]
+                - generic [ref=e116]: Attribute help texts
+            - listitem [ref=e117]:
+              - generic [ref=e118]:
+                - link "Calendars and dates" [ref=e119] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/working_days_and_hours
+                  - img [ref=e120]
+                  - generic [ref=e123]: Calendars and dates
+                - button "Open Calendars and dates sub-menu" [ref=e124] [cursor=pointer]:
+                  - img [ref=e125]
+            - listitem [ref=e127]:
+              - generic [ref=e128]:
+                - link "Artificial Intelligence (AI)" [ref=e129] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/mcp_configurations
+                  - img [ref=e130]
+                  - generic [ref=e133]: Artificial Intelligence (AI)
+                - button "Open Artificial Intelligence (AI) sub-menu" [ref=e134] [cursor=pointer]:
+                  - img [ref=e135]
+            - listitem [ref=e137]:
+              - generic [ref=e138]:
+                - link "System settings" [ref=e139] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/general
+                  - img [ref=e140]
+                  - generic [ref=e143]: System settings
+                - button "Open System settings sub-menu" [ref=e144] [cursor=pointer]:
+                  - img [ref=e145]
+            - listitem [ref=e147]:
+              - generic [ref=e148]:
+                - link "Emails and notifications" [ref=e149] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/aggregation
+                  - img [ref=e150]
+                  - generic [ref=e153]: Emails and notifications
+                - button "Open Emails and notifications sub-menu" [ref=e154] [cursor=pointer]:
+                  - img [ref=e155]
+            - listitem [ref=e157]:
+              - generic [ref=e158]:
+                - link "API and webhooks" [ref=e159] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/api
+                  - img [ref=e160]
+                  - generic [ref=e163]: API and webhooks
+                - button "Open API and webhooks sub-menu" [ref=e164] [cursor=pointer]:
+                  - img [ref=e165]
+            - listitem [ref=e167]:
+              - generic [ref=e168]:
+                - link "Authentication" [ref=e169] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/authentication
+                  - img [ref=e170]
+                  - generic [ref=e173]: Authentication
+                - button "Open Authentication sub-menu" [ref=e174] [cursor=pointer]:
+                  - img [ref=e175]
+            - listitem [ref=e177]:
+              - link "Announcement" [ref=e178] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/announcements/edit
+                - img [ref=e179]
+                - generic [ref=e184]: Announcement
+            - listitem [ref=e185]:
+              - link "Design" [ref=e186] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/design
+                - img [ref=e187]
+                - generic [ref=e189]:
+                  - generic [ref=e190]: Design
+                  - img [ref=e191]
+            - listitem [ref=e193]:
+              - link "Colors" [ref=e194] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/colors
+                - img [ref=e195]
+                - generic [ref=e198]: Colors
+            - listitem [ref=e199]:
+              - link "Enterprise edition" [ref=e200] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/enterprise_tokens
+                - img [ref=e201]
+                - generic [ref=e204]: Enterprise edition
+            - listitem [ref=e205]:
+              - generic [ref=e206]:
+                - link "Time and costs" [ref=e207] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/costs
+                  - img [ref=e208]
+                  - generic [ref=e212]: Time and costs
+                - button "Open Time and costs sub-menu" [ref=e213] [cursor=pointer]:
+                  - img [ref=e214]
+            - listitem [ref=e216]:
+              - link "Backlogs" [ref=e217] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/backlogs
+                - img [ref=e218]
+                - generic [ref=e222]: Backlogs
+            - listitem [ref=e223]:
+              - generic [ref=e224]:
+                - link "Documents" [ref=e225] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/document_types
+                  - img [ref=e226]
+                  - generic [ref=e229]: Documents
+                - button "Open Documents sub-menu" [ref=e230] [cursor=pointer]:
+                  - img [ref=e231]
+            - listitem [ref=e233]:
+              - generic [ref=e234]:
+                - link "Files" [ref=e235] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/storages
+                  - img [ref=e236]
+                  - generic [ref=e239]: Files
+                - button "Open Files sub-menu" [ref=e240] [cursor=pointer]:
+                  - img [ref=e241]
+            - listitem [ref=e243]:
+              - link "Plugins" [ref=e244] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/plugins
+                - img [ref=e245]
+                - generic [ref=e248]: Plugins
+            - listitem [ref=e249]:
+              - link "Backup" [ref=e250] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/backups
+                - img [ref=e251]
+                - generic [ref=e254]: Backup
+            - listitem [ref=e255]:
+              - link "Information" [ref=e256] [cursor=pointer]:
+                - /url: https://projects.axinagroup.com/admin/info
+                - img [ref=e257]
+                - generic [ref=e260]: Information
+      - main [ref=e261]:
+        - generic [ref=e262]:
+          - heading "Content" [level=1] [ref=e263]
+          - generic [ref=e264]:
+            - generic [ref=e265]:
+              - navigation "Breadcrumb" [ref=e267]:
+                - list [ref=e268]:
+                  - listitem [ref=e269]:
+                    - link "Administration" [ref=e270] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e272]: Administration
+                  - listitem [ref=e273]:
+                    - link "Plugins" [ref=e274]:
+                      - /url: "#"
+                      - generic [ref=e276]: Plugins
+              - heading "Plugins" [level=2] [ref=e278]
+            - table [ref=e281]:
+              - rowgroup [ref=e286]:
+                - row "Name Author Version" [ref=e287]:
+                  - columnheader "Name" [ref=e288]:
+                    - generic [ref=e291]: Name
+                  - columnheader "Author" [ref=e292]:
+                    - generic [ref=e295]: Author
+                  - columnheader "Version" [ref=e296]:
+                    - generic [ref=e299]: Version
+              - rowgroup [ref=e300]:
+                - row "OpenProject Wikis Allows linking work packages to pages in wikis, such as XWiki or the internal OpenProject wiki. OpenProject GmbH 1.0.0" [ref=e301]:
+                  - cell "OpenProject Wikis Allows linking work packages to pages in wikis, such as XWiki or the internal OpenProject wiki." [ref=e302]:
+                    - text: OpenProject Wikis
+                    - generic [ref=e303]: Allows linking work packages to pages in wikis, such as XWiki or the internal OpenProject wiki.
+                  - cell "OpenProject GmbH" [ref=e304]:
+                    - link "OpenProject GmbH" [ref=e305] [cursor=pointer]:
+                      - /url: https://openproject.org
+                  - cell "1.0.0" [ref=e306]

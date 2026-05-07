@@ -1,0 +1,157 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Calendars and dates" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/working_days_and_hours
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Working days and hours" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/working_days_and_hours
+                    - generic [ref=e77]: Working days and hours
+                - listitem [ref=e78]:
+                  - link "Date format" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/date_format
+                    - generic [ref=e81]: Date format
+                - listitem [ref=e82]:
+                  - link "Calendar subscriptions" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/icalendar
+                    - generic [ref=e85]: Calendar subscriptions
+      - main [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Content" [level=1] [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - navigation "Breadcrumb" [ref=e92]:
+                - list [ref=e93]:
+                  - listitem [ref=e94]:
+                    - link "Administration" [ref=e95] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e97]: Administration
+                  - listitem [ref=e98]:
+                    - link "Calendars and dates" [ref=e99] [cursor=pointer]:
+                      - /url: /admin/settings/working_days_and_hours
+                      - generic [ref=e101]: Calendars and dates
+                  - listitem [ref=e102]:
+                    - link "Working days and hours" [ref=e103]:
+                      - /url: "#"
+                      - generic [ref=e105]: Working days and hours
+              - heading "Working days and hours" [level=2] [ref=e107]
+            - generic [ref=e108]:
+              - group [ref=e110]:
+                - generic [ref=e111]:
+                  - generic "Hours per day" [ref=e112]
+                  - spinbutton "Hours per day" [ref=e115]: "10"
+                  - generic [ref=e116]: This defines what is considered a "day" when displaying duration in days and hours (for example, if a day is 8 hours, 32 hours would be 4 days).
+                - generic [ref=e117]:
+                  - generic "Duration format" [ref=e118]
+                  - combobox "Duration format" [ref=e121]:
+                    - option "Days and hours"
+                    - option "Hours only" [selected]
+                  - generic [ref=e122]: This defines how Work, Remaining work, and Time spent durations are displayed.
+              - group "Work week" [ref=e124]:
+                - generic [ref=e125]: Work week
+                - generic [ref=e126]:
+                  - text: 
+                  - paragraph [ref=e128]: Changing which days of the week are considered working days or non-working days can affect the start and finish days of all work packages and life cycles in all projects in this instance.
+                - paragraph [ref=e129]: Days that are not selected are skipped when scheduling work packages and project life cycles (and not included in the day count). These can be overridden at a work-package level.
+                - generic [ref=e130]:
+                  - generic "Working days" [ref=e131]
+                  - generic [ref=e132]:
+                    - generic [ref=e133]:
+                      - checkbox "Monday" [checked] [ref=e135]
+                      - text: Monday
+                    - generic [ref=e136]:
+                      - checkbox "Tuesday" [checked] [ref=e138]
+                      - text: Tuesday
+                    - generic [ref=e139]:
+                      - checkbox "Wednesday" [checked] [ref=e141]
+                      - text: Wednesday
+                    - generic [ref=e142]:
+                      - checkbox "Thursday" [checked] [ref=e144]
+                      - text: Thursday
+                    - generic [ref=e145]:
+                      - checkbox "Friday" [checked] [ref=e147]
+                      - text: Friday
+                    - generic [ref=e148]:
+                      - checkbox "Saturday" [ref=e150]
+                      - text: Saturday
+                    - generic [ref=e151]:
+                      - checkbox "Sunday" [ref=e153]
+                      - text: Sunday
+              - group "Holidays and closures" [ref=e155]:
+                - generic [ref=e156]: Holidays and closures
+                - paragraph [ref=e157]: Dates added to the list below are considered non-working and skipped when scheduling work packages.
+                - generic [ref=e158]:
+                  - generic [ref=e159]:
+                    - generic [ref=e162]:
+                      - button "Previous year" [ref=e163] [cursor=pointer]:
+                        - img [ref=e164]: 
+                      - button "Next year" [ref=e165] [cursor=pointer]:
+                        - img [ref=e166]: 
+                      - heading "2026" [level=2] [ref=e167]
+                    - generic "2026" [ref=e168]:
+                      - table [ref=e173]:
+                        - rowgroup [ref=e174]:
+                          - row "Non-working days" [ref=e175]:
+                            - columnheader "Non-working days" [ref=e176]:
+                              - generic [ref=e178]: Non-working days
+                          - row "No specific non-working days are defined for this year. Click on \"+ Non-working day\" below to add a date." [ref=e179]:
+                            - cell "No specific non-working days are defined for this year. Click on \"+ Non-working day\" below to add a date." [ref=e180]
+                  - generic [ref=e183]:
+                    - button "Non-working day" [ref=e184] [cursor=pointer]:
+                      - img [ref=e185]
+                      - generic [ref=e187]: Non-working day
+                    - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Apply changes" [ref=e188] [cursor=pointer]

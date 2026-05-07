@@ -1,0 +1,381 @@
+- generic [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e91]:
+        - button "Search" [ref=e92] [cursor=pointer]:
+          - generic [ref=e94]: 
+        - generic [ref=e97]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e102]
+          - status [ref=e103]
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - generic [ref=e19]:
+          - link "Notifications" [ref=e20] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e104]: "52"
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e105] [cursor=pointer]:
+          - img "User menu" [ref=e109]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - button "Collapse project menu" [expanded] [ref=e111] [cursor=pointer]:
+          - img [ref=e113]
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e118]:
+                - button "claude-assistant-config " [ref=e119] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e120]
+                  - generic [ref=e121]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+                - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Wiki" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - list [ref=e124]:
+                    - listitem [ref=e125]:
+                      - link "Wiki - Claude Assistant" [ref=e127] [cursor=pointer]:
+                        - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant
+      - main [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Content" [level=1] [ref=e43]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - navigation "Breadcrumb" [ref=e47]:
+                - list [ref=e48]:
+                  - listitem [ref=e49]:
+                    - link "claude-assistant-config" [ref=e50] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e52]: claude-assistant-config
+                  - listitem [ref=e53]:
+                    - link "Wiki" [ref=e54] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/index
+                      - generic [ref=e56]: Wiki
+                  - listitem [ref=e57]:
+                    - link "Create new wiki page" [ref=e58]:
+                      - /url: "#"
+                      - generic [ref=e60]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e62]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - generic "Page title" [ref=e65]: Page title*
+                - textbox "Page title*" [ref=e68]
+              - generic [ref=e69]:
+                - generic "Page content" [ref=e70]
+                - generic [ref=e128]:
+                  - generic [ref=e131]:
+                    - toolbar "Editor toolbar" [ref=e133]:
+                      - generic [ref=e134]:
+                        - button "Heading 1, Heading" [ref=e136]:
+                          - generic [ref=e137]: Heading 1
+                          - img
+                        - button "Bold" [ref=e139]:
+                          - img [ref=e140]
+                        - button "Italic" [ref=e142]:
+                          - img [ref=e143]
+                        - button "Strikethrough" [ref=e145]:
+                          - img [ref=e146]
+                        - button "Code" [ref=e149]:
+                          - img [ref=e150]
+                        - button "Insert code snippet" [ref=e152]:
+                          - img [ref=e153]
+                        - button "Link" [ref=e159]:
+                          - img [ref=e160]
+                        - button "Bulleted List" [ref=e162]:
+                          - img [ref=e163]
+                        - button "Numbered List" [ref=e165]:
+                          - img [ref=e166]
+                        - button "To-do List" [ref=e168]:
+                          - img [ref=e169]
+                        - button "Upload image from computer" [ref=e171]:
+                          - img [ref=e172]
+                        - button "Block quote" [ref=e176]:
+                          - img [ref=e177]
+                        - button "Insert table" [ref=e181]:
+                          - img [ref=e182]
+                          - img
+                        - button "Macros" [ref=e185]:
+                          - generic [ref=e186]: Macros
+                          - img
+                        - button "Show local modifications" [ref=e189]:
+                          - img [ref=e190]
+                          - img
+                        - button "Undo" [disabled] [ref=e192]:
+                          - img [ref=e193]
+                        - button "Redo" [disabled] [ref=e195]:
+                          - img [ref=e196]
+                      - button "Show more items" [ref=e200]:
+                        - img [ref=e201]
+                    - textbox "Page content" [ref=e206]:
+                      - heading "Installation — Mac" [level=1] [ref=e207]
+                      - paragraph [ref=e208]: "Full setup guide for a new Mac. Takes about 30 minutes end to end. At the end you will have:"
+                      - list [ref=e209]:
+                        - listitem [ref=e210]:
+                          - generic [ref=e211]: 🤖 Claude Assistant menu bar app — click to run morning/evening/weekend/weekly briefings
+                        - listitem [ref=e212]:
+                          - generic [ref=e213]: Claude CLI connected to OpenProject, Google Workspace, WhatsApp, S3, and your filesystem
+                        - listitem [ref=e214]:
+                          - generic [ref=e215]: Claude Desktop with the same tools (optional)
+                        - listitem [ref=e216]:
+                          - generic [ref=e217]: The AXINA remote MCP server accessible from mobile and any IDE
+                      - heading "Before You Start" [level=2] [ref=e218]
+                      - paragraph [ref=e219]: "You need:"
+                      - list [ref=e220]:
+                        - listitem [ref=e221]:
+                          - generic [ref=e222]: macOS 13 or later
+                        - listitem [ref=e223]:
+                          - generic [ref=e224]: An Anthropic account (claude.ai) with Claude Code access
+                        - listitem [ref=e225]:
+                          - generic [ref=e226]: Access to the AXINA team 1Password vault (for the MCP API key — ask Daniel)
+                        - listitem [ref=e227]:
+                          - generic [ref=e228]: An OpenProject account at https://projects.axinagroup.com (ask Daniel to create one)
+                        - listitem [ref=e229]:
+                          - generic [ref=e230]:
+                            - text: AWS IAM credentials for the
+                            - code [ref=e231]: claude-assistant
+                            - text: user (ask Daniel)
+                      - heading "Step 1 — Install prerequisites" [level=2] [ref=e232]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e233]:
+                        - text: "# Homebrew (if not already installed) /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+                        - generic [ref=e234]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e235]
+                      - heading "Step 2 — Clone the repo" [level=2] [ref=e236]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e237]:
+                        - text: git clone https://github.com/dzbrody/claude-assistant-config.git ~/.claude-assistant
+                        - generic [ref=e238]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 3 — Configure AWS credentials" [level=2] [ref=e239]
+                      - paragraph [ref=e240]:
+                        - text: This project uses an IAM user (
+                        - code [ref=e241]: claude-assistant
+                        - text: ) instead of SSO — it works headlessly without browser logins.
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e242]:
+                        - text: "# Ask Daniel for the Access Key ID and Secret Access Key, then: aws configure --profile claude-assistant # AWS Access Key ID: <from Daniel> # AWS Secret Access Key: <from Daniel> # Default region: us-east-1 # Default output format: json"
+                        - generic [ref=e243]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 4 — Register local MCP servers" [level=2] [ref=e244]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e245]:
+                        - text: cd ~/.claude-assistant bash mcp-servers/install-all.sh
+                        - generic [ref=e246]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e247]:
+                        - strong [ref=e248]: "Note:"
+                        - code [ref=e249]: install-all.sh
+                        - text: includes filesystem paths for
+                        - code [ref=e250]: db@xgccorp.com
+                        - text: Google Drive. If you use different Google accounts, edit the filesystem paths in the script first.
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e251]:
+                        - text: "# Verify all servers registered: claude mcp list"
+                        - generic [ref=e252]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 5 — Connect the AXINA remote MCP server" [level=2] [ref=e253]
+                      - list [ref=e254]:
+                        - listitem [ref=e255]:
+                          - generic [ref=e256]:
+                            - text: "Get the API key from 1Password:"
+                            - strong [ref=e257]: AXINA MCP API Key
+                        - listitem [ref=e258]:
+                          - generic [ref=e259]: "Run:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e260]:
+                        - text: claude mcp add --transport sse --scope user openproject-remote "https://projects.axinagroup.com/mcp/sse?key=<PASTE_KEY_HERE>"
+                        - generic [ref=e261]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - list [ref=e262]:
+                        - listitem [ref=e263]:
+                          - generic [ref=e264]: "Test it works:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e265]:
+                        - text: claude "List my OpenProject projects"
+                        - generic [ref=e266]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 6 — Set up WhatsApp" [level=2] [ref=e267]
+                      - paragraph [ref=e268]: "WhatsApp requires two components: a persistent Go bridge and a Python MCP server."
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e269]:
+                        - text: git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
+                        - generic [ref=e270]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e271]
+                      - paragraph [ref=e272]:
+                        - strong [ref=e273]: "Link your WhatsApp account (one-time QR scan):"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e274]:
+                        - text: ~/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge
+                        - generic [ref=e275]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e276]:
+                        - text: "On your phone:"
+                        - strong [ref=e277]: WhatsApp → Settings → Linked Devices → Link a Device
+                        - text: → scan the QR code. The session is saved to
+                        - code [ref=e278]: ~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db
+                        - text: — you never need to scan again on this machine.
+                      - paragraph [ref=e279]:
+                        - strong [ref=e280]: "Install as a background service:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e281]:
+                        - text: "mkdir -p ~/logs/claude-assistant cat > ~/Library/LaunchAgents/com.$USER.whatsapp-bridge.plist << 'EOF' <?xml version=\"1.0\" encoding=\"UTF-8\"?> <!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"> <plist version=\"1.0\"> <dict> <key>Label</key><string>com.YOURUSERNAME.whatsapp-bridge</string> <key>ProgramArguments</key> <array><string>/Users/YOURUSERNAME/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge</string></array> <key>WorkingDirectory</key><string>/Users/YOURUSERNAME/whatsapp-mcp/whatsapp-bridge</string> <key>RunAtLoad</key><true/> <key>KeepAlive</key><true/> <key>StandardOutPath</key><string>/Users/YOURUSERNAME/logs/claude-assistant/whatsapp-bridge.log</string> <key>StandardErrorPath</key><string>/Users/YOURUSERNAME/logs/claude-assistant/whatsapp-bridge.log</string> <key>LimitLoadToSessionType</key><string>Aqua</string> </dict> </plist> EOF # Replace YOURUSERNAME with your actual username, then: launchctl load ~/Library/LaunchAgents/com.$USER.whatsapp-bridge.plist curl http://localhost:8080/api/health # should show connected:true"
+                        - generic [ref=e282]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 7 — Install the menu bar app" [level=2] [ref=e283]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e284]:
+                        - text: "chmod +x ~/.claude-assistant/desktop/build.sh ~/.claude-assistant/desktop/build.sh # Answer y to install LaunchAgent (starts app at login)"
+                        - generic [ref=e285]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e286]:
+                        - text: Open
+                        - code [ref=e287]: ~/Applications/Claude Assistant.app
+                        - text: — look for 🤖 in your menu bar.
+                      - paragraph [ref=e288]:
+                        - strong [ref=e289]: "Grant accessibility permission (required for keystroke paste):"
+                      - list [ref=e290]:
+                        - listitem [ref=e291]:
+                          - generic [ref=e292]: System Settings → Privacy & Security → Accessibility
+                        - listitem [ref=e293]:
+                          - generic [ref=e294]: Click + → add Terminal
+                        - listitem [ref=e295]:
+                          - generic [ref=e296]: Enable the toggle
+                      - paragraph [ref=e297]: Without this, the terminal window opens but the prompt won't paste automatically.
+                      - heading "Step 8 — Install the OpenProject notifier (optional)" [level=2] [ref=e298]
+                      - paragraph [ref=e299]: Posts every OpenProject change to the TSPG WhatsApp group every 15 minutes. Requires WhatsApp bridge running (Step 6).
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e300]:
+                        - text: cat > ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist << 'EOF' <!-- See mcp-servers/TEAM-INSTALL.md Step 11 for full plist content --> EOF launchctl load ~/Library/LaunchAgents/com.$USER.openproject-notifier.plist
+                        - generic [ref=e301]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 9 — Configure Claude Desktop (optional)" [level=2] [ref=e302]
+                      - paragraph [ref=e303]:
+                        - text: Download Claude Desktop from https://claude.ai/download. Edit
+                        - code [ref=e304]: ~/Library/Application Support/Claude/claude_desktop_config.json
+                        - text: — see the full config in
+                        - code [ref=e305]: mcp-servers/TEAM-INSTALL.md
+                        - text: Step 8.
+                      - heading "Step 10 — Connect Claude Mobile (optional)" [level=2] [ref=e306]
+                      - list [ref=e307]:
+                        - listitem [ref=e308]:
+                          - generic [ref=e309]: Settings → MCP Servers → Add Server
+                        - listitem [ref=e310]:
+                          - generic [ref=e311]:
+                            - text: "Name:"
+                            - code [ref=e312]: AXINA Group
+                        - listitem [ref=e313]:
+                          - generic [ref=e314]:
+                            - text: "URL:"
+                            - code [ref=e315]: https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>
+                      - heading "Final Verification" [level=2] [ref=e316]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e317]:
+                        - text: bash ~/.claude-assistant/scripts/health-check.sh
+                        - generic [ref=e318]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e319]: "Or manually:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e320]:
+                        - text: claude mcp list curl http://localhost:8080/api/health launchctl list | grep -E "whatsapp-bridge|openproject-notifier|claude-assistant"
+                        - generic [ref=e321]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e322]: Then click ☀️ in the menu bar and watch the morning briefing run live.
+                  - group "Attachments" [ref=e323]:
+                    - generic [ref=e324]: Attachments
+                    - generic [ref=e325]:
+                      - button "Attach files" [ref=e326] [cursor=pointer]:
+                        - img [ref=e327]
+                        - generic [ref=e330]: Drop files here or click to attach files.
+                      - button "Attach files" [ref=e332] [cursor=pointer]:
+                        - img [ref=e333]
+                        - generic [ref=e336]: Attach files
+              - generic [ref=e74]:
+                - generic "Parent page" [ref=e75]: Parent page*
+                - combobox [ref=e78]:
+                  - option "-- No parent page --"
+                  - option "Wiki - Claude Assistant" [selected]
+              - generic [ref=e79]:
+                - generic "Comment" [ref=e80]
+                - textbox "Comment" [active] [ref=e83]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e84] [cursor=pointer]
+              - link "Cancel" [ref=e85] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

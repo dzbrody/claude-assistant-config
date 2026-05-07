@@ -72,6 +72,32 @@ For any action items or follow-ups not yet captured this morning:
 
 ---
 
+### Step 3.6: Scan ZOOM-MEETINGS Drive Folder for AI Notes (google-workspace + openproject-remote)
+
+Using `google-workspace` MCP tools, scan the Zoom Meetings Gemini folder for new notes:
+
+1. **List recent files**: Call `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` — this is `db@xgccorp.com/My Drive/ZOOM-MEETINGS/gemini`. Look for files created or modified since 7:00 AM today.
+
+2. **For each new meeting notes file**:
+   - Read the full file content using `get_file_content`.
+   - Extract every action item, task, decision, or follow-up. Look for:
+     - Phrases: "action item", "follow up", "to do", "will", "needs to", "should", "by [date]", "assigned to"
+     - Sections titled: "Action Items", "Next Steps", "Follow-ups", "Decisions"
+   - For each extracted task:
+     - Determine the most relevant OpenProject project based on context — use `list_projects` if unsure; default to `axina-group-admin`
+     - Type: Task (default), Milestone if a hard deadline is stated
+     - Subject: clear and actionable (e.g. "Follow up with Raj re: contract draft")
+     - Prefix with org if identifiable: `[4ward]`, `[XGC]`, or `[AXINA]`
+     - Description: include meeting title, file date, and the exact excerpt from the notes
+     - **Do not duplicate**: call `list_work_packages` first to check for an existing matching subject before creating
+     - Create using `openproject-remote` tool `create_work_package`
+
+3. **Note in wrap-up**: meeting title, file date, and number of tasks created per meeting.
+
+If no new files are found in the folder since 7:00 AM today, skip this step.
+
+---
+
 ### Step 4: Google Calendar Tasks — Status Check
 
 Using `google-workspace` MCP tools:
@@ -102,6 +128,11 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}-wrapup.md`
 | Sender | Summary | Doc Saved | Task Created |
 |--------|---------|-----------|-------------|
 | ... | ... | ... | ... |
+
+## Tasks Created in OpenProject (from Zoom AI Notes)
+| Meeting | Project | Work Package | ID |
+|---------|---------|-------------|-----|
+| [meeting title] | [project] | [subject] | #[id] |
 
 ## Files Modified Today
 - **Personal (Documents/Downloads/Desktop)**: ...
@@ -135,6 +166,7 @@ Using `whatsapp` MCP tools, send me:
 > ✉️ [X] emails sent
 > 📅 [X] meetings completed
 > 💬 TSPG: [X] msgs, [X] docs saved, [X] tasks created (or "quiet today")
+> 📝 [X] tasks from Zoom AI notes (or omit if 0)
 > 📂 [X] files modified
 > ⚠️ [X] tasks carried to tomorrow
 > Full wrap-up saved to ~/Documents/daily_briefs/{date}-wrapup.md

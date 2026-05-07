@@ -1,0 +1,407 @@
+- generic [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e91]:
+        - button "Search" [ref=e92] [cursor=pointer]:
+          - generic [ref=e94]: 
+        - generic [ref=e97]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e102]
+          - status [ref=e103]
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - generic [ref=e19]:
+          - link "Notifications" [ref=e20] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e104]: "52"
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e105] [cursor=pointer]:
+          - img "User menu" [ref=e109]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - button "Collapse project menu" [expanded] [ref=e111] [cursor=pointer]:
+          - img [ref=e113]
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - generic [ref=e28]:
+              - generic [ref=e118]:
+                - button "claude-assistant-config " [ref=e119] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e120]
+                  - generic [ref=e121]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+                - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Wiki" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - list [ref=e124]:
+                    - listitem [ref=e125]:
+                      - generic [ref=e126]:
+                        - link "Wiki - Claude Assistant" [ref=e127] [cursor=pointer]:
+                          - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant
+                        - button "Expanded. Click to collapse" [ref=e129]:
+                          - generic [ref=e130]: 
+                          - generic [ref=e131]: Expanded. Click to collapse
+                      - list [ref=e132]:
+                        - listitem [ref=e133]:
+                          - link "Installation — Mac" [ref=e135] [cursor=pointer]:
+                            - /url: /projects/claude-assistant-config/wiki/installation-mac
+      - main [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Content" [level=1] [ref=e43]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - navigation "Breadcrumb" [ref=e47]:
+                - list [ref=e48]:
+                  - listitem [ref=e49]:
+                    - link "claude-assistant-config" [ref=e50] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e52]: claude-assistant-config
+                  - listitem [ref=e53]:
+                    - link "Wiki" [ref=e54] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/index
+                      - generic [ref=e56]: Wiki
+                  - listitem [ref=e57]:
+                    - link "Create new wiki page" [ref=e58]:
+                      - /url: "#"
+                      - generic [ref=e60]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e62]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - generic "Page title" [ref=e65]: Page title*
+                - textbox "Page title*" [active] [ref=e68]
+              - generic [ref=e69]:
+                - generic "Page content" [ref=e70]
+                - generic [ref=e136]:
+                  - generic [ref=e139]:
+                    - toolbar "Editor toolbar" [ref=e141]:
+                      - generic [ref=e142]:
+                        - button "Heading 1, Heading" [ref=e144]:
+                          - generic [ref=e145]: Heading 1
+                          - img
+                        - button "Bold" [ref=e147]:
+                          - img [ref=e148]
+                        - button "Italic" [ref=e150]:
+                          - img [ref=e151]
+                        - button "Strikethrough" [ref=e153]:
+                          - img [ref=e154]
+                        - button "Code" [ref=e157]:
+                          - img [ref=e158]
+                        - button "Insert code snippet" [ref=e160]:
+                          - img [ref=e161]
+                        - button "Link" [ref=e167]:
+                          - img [ref=e168]
+                        - button "Bulleted List" [ref=e170]:
+                          - img [ref=e171]
+                        - button "Numbered List" [ref=e173]:
+                          - img [ref=e174]
+                        - button "To-do List" [ref=e176]:
+                          - img [ref=e177]
+                        - button "Upload image from computer" [ref=e179]:
+                          - img [ref=e180]
+                        - button "Block quote" [ref=e184]:
+                          - img [ref=e185]
+                        - button "Insert table" [ref=e189]:
+                          - img [ref=e190]
+                          - img
+                        - button "Macros" [ref=e193]:
+                          - generic [ref=e194]: Macros
+                          - img
+                        - button "Show local modifications" [ref=e197]:
+                          - img [ref=e198]
+                          - img
+                        - button "Undo" [disabled] [ref=e200]:
+                          - img [ref=e201]
+                        - button "Redo" [disabled] [ref=e203]:
+                          - img [ref=e204]
+                      - button "Show more items" [ref=e208]:
+                        - img [ref=e209]
+                    - textbox "Page content" [ref=e214]:
+                      - heading "Installation — Windows" [level=1] [ref=e215]
+                      - paragraph [ref=e216]:
+                        - text: This guide sets up Claude Assistant on Windows using
+                        - strong [ref=e217]: WSL2
+                        - text: (Windows Subsystem for Linux). The menu bar app is macOS-only, but all the core tools — Claude CLI, MCP servers, and scheduled briefings — work on Windows via WSL2.
+                      - paragraph [ref=e218]:
+                        - strong [ref=e219]: "What you'll have when done:"
+                      - list [ref=e220]:
+                        - listitem [ref=e221]:
+                          - generic [ref=e222]: Claude CLI with all MCP servers (OpenProject, Google Workspace, WhatsApp, S3, filesystem)
+                        - listitem [ref=e223]:
+                          - generic [ref=e224]: Ability to run any briefing manually from the command line
+                        - listitem [ref=e225]:
+                          - generic [ref=e226]: The AXINA remote MCP server accessible from any Windows IDE (VS Code, etc.)
+                      - paragraph [ref=e227]:
+                        - strong [ref=e228]: "What is different on Windows:"
+                        - text: The 🤖 menu bar app requires macOS (rumps framework). Windows users run briefings by typing a command in WSL2, or can schedule them with Windows Task Scheduler.
+                      - heading "Step 1 — Enable WSL2" [level=2] [ref=e229]
+                      - paragraph [ref=e230]: "Open PowerShell as Administrator and run:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e231]:
+                        - text: "wsl --install # Restart your computer when prompted # After restart, Ubuntu will finish installing — create a username and password when asked"
+                        - generic [ref=e232]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e233]: "Verify WSL2 is working:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e234]:
+                        - text: "wsl --version # WSL version 2.x.x"
+                        - generic [ref=e235]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 2 — Install prerequisites inside WSL2" [level=2] [ref=e236]
+                      - paragraph [ref=e237]: "Open the Ubuntu terminal (search \"Ubuntu\" in Start menu) and run:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e238]:
+                        - text: "# Update packages sudo apt update && sudo apt upgrade -y"
+                        - generic [ref=e239]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e240]
+                      - heading "Step 3 — Clone the repo" [level=2] [ref=e241]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e242]:
+                        - text: git clone https://github.com/dzbrody/claude-assistant-config.git ~/.claude-assistant
+                        - generic [ref=e243]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 4 — Configure AWS credentials" [level=2] [ref=e244]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e245]:
+                        - text: "aws configure --profile claude-assistant # AWS Access Key ID: <from Daniel> # AWS Secret Access Key: <from Daniel> # Default region: us-east-1 # Default output format: json"
+                        - generic [ref=e246]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 5 — Register local MCP servers" [level=2] [ref=e247]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e248]:
+                        - text: cd ~/.claude-assistant bash mcp-servers/install-all.sh
+                        - generic [ref=e249]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e250]
+                      - paragraph [ref=e251]:
+                        - strong [ref=e252]: "Note:"
+                        - text: Edit
+                        - code [ref=e253]: mcp-servers/install-all.sh
+                        - text: before running — it contains macOS-specific paths for Google Drive (
+                        - code [ref=e254]: /Users/dzbrody/Library/...
+                        - text: ). Replace those with your actual Windows filesystem paths mounted in WSL2, e.g.
+                        - code [ref=e255]: /mnt/c/Users/YourName/...
+                        - text: .
+                      - heading "Step 6 — Connect the AXINA remote MCP server" [level=2] [ref=e256]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e257]:
+                        - text: claude mcp add --transport sse --scope user openproject-remote "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
+                        - generic [ref=e258]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e259]
+                      - heading "Step 7 — Set up WhatsApp" [level=2] [ref=e260]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e261]:
+                        - text: git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
+                        - generic [ref=e262]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e263]
+                      - paragraph [ref=e264]:
+                        - strong [ref=e265]: "Link your WhatsApp account:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e266]:
+                        - text: ~/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge
+                        - generic [ref=e267]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e268]:
+                        - text: "On your phone:"
+                        - strong [ref=e269]: WhatsApp → Settings → Linked Devices → Link a Device
+                        - text: → scan the QR code in the terminal. After linking, stop the bridge (Ctrl+C).
+                      - paragraph [ref=e270]:
+                        - strong [ref=e271]: "Auto-start with Windows Task Scheduler:"
+                      - list [ref=e272]:
+                        - listitem [ref=e273]:
+                          - generic [ref=e274]: Open Task Scheduler → Create Basic Task
+                        - listitem [ref=e275]:
+                          - generic [ref=e276]: "Trigger: At log on"
+                        - listitem [ref=e277]:
+                          - generic [ref=e278]:
+                            - text: "Action: Start a program →"
+                            - code [ref=e279]: wsl.exe
+                            - text: ", arguments:"
+                            - code [ref=e280]: "-- /home/YOURUSERNAME/whatsapp-mcp/whatsapp-bridge/whatsapp-bridge"
+                        - listitem [ref=e281]:
+                          - generic [ref=e282]: Finish and enable
+                      - heading "Step 8 — Run a briefing manually" [level=2] [ref=e283]
+                      - paragraph [ref=e284]: "From WSL2 terminal:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e285]:
+                        - text: "cd ~/.claude-assistant # Read the morning briefing prompt and run it PROMPT=$(sed -n '/^## Prompt/,$ p' scheduled-tasks/morning-briefing.md | tail -n +2) claude --dangerously-skip-permissions \"$PROMPT\""
+                        - generic [ref=e286]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e287]: "Or use the shell wrapper:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e288]:
+                        - text: bash ~/.claude-assistant/desktop/run_briefing.sh morning
+                        - generic [ref=e289]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 9 — Connect to VS Code (optional)" [level=2] [ref=e290]
+                      - paragraph [ref=e291]: "Install the Claude Code VS Code extension, then add the remote MCP server in VS Code settings:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e292]:
+                        - text: "# In VS Code settings.json or via Claude extension settings: # MCP Server URL: https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
+                        - generic [ref=e293]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Step 10 — Connect Claude Mobile (optional)" [level=2] [ref=e294]
+                      - list [ref=e295]:
+                        - listitem [ref=e296]:
+                          - generic [ref=e297]: Settings → MCP Servers → Add Server
+                        - listitem [ref=e298]:
+                          - generic [ref=e299]:
+                            - text: "Name:"
+                            - code [ref=e300]: AXINA Group
+                        - listitem [ref=e301]:
+                          - generic [ref=e302]:
+                            - text: "URL:"
+                            - code [ref=e303]: https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>
+                      - heading "Troubleshooting — Windows Specific" [level=2] [ref=e304]
+                      - figure [ref=e305]:
+                        - img [ref=e307]
+                        - table [ref=e313]:
+                          - rowgroup [ref=e314]:
+                            - row "Problem Fix" [ref=e315]:
+                              - textbox [ref=e316]:
+                                - generic [ref=e317]: Problem
+                              - textbox [ref=e318]:
+                                - generic [ref=e319]: Fix
+                          - rowgroup [ref=e320]:
+                            - 'row "claude: command not found Make sure ~/.local/bin is in your PATH: add export PATH=\"$HOME/.local/bin:$PATH\" to ~/.bashrc" [ref=e321]':
+                              - textbox [ref=e322]:
+                                - code [ref=e324]: "claude: command not found"
+                              - textbox [ref=e325]:
+                                - generic [ref=e326]:
+                                  - text: Make sure
+                                  - code [ref=e327]: ~/.local/bin
+                                  - text: "is in your PATH: add"
+                                  - code [ref=e328]: export PATH="$HOME/.local/bin:$PATH"
+                                  - text: to
+                                  - code [ref=e329]: ~/.bashrc
+                            - 'row "Google Workspace auth fails Run OAuth flow once manually: npx -y @alanxchen/google-workspace-mcp — browser opens in Windows" [ref=e330]':
+                              - textbox [ref=e331]:
+                                - generic [ref=e332]: Google Workspace auth fails
+                              - textbox [ref=e333]:
+                                - generic [ref=e334]:
+                                  - text: "Run OAuth flow once manually:"
+                                  - code [ref=e335]: npx -y @alanxchen/google-workspace-mcp
+                                  - text: — browser opens in Windows
+                            - row "Filesystem paths wrong Windows drives are at /mnt/c/ in WSL2 — update paths in install-all.sh" [ref=e336]:
+                              - textbox [ref=e337]:
+                                - generic [ref=e338]: Filesystem paths wrong
+                              - textbox [ref=e339]:
+                                - generic [ref=e340]:
+                                  - text: Windows drives are at
+                                  - code [ref=e341]: /mnt/c/
+                                  - text: in WSL2 — update paths in
+                                  - code [ref=e342]: install-all.sh
+                            - row "WhatsApp bridge won't start Check ~/whatsapp-mcp/whatsapp-bridge/store/ exists and has write permission" [ref=e343]:
+                              - textbox [ref=e344]:
+                                - generic [ref=e345]: WhatsApp bridge won't start
+                              - textbox [ref=e346]:
+                                - generic [ref=e347]:
+                                  - text: Check
+                                  - code [ref=e348]: ~/whatsapp-mcp/whatsapp-bridge/store/
+                                  - text: exists and has write permission
+                            - row "WSL2 can't reach internet Try wsl --shutdown in PowerShell, then reopen Ubuntu" [ref=e349]:
+                              - textbox [ref=e350]:
+                                - generic [ref=e351]: WSL2 can't reach internet
+                              - textbox [ref=e352]:
+                                - generic [ref=e353]:
+                                  - text: Try
+                                  - code [ref=e354]: wsl --shutdown
+                                  - text: in PowerShell, then reopen Ubuntu
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                  - group "Attachments" [ref=e355]:
+                    - generic [ref=e356]: Attachments
+                    - generic [ref=e357]:
+                      - button "Attach files" [ref=e358] [cursor=pointer]:
+                        - img [ref=e359]
+                        - generic [ref=e362]: Drop files here or click to attach files.
+                      - button "Attach files" [ref=e364] [cursor=pointer]:
+                        - img [ref=e365]
+                        - generic [ref=e368]: Attach files
+              - generic [ref=e74]:
+                - generic "Parent page" [ref=e75]: Parent page*
+                - combobox [ref=e78]:
+                  - option "-- No parent page --"
+                  - option "Wiki - Claude Assistant"
+                  - option "» Installation — Mac" [selected]
+              - generic [ref=e79]:
+                - generic "Comment" [ref=e80]
+                - textbox "Comment" [ref=e83]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e84] [cursor=pointer]
+              - link "Cancel" [ref=e85] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

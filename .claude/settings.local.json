@@ -148,7 +148,19 @@
       "Bash(kill 89539 81269 81265)",
       "Bash(security add-generic-password *)",
       "Bash(git -C /Users/dzbrody/.claude-assistant add -A)",
-      "Bash(git -C /Users/dzbrody/.claude-assistant status)"
+      "Bash(git -C /Users/dzbrody/.claude-assistant status)",
+      "Bash(git *)",
+      "Bash(security find-generic-password *)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_fill_form",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_type",
+      "WebFetch(domain:projects.axinagroup.com)",
+      "mcp__google-workspace__export_file",
+      "WebFetch(domain:axinagroup.com)"
     ]
   },
   "mcpServers": {

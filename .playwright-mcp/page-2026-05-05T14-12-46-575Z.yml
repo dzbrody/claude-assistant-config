@@ -1,0 +1,188 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Project settings" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/general
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "Information" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/general
+                    - generic [ref=e43]: Information
+                - listitem [ref=e44]:
+                  - link "Project life cycle" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/life_cycle
+                    - generic [ref=e47]: Project life cycle
+                - listitem [ref=e48]:
+                  - link "Project attributes" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/project_custom_fields
+                    - generic [ref=e51]: Project attributes
+                - listitem [ref=e52]:
+                  - link "Project initiation request" [ref=e53] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/creation_wizard
+                    - generic [ref=e55]: Project initiation request
+                - listitem [ref=e56]:
+                  - link "Modules" [ref=e57] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/modules
+                    - generic [ref=e59]: Modules
+                - listitem [ref=e60]:
+                  - link "Template" [ref=e61] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/template
+                    - generic [ref=e63]: Template
+                - listitem [ref=e64]:
+                  - link "Subitems" [ref=e65] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/subitems
+                    - generic [ref=e67]: Subitems
+                - listitem [ref=e68]:
+                  - link "Work packages" [ref=e69] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/work_packages
+                    - generic [ref=e71]: Work packages
+                - listitem [ref=e72]:
+                  - link "Versions" [ref=e73] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/versions
+                    - generic [ref=e75]: Versions
+                - listitem [ref=e76]:
+                  - link "Repository" [ref=e77] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/repository
+                    - generic [ref=e79]: Repository
+                - listitem [ref=e80]:
+                  - link "Time tracking activities" [ref=e81] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/time_entry_activities
+                    - generic [ref=e83]: Time tracking activities
+                - listitem [ref=e84]:
+                  - link "Backlogs" [ref=e85] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/backlogs
+                    - generic [ref=e87]: Backlogs
+                - listitem [ref=e88]:
+                  - link "Required disk storage" [ref=e89] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/storage
+                    - generic [ref=e91]: Required disk storage
+                - listitem [ref=e92]:
+                  - link "Files" [ref=e93] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/project_storages/external_file_storages
+                    - generic [ref=e95]: Files
+      - main [ref=e96]:
+        - generic [ref=e97]:
+          - heading "Content" [level=1] [ref=e98]
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - navigation "Breadcrumb" [ref=e102]:
+                - list [ref=e103]:
+                  - listitem [ref=e104]:
+                    - link "claude-assistant-config" [ref=e105] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e107]: claude-assistant-config
+                  - listitem [ref=e108]:
+                    - link "Project settings" [ref=e109] [cursor=pointer]:
+                      - /url: /projects/6/settings/general
+                      - generic [ref=e111]: Project settings
+                  - listitem [ref=e112]:
+                    - link "Repository" [ref=e113]:
+                      - /url: "#"
+                      - generic [ref=e115]: Repository
+              - heading "Repository" [level=2] [ref=e117]
+            - group "Available repositories" [ref=e119]:
+              - generic [ref=e120]: Available repositories
+              - generic [ref=e121]:
+                - generic [ref=e122]: Source control management system*
+                - combobox "Source control management system*" [disabled] [ref=e125]:
+                  - option "--- Please select ---" [disabled]
+                  - option "Subversion"
+                  - option "Git" [selected]
+              - group [ref=e126]:
+                - generic [ref=e127]:
+                  - generic [ref=e128]: Local URL
+                  - generic [ref=e129]:
+                    - link "Users" [ref=e130] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/repository/committers
+                    - link "Remove" [ref=e131] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/repository/destroy_info
+                - paragraph [ref=e132]: If you have an existing local Git repository, you can link it with OpenProject to access it from within the application.
+                - generic [ref=e133]:
+                  - generic [ref=e134]:
+                    - generic "Path to Git repository" [ref=e135]: Path to Git repository*
+                    - textbox "Path to Git repository*" [ref=e138]: https://github.com/dzbrody/claude-assistant-config.git
+                    - generic [ref=e139]:
+                      - text: Specify the path to your local Git repository ( e.g.,
+                      - code [ref=e140]: /path/to/repository/.git
+                      - text: ). You can also use remote repositories which are cloned to a local copy by using a value starting with http(s):// or file://.
+                  - generic [ref=e141]:
+                    - generic "Path encoding" [ref=e142]: Path encoding*
+                    - combobox "Path encoding*" [ref=e145]:
+                      - option "US-ASCII"
+                      - option "windows-1250"
+                      - option "windows-1251"
+                      - option "windows-1252"
+                      - option "windows-1253"
+                      - option "windows-1254"
+                      - option "windows-1255"
+                      - option "windows-1256"
+                      - option "windows-1257"
+                      - option "windows-1258"
+                      - option "windows-31j"
+                      - option "ISO-2022-JP"
+                      - option "ISO-2022-KR"
+                      - option "ISO-8859-1"
+                      - option "ISO-8859-2"
+                      - option "ISO-8859-3"
+                      - option "ISO-8859-4"
+                      - option "ISO-8859-5"
+                      - option "ISO-8859-6"
+                      - option "ISO-8859-7"
+                      - option "ISO-8859-8"
+                      - option "ISO-8859-9"
+                      - option "ISO-8859-13"
+                      - option "ISO-8859-15"
+                      - option "KOI8-R"
+                      - option "UTF-8" [selected]
+                      - option "UTF-16"
+                      - option "UTF-16BE"
+                      - option "UTF-16LE"
+                      - option "EUC-JP"
+                      - option "Shift_JIS"
+                      - option "CP932"
+                      - option "GB18030"
+                      - option "GBK"
+                      - option "ISCII91"
+                      - option "EUC-KR"
+                      - option "Big5"
+                      - option "Big5-HKSCS"
+                      - option "TIS-620"
+                    - generic [ref=e146]: "Override Git path encoding (Default: UTF-8)"
+              - button "Save" [ref=e147] [cursor=pointer]:
+                - generic [ref=e148]: 
+                - text: Save

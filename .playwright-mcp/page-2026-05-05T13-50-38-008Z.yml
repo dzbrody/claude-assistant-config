@@ -1,0 +1,81 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Wiki" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e39]:
+                - listitem [ref=e40]
+      - main [ref=e41]:
+        - generic [ref=e42]:
+          - heading "Content" [level=1] [ref=e43]
+          - generic [ref=e44]:
+            - generic [ref=e45]:
+              - navigation "Breadcrumb" [ref=e47]:
+                - list [ref=e48]:
+                  - listitem [ref=e49]:
+                    - link "claude-assistant-config" [ref=e50] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e52]: claude-assistant-config
+                  - listitem [ref=e53]:
+                    - link "Wiki" [ref=e54] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/wiki/toc
+                      - generic [ref=e56]: Wiki
+                  - listitem [ref=e57]:
+                    - link "Create new wiki page" [ref=e58]:
+                      - /url: "#"
+                      - generic [ref=e60]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e62]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - generic "Page title" [ref=e65]: Page title*
+                - textbox "Page title*" [ref=e68]: Wiki
+              - generic [ref=e69]:
+                - generic "Text" [ref=e70]
+                - textbox "Text" [ref=e73]
+              - generic [ref=e74]:
+                - generic "Parent page" [ref=e75]: Parent page*
+                - combobox [ref=e78]:
+                  - option "-- No parent page --" [selected]
+                  - option "Wiki - Claude Assistant"
+              - generic [ref=e79]:
+                - generic "Comment" [ref=e80]
+                - textbox "Comment" [ref=e83]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e84] [cursor=pointer]
+              - link "Cancel" [ref=e85] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki

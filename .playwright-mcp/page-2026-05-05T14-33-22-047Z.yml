@@ -1,0 +1,277 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Emails and notifications" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/aggregation
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Aggregation" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/aggregation
+                    - generic [ref=e77]: Aggregation
+                - listitem [ref=e78]:
+                  - link "Email notifications" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/mail_notifications
+                    - generic [ref=e81]: Email notifications
+                - listitem [ref=e82]:
+                  - link "Incoming emails" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/incoming_mails
+                    - generic [ref=e85]: Incoming emails
+      - main [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Content" [level=1] [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - navigation "Breadcrumb" [ref=e92]:
+                - list [ref=e93]:
+                  - listitem [ref=e94]:
+                    - link "Administration" [ref=e95] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e97]: Administration
+                  - listitem [ref=e98]:
+                    - link "Emails and notifications" [ref=e99] [cursor=pointer]:
+                      - /url: /admin/settings/aggregation
+                      - generic [ref=e101]: Emails and notifications
+                  - listitem [ref=e102]:
+                    - link "Email notifications" [ref=e103]:
+                      - /url: "#"
+                      - generic [ref=e105]: Email notifications
+              - heading "Email notifications" [level=2] [ref=e107]
+            - generic [ref=e110]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: Emission email address
+                - textbox "Emission email address" [disabled] [ref=e115]: no-reply@axinagroup.com
+              - generic [ref=e117]:
+                - checkbox "Blind carbon copy recipients (bcc)" [checked] [ref=e118] [cursor=pointer]
+                - generic [ref=e120] [cursor=pointer]: Blind carbon copy recipients (bcc)
+              - generic [ref=e122]:
+                - checkbox "Plain text mail (no HTML)" [ref=e123] [cursor=pointer]
+                - generic [ref=e125] [cursor=pointer]: Plain text mail (no HTML)
+              - generic [ref=e127]:
+                - generic [ref=e128]: Address user in emails with
+                - combobox "Address user in emails with" [ref=e130]:
+                  - option "First name" [selected]
+                  - option "Full name"
+              - region "Emails header & Emails footer" [ref=e131]:
+                - group "Emails header & Emails footer" [ref=e132]:
+                  - generic [ref=e133]: Emails header & Emails footer
+                  - heading "Emails header & Emails footer" [level=3] [ref=e135]
+                  - generic [ref=e136]:
+                    - generic [ref=e137]:
+                      - generic [ref=e138]: Emails header
+                      - combobox "Emails header" [ref=e140]:
+                        - option "English" [selected]
+                        - option "Español"
+                        - option "Français"
+                        - option "Italiano"
+                        - option "Português europeu"
+                        - option "Беларуская"
+                        - option "Български"
+                        - option "Русский"
+                        - option "Српски"
+                        - option "Українська"
+                        - option "Қазақ тілі"
+                        - option "עברית"
+                    - generic [ref=e143]:
+                      - generic [ref=e144]: Emails header
+                      - generic [ref=e148]:
+                        - toolbar "Editor toolbar" [ref=e150]:
+                          - generic [ref=e151]:
+                            - button "Paragraph, Heading" [ref=e153]:
+                              - generic [ref=e154]: Paragraph
+                              - img
+                            - button "Bold" [pressed] [ref=e156]:
+                              - img [ref=e157]
+                            - button "Italic" [ref=e159]:
+                              - img [ref=e160]
+                            - button "Strikethrough" [ref=e162]:
+                              - img [ref=e163]
+                            - button "Code" [ref=e166]:
+                              - img [ref=e167]
+                            - button "Insert code snippet" [ref=e169]:
+                              - img [ref=e170]
+                            - button "Link" [ref=e176]:
+                              - img [ref=e177]
+                            - button "Bulleted List" [ref=e179]:
+                              - img [ref=e180]
+                            - button "Numbered List" [ref=e182]:
+                              - img [ref=e183]
+                            - button "To-do List" [ref=e185]:
+                              - img [ref=e186]
+                            - button "Block quote" [ref=e188]:
+                              - img [ref=e189]
+                            - button "Insert table" [ref=e193]:
+                              - img [ref=e194]
+                              - img
+                            - button "Macros" [ref=e197]:
+                              - generic [ref=e198]: Macros
+                              - img
+                            - button "Show local modifications" [ref=e201]:
+                              - img [ref=e202]
+                              - img
+                            - button "Undo" [disabled] [ref=e204]:
+                              - img [ref=e205]
+                            - button "Redo" [disabled] [ref=e207]:
+                              - img [ref=e208]
+                            - button "Text formatting help" [ref=e210]:
+                              - img [ref=e211]
+                            - button "Page break" [ref=e214]:
+                              - img [ref=e215]
+                            - button "Toggle preview mode" [ref=e220]:
+                              - img [ref=e221]
+                            - button "Switch to Markdown source" [ref=e223]:
+                              - img [ref=e224]
+                        - textbox "Emails header" [ref=e231]:
+                          - paragraph [ref=e232]:
+                            - strong [ref=e233]: Axina Group Inc.
+                            - text: "| Project Management Portal"
+                    - generic [ref=e234]:
+                      - generic [ref=e235]: Emails footer
+                      - combobox "Emails footer" [ref=e237]:
+                        - option "English" [selected]
+                        - option "Español"
+                        - option "Français"
+                        - option "Italiano"
+                        - option "Português europeu"
+                        - option "Беларуская"
+                        - option "Български"
+                        - option "Русский"
+                        - option "Српски"
+                        - option "Українська"
+                        - option "Қазақ тілі"
+                        - option "עברית"
+                    - generic [ref=e240]:
+                      - generic [ref=e241]: Emails footer
+                      - generic [ref=e245]:
+                        - toolbar "Editor toolbar" [ref=e247]:
+                          - generic [ref=e248]:
+                            - button "Paragraph, Heading" [ref=e250]:
+                              - generic [ref=e251]: Paragraph
+                              - img
+                            - button "Bold" [ref=e253]:
+                              - img [ref=e254]
+                            - button "Italic" [ref=e256]:
+                              - img [ref=e257]
+                            - button "Strikethrough" [ref=e259]:
+                              - img [ref=e260]
+                            - button "Code" [ref=e263]:
+                              - img [ref=e264]
+                            - button "Insert code snippet" [ref=e266]:
+                              - img [ref=e267]
+                            - button "Link" [ref=e273]:
+                              - img [ref=e274]
+                            - button "Bulleted List" [ref=e276]:
+                              - img [ref=e277]
+                            - button "Numbered List" [ref=e279]:
+                              - img [ref=e280]
+                            - button "To-do List" [ref=e282]:
+                              - img [ref=e283]
+                            - button "Block quote" [ref=e285]:
+                              - img [ref=e286]
+                            - button "Insert table" [ref=e290]:
+                              - img [ref=e291]
+                              - img
+                            - button "Macros" [ref=e294]:
+                              - generic [ref=e295]: Macros
+                              - img
+                            - button "Show local modifications" [ref=e298]:
+                              - img [ref=e299]
+                              - img
+                            - button "Undo" [disabled] [ref=e301]:
+                              - img [ref=e302]
+                            - button "Redo" [disabled] [ref=e304]:
+                              - img [ref=e305]
+                            - button "Text formatting help" [ref=e307]:
+                              - img [ref=e308]
+                            - button "Page break" [ref=e311]:
+                              - img [ref=e312]
+                            - button "Toggle preview mode" [ref=e317]:
+                              - img [ref=e318]
+                            - button "Switch to Markdown source" [ref=e320]:
+                              - img [ref=e321]
+                        - textbox "Emails footer" [ref=e328]:
+                          - paragraph [ref=e329]:
+                            - text: This is an automated notification from the
+                            - link "Axina Group Project Server" [ref=e330]:
+                              - /url: https://projects.axinagroup.com/
+                            - text: .
+                          - paragraph [ref=e331]:
+                            - strong [ref=e332]: "Confidentiality Notice:"
+                            - text: This email and any attachments are intended for the sole use of the individual or entity it addresses. It may contain privileged and confidential information exempt from disclosure under applicable law. Unauthorized dissemination, distribution, copying, or use of this communication is strictly prohibited. If you have received this email in error, please notify the sender and permanently delete the original message.
+              - region "Configure your email provider" [ref=e333]:
+                - group "Configure your email provider" [ref=e334]:
+                  - generic [ref=e335]: Configure your email provider
+                  - heading "Configure your email provider" [level=3] [ref=e337]
+                  - generic [ref=e339]:
+                    - generic [ref=e340]: Email delivery method
+                    - combobox "Email delivery method" [disabled] [ref=e342]:
+                      - option "smtp" [selected]
+                      - option "sendmail"
+              - button "Save" [ref=e344] [cursor=pointer]:
+                - generic [ref=e346]: Save
+            - link "Send a test email" [ref=e347] [cursor=pointer]:
+              - /url: /admin/test_email
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

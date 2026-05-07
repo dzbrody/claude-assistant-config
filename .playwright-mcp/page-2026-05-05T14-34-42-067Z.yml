@@ -1,0 +1,171 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Authentication" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/authentication
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Login and registration" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/authentication
+                    - generic [ref=e77]: Login and registration
+                - listitem [ref=e78]:
+                  - link "OAuth applications" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/oauth/applications
+                    - generic [ref=e81]: OAuth applications
+                - listitem [ref=e82]:
+                  - link "OpenID providers" [ref=e83] [cursor=pointer]:
+                    - /url: /admin/openid_connect/providers
+                    - generic [ref=e84]:
+                      - generic [ref=e85]: OpenID providers
+                      - img [ref=e86]
+                - listitem [ref=e88]:
+                  - link "SAML providers" [ref=e89] [cursor=pointer]:
+                    - /url: /admin/saml/providers
+                    - generic [ref=e90]:
+                      - generic [ref=e91]: SAML providers
+                      - img [ref=e92]
+                - listitem [ref=e94]:
+                  - link "LDAP connections" [ref=e95] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/ldap_auth_sources
+                    - generic [ref=e97]: LDAP connections
+                - listitem [ref=e98]:
+                  - link "LDAP group synchronization" [ref=e99] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/ldap_groups/synchronized_groups
+                    - generic [ref=e100]:
+                      - generic [ref=e101]: LDAP group synchronization
+                      - img [ref=e102]
+                - listitem [ref=e104]:
+                  - link "SCIM clients" [ref=e105] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/scim_clients
+                    - generic [ref=e106]:
+                      - generic [ref=e107]: SCIM clients
+                      - img [ref=e108]
+                - listitem [ref=e110]:
+                  - link "Two-factor authentication" [ref=e111] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/two_factor_authentication/settings
+                    - generic [ref=e113]: Two-factor authentication
+                - listitem [ref=e114]:
+                  - link "reCAPTCHA" [ref=e115] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/recaptcha/settings
+                    - generic [ref=e117]: reCAPTCHA
+      - main [ref=e118]:
+        - generic [ref=e119]:
+          - heading "Content" [level=1] [ref=e120]
+          - generic [ref=e121]:
+            - generic [ref=e122]:
+              - navigation "Breadcrumb" [ref=e124]:
+                - list [ref=e125]:
+                  - listitem [ref=e126]:
+                    - link "Administration" [ref=e127] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e129]: Administration
+                  - listitem [ref=e130]:
+                    - link "Authentication" [ref=e131] [cursor=pointer]:
+                      - /url: /admin/settings/authentication
+                      - generic [ref=e133]: Authentication
+                  - listitem [ref=e134]:
+                    - link "Login and registration" [ref=e135]:
+                      - /url: "#"
+                      - generic [ref=e137]: Login and registration
+              - heading "Login and registration" [level=2] [ref=e139]
+              - list [ref=e142]:
+                - listitem [ref=e143]:
+                  - link "Login" [ref=e144] [cursor=pointer]:
+                    - /url: /admin/settings/authentication?tab=login
+                - listitem [ref=e145]:
+                  - link "Single Sign-On (SSO)" [ref=e146] [cursor=pointer]:
+                    - /url: /admin/settings/authentication?tab=sso
+                    - img [ref=e147]
+                    - text: Single Sign-On (SSO)
+                - listitem [ref=e149]:
+                  - link "Registration" [ref=e150] [cursor=pointer]:
+                    - /url: /admin/settings/authentication?tab=registration
+                - listitem [ref=e151]:
+                  - link "Passwords" [ref=e152] [cursor=pointer]:
+                    - /url: /admin/settings/authentication?tab=passwords
+            - generic [ref=e156]:
+              - generic [ref=e158]:
+                - generic [ref=e159]: Autologin
+                - combobox "Autologin" [ref=e161]:
+                  - option "disabled" [selected]
+                  - option "1 day"
+                  - option "7 days"
+                  - option "14 days"
+                  - option "30 days"
+                  - option "60 days"
+                  - option "90 days"
+                  - option "365 days"
+              - generic [ref=e163]:
+                - checkbox "Session expires" [ref=e164] [cursor=pointer]
+                - generic [ref=e166] [cursor=pointer]: Session expires
+              - generic [ref=e168]:
+                - checkbox "Log user login, name, and mail address for all requests" [ref=e169] [cursor=pointer]
+                - generic [ref=e171] [cursor=pointer]: Log user login, name, and mail address for all requests
+              - generic [ref=e173]:
+                - generic [ref=e174]: First login redirect
+                - textbox "First login redirect" [ref=e176]
+                - generic [ref=e177]:
+                  - text: Set a path to redirect users after their first login. If empty, redirects to the home page for the onboarding tour.
+                  - text: "Example:"
+                  - code [ref=e178]: /my/page
+              - generic [ref=e180]:
+                - generic [ref=e181]: After login redirect
+                - textbox "After login redirect" [ref=e183]
+                - generic [ref=e184]:
+                  - text: Set a default path to redirect users after login, if no back link was provided. Redirects to home page if not set.
+                  - text: "Example:"
+                  - code [ref=e185]: /my/page
+              - button "Save" [ref=e187] [cursor=pointer]:
+                - generic [ref=e189]: Save

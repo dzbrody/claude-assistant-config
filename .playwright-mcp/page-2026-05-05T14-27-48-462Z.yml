@@ -1,0 +1,179 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Users and permissions" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/users
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "Users settings" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/users
+                    - generic [ref=e43]: Users settings
+                - listitem [ref=e44]:
+                  - link "Users" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/users
+                    - generic [ref=e47]: Users
+                - listitem [ref=e48]:
+                  - link "Placeholder users" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/placeholder_users
+                    - generic [ref=e50]:
+                      - generic [ref=e51]: Placeholder users
+                      - img [ref=e52]
+                - listitem [ref=e54]:
+                  - link "Groups" [ref=e55] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/groups
+                    - generic [ref=e57]: Groups
+                - listitem [ref=e58]:
+                  - link "Roles and permissions" [ref=e59] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/roles
+                    - generic [ref=e61]: Roles and permissions
+                - listitem [ref=e62]:
+                  - link "Permissions report" [ref=e63] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/roles/report
+                    - generic [ref=e65]: Permissions report
+                - listitem [ref=e66]:
+                  - link "Avatars" [ref=e67] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/plugin/openproject_avatars
+                    - generic [ref=e69]: Avatars
+      - main [ref=e70]:
+        - generic [ref=e71]:
+          - heading "Content" [level=1] [ref=e72]
+          - generic [ref=e73]:
+            - generic [ref=e74]:
+              - navigation "Breadcrumb" [ref=e76]:
+                - list [ref=e77]:
+                  - listitem [ref=e78]:
+                    - link "Administration" [ref=e79] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e81]: Administration
+                  - listitem [ref=e82]:
+                    - link "Users and permissions" [ref=e83] [cursor=pointer]:
+                      - /url: /admin/settings/users
+                      - generic [ref=e85]: Users and permissions
+                  - listitem [ref=e86]:
+                    - link "Users" [ref=e87] [cursor=pointer]:
+                      - /url: /users
+                      - generic [ref=e89]: Users
+                  - listitem [ref=e90]:
+                    - link "Dan Brody" [ref=e91]:
+                      - /url: "#"
+                      - generic [ref=e93]: Dan Brody
+              - generic [ref=e94]:
+                - heading "Dan Brody" [level=2] [ref=e95]
+                - link "Profile" [ref=e97] [cursor=pointer]:
+                  - /url: /users/5
+                  - generic [ref=e98]:
+                    - generic:
+                      - img
+                    - generic [ref=e99]: Profile
+              - list [ref=e102]:
+                - listitem [ref=e103]:
+                  - link "General" [ref=e104] [cursor=pointer]:
+                    - /url: /users/5/edit/general
+                - listitem [ref=e105]:
+                  - link "Projects" [ref=e106] [cursor=pointer]:
+                    - /url: /users/5/edit/memberships
+                - listitem [ref=e107]:
+                  - link "Groups" [ref=e108] [cursor=pointer]:
+                    - /url: /users/5/edit/groups
+                - listitem [ref=e109]:
+                  - link "Global roles" [ref=e110] [cursor=pointer]:
+                    - /url: /users/5/edit/global_roles
+                - listitem [ref=e111]:
+                  - link "Notification settings" [ref=e112] [cursor=pointer]:
+                    - /url: /users/5/edit/notifications
+                - listitem [ref=e113]:
+                  - link "Email reminders" [ref=e114] [cursor=pointer]:
+                    - /url: /users/5/edit/reminders
+                - listitem [ref=e115]:
+                  - link "Rate history" [ref=e116] [cursor=pointer]:
+                    - /url: /users/5/edit/rates
+                - listitem [ref=e117]:
+                  - link "Avatar" [ref=e118] [cursor=pointer]:
+                    - /url: /users/5/edit/avatar
+                - listitem [ref=e119]:
+                  - link "Two-factor authentication" [ref=e120] [cursor=pointer]:
+                    - /url: /users/5/edit/two_factor_authentication
+            - generic [ref=e121]:
+              - generic [ref=e122]:
+                - link "Update" [ref=e124] [cursor=pointer]:
+                  - /url: /hourly_rates/5/edit
+                - heading "Default rates" [level=3] [ref=e125]
+                - table [ref=e128]:
+                  - rowgroup [ref=e133]:
+                    - row "Valid from Rate Current rate" [ref=e134]:
+                      - columnheader "Valid from" [ref=e135]:
+                        - generic [ref=e138]: Valid from
+                      - columnheader "Rate" [ref=e139]:
+                        - generic [ref=e142]: Rate
+                      - columnheader "Current rate" [ref=e143]:
+                        - generic [ref=e146]: Current rate
+                  - rowgroup [ref=e147]:
+                    - row "2026-05-05 $ 125.00 Yes" [ref=e148]:
+                      - cell "2026-05-05" [ref=e149]
+                      - cell "$ 125.00" [ref=e150]
+                      - cell "Yes" [ref=e151]:
+                        - generic [ref=e152]: 
+                        - generic [ref=e153]: "Yes"
+              - generic [ref=e154]:
+                - link "Update" [ref=e156] [cursor=pointer]:
+                  - /url: /projects/axerp/hourly_rates/5/edit
+                - heading "AXERP - $ 125.00" [level=3] [ref=e157]
+                - generic [ref=e158]:
+                  - generic [ref=e159]: 
+                  - generic [ref=e160]: There is currently nothing to display.
+              - generic [ref=e161]:
+                - link "Update" [ref=e163] [cursor=pointer]:
+                  - /url: /projects/axina-group-admin/hourly_rates/5/edit
+                - heading "AXINA Group Admin - $ 125.00" [level=3] [ref=e164]
+                - generic [ref=e165]:
+                  - generic [ref=e166]: 
+                  - generic [ref=e167]: There is currently nothing to display.
+              - generic [ref=e168]:
+                - link "Update" [ref=e170] [cursor=pointer]:
+                  - /url: /projects/axinagroup-com/hourly_rates/5/edit
+                - heading "AXINA Group Website - $ 125.00" [level=3] [ref=e171]
+                - generic [ref=e172]:
+                  - generic [ref=e173]: 
+                  - generic [ref=e174]: There is currently nothing to display.
+              - generic [ref=e175]:
+                - link "Update" [ref=e177] [cursor=pointer]:
+                  - /url: /projects/claude-assistant-config/hourly_rates/5/edit
+                - heading "claude-assistant-config - $ 125.00" [level=3] [ref=e178]
+                - generic [ref=e179]:
+                  - generic [ref=e180]: 
+                  - generic [ref=e181]: There is currently nothing to display.

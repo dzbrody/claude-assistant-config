@@ -1,0 +1,159 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "claude-assistant-config " [ref=e60] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Wiki" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e73]:
+                - listitem [ref=e74]
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - heading "Content" [level=1] [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - navigation "Breadcrumb" [ref=e81]:
+                - list [ref=e82]:
+                  - listitem [ref=e83]:
+                    - link "claude-assistant-config" [ref=e84] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e86]: claude-assistant-config
+                  - listitem [ref=e87]:
+                    - link "Wiki" [ref=e88] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/index
+                      - generic [ref=e90]: Wiki
+                  - listitem [ref=e91]:
+                    - link "Create new wiki page" [ref=e92]:
+                      - /url: "#"
+                      - generic [ref=e94]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e96]
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic "Page title" [ref=e99]: Page title*
+                - textbox "Page title*" [ref=e102]: Wiki
+              - generic [ref=e103]:
+                - generic "Text" [ref=e104]
+                - generic [ref=e107]:
+                  - generic [ref=e110]:
+                    - toolbar "Editor toolbar" [ref=e112]:
+                      - generic [ref=e113]:
+                        - button "Paragraph, Heading" [ref=e115]:
+                          - generic [ref=e116]: Paragraph
+                          - img
+                        - button "Bold" [ref=e118]:
+                          - img [ref=e119]
+                        - button "Italic" [ref=e121]:
+                          - img [ref=e122]
+                        - button "Strikethrough" [ref=e124]:
+                          - img [ref=e125]
+                        - button "Code" [ref=e128]:
+                          - img [ref=e129]
+                        - button "Insert code snippet" [ref=e131]:
+                          - img [ref=e132]
+                        - button "Link" [ref=e138]:
+                          - img [ref=e139]
+                        - button "Bulleted List" [ref=e141]:
+                          - img [ref=e142]
+                        - button "Numbered List" [ref=e144]:
+                          - img [ref=e145]
+                        - button "To-do List" [ref=e147]:
+                          - img [ref=e148]
+                        - button "Upload image from computer" [ref=e150]:
+                          - img [ref=e151]
+                        - button "Block quote" [ref=e155]:
+                          - img [ref=e156]
+                        - button "Insert table" [ref=e160]:
+                          - img [ref=e161]
+                          - img
+                        - button "Macros" [ref=e164]:
+                          - generic [ref=e165]: Macros
+                          - img
+                        - button "Show local modifications" [ref=e168]:
+                          - img [ref=e169]
+                          - img
+                        - button "Undo" [disabled] [ref=e171]:
+                          - img [ref=e172]
+                        - button "Redo" [disabled] [ref=e174]:
+                          - img [ref=e175]
+                      - button "Show more items" [ref=e179]:
+                        - img [ref=e180]
+                    - textbox "Text" [ref=e185]:
+                      - paragraph [ref=e186]
+                  - group "Attachments" [ref=e187]:
+                    - generic [ref=e188]: Attachments
+                    - generic [ref=e189]:
+                      - button "Attach files" [ref=e190] [cursor=pointer]:
+                        - img [ref=e191]
+                        - generic [ref=e194]: Drop files here or click to attach files.
+                      - button "Attach files" [ref=e196] [cursor=pointer]:
+                        - img [ref=e197]
+                        - generic [ref=e200]: Attach files
+              - generic [ref=e201]:
+                - generic "Parent page" [ref=e202]: Parent page*
+                - combobox [ref=e205]:
+                  - option "-- No parent page --" [selected]
+                  - option "Wiki - Claude Assistant"
+              - generic [ref=e206]:
+                - generic "Comment" [ref=e207]
+                - textbox "Comment" [ref=e210]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e211] [cursor=pointer]
+              - link "Cancel" [ref=e212] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

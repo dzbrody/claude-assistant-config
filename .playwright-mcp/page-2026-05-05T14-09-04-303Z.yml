@@ -1,0 +1,9 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - img [ref=e7]
+    - paragraph [ref=e10]: "[Error 404] The page you were trying to access doesn't exist or has been removed."
+  - generic [ref=e11]:
+    - banner [ref=e12]:
+      - link "Home" [ref=e15] [cursor=pointer]:
+        - /url: https://projects.axinagroup.com/
+    - main [ref=e16]

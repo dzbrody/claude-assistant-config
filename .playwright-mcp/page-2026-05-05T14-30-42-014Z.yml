@@ -1,0 +1,162 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "System settings" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/general
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "General" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/general
+                    - generic [ref=e43]: General
+                - listitem [ref=e44]:
+                  - link "Languages" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/languages
+                    - generic [ref=e47]: Languages
+                - listitem [ref=e48]:
+                  - link "External links" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/external_links
+                    - generic [ref=e51]: External links
+                - listitem [ref=e52]:
+                  - link "Repositories" [ref=e53] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/repositories
+                    - generic [ref=e55]: Repositories
+      - main [ref=e56]:
+        - generic [ref=e57]:
+          - heading "Content" [level=1] [ref=e58]
+          - generic [ref=e59]:
+            - generic [ref=e60]:
+              - navigation "Breadcrumb" [ref=e62]:
+                - list [ref=e63]:
+                  - listitem [ref=e64]:
+                    - link "Administration" [ref=e65] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e67]: Administration
+                  - listitem [ref=e68]:
+                    - link "System settings" [ref=e69] [cursor=pointer]:
+                      - /url: /admin/settings/general
+                      - generic [ref=e71]: System settings
+                  - listitem [ref=e72]:
+                    - link "General" [ref=e73]:
+                      - /url: "#"
+                      - generic [ref=e75]: General
+              - heading "General" [level=2] [ref=e77]
+            - generic [ref=e79]:
+              - generic [ref=e80]:
+                - generic [ref=e82]:
+                  - generic [ref=e83]: Application title
+                  - textbox "Application title" [ref=e85]: AXINA Projects
+                - generic [ref=e87]:
+                  - generic [ref=e88]: Objects per page options
+                  - textbox "Objects per page options" [ref=e90]: 20, 100
+                  - generic [ref=e91]:
+                    - text: Multiple values allowed (comma separated).
+                    - text: "Note: Displaying more than 100 items per page can increase the page load time."
+                - generic [ref=e93]:
+                  - generic [ref=e94]: Days displayed on project activity
+                  - generic [ref=e95]:
+                    - spinbutton "Days displayed on project activity" [ref=e96]: "30"
+                    - generic:
+                      - generic:
+                        - generic: days
+                - generic [ref=e98]:
+                  - generic [ref=e99]: Host name
+                  - textbox "Host name" [disabled] [ref=e101]: projects.axinagroup.com
+                  - generic [ref=e102]: "Example: projects.axinagroup.com"
+                - generic [ref=e104]:
+                  - checkbox "Cache formatted text" [checked] [ref=e105] [cursor=pointer]
+                  - generic [ref=e107] [cursor=pointer]: Cache formatted text
+                - generic [ref=e110]:
+                  - generic [ref=e111]: Allowed link protocols
+                  - textbox "Allowed link protocols" [ref=e113]
+                  - generic [ref=e114]:
+                    - text: Allow these protocols to be rendered as links in work package descriptions, long text fields and comments. For example,
+                    - code [ref=e115]: tel
+                    - text: or
+                    - code [ref=e116]: element
+                    - text: . Enter one protocol per line.
+                    - text: Protocols
+                    - code [ref=e117]: http
+                    - text: ","
+                    - code [ref=e118]: https
+                    - text: ", and"
+                    - code [ref=e119]: mailto
+                    - text: are always allowed.
+                - generic [ref=e121]:
+                  - checkbox "Enable Feeds" [checked] [ref=e122] [cursor=pointer]
+                  - generic [ref=e124] [cursor=pointer]: Enable Feeds
+                - generic [ref=e126]:
+                  - generic [ref=e127]: Feed content limit
+                  - spinbutton "Feed content limit" [ref=e129]: "15"
+                - generic [ref=e131]:
+                  - generic [ref=e132]: Work packages / Projects export limit
+                  - spinbutton "Work packages / Projects export limit" [ref=e134]: "500"
+                - generic [ref=e136]:
+                  - generic [ref=e137]: Max size of text files displayed inline
+                  - generic [ref=e138]:
+                    - spinbutton "Max size of text files displayed inline" [ref=e139]: "512"
+                    - generic:
+                      - generic:
+                        - generic: kB
+                - generic [ref=e141]:
+                  - generic [ref=e142]: Max number of diff lines displayed
+                  - spinbutton "Max number of diff lines displayed" [ref=e144]: "1500"
+                - generic [ref=e146]:
+                  - checkbox "Display security badge" [checked] [ref=e147] [cursor=pointer]
+                  - generic [ref=e148]:
+                    - generic [ref=e149] [cursor=pointer]: Display security badge
+                    - generic [ref=e150]:
+                      - text: "Note: if enabled, this will display a badge with your installation status in the"
+                      - link "Information" [ref=e151] [cursor=pointer]:
+                        - /url: /admin/info
+                      - text: administration panel, and on the home page. It is displayed to administrators only.
+                      - text: The badge will check your current OpenProject version against the official OpenProject release database to alert you of any updates or known vulnerabilities. For more information on what the check provides, what data is needed to provide available updates, and how to disable this check, please visit
+                      - link "the configuration documentation" [ref=e152] [cursor=pointer]:
+                        - /url: https://www.openproject.org/docs/system-admin-guide/information/?go_to_locale=en#security-badge
+                      - text: .
+              - heading "Welcome block text" [level=3] [ref=e154]
+              - generic [ref=e155]:
+                - generic [ref=e156]:
+                  - generic [ref=e158]:
+                    - generic [ref=e159]: Welcome block title
+                    - textbox "Welcome block title" [ref=e161]: Welcome to AXINA OpenProject!
+                  - generic [ref=e164]: Welcome block text
+                  - generic [ref=e166]:
+                    - checkbox "Display welcome block on homescreen" [checked] [ref=e167] [cursor=pointer]
+                    - generic [ref=e169] [cursor=pointer]: Display welcome block on homescreen
+                - button "Save" [ref=e172] [cursor=pointer]:
+                  - generic [ref=e174]: Save

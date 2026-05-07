@@ -1,0 +1,136 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]: Open link in a new tab
+  - generic [ref=e4]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link "Click here to skip over the menu and go to the content" [ref=e7] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e8]:
+          - button "Global modules" [ref=e9] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e11] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - generic [ref=e12]:
+        - button "Add…" [ref=e14] [cursor=pointer]:
+          - generic [ref=e15]:
+            - generic:
+              - img
+            - img "Add…" [ref=e17]
+        - link "Notifications" [ref=e20] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e22] [cursor=pointer]:
+          - img
+        - button [ref=e23] [cursor=pointer]
+    - generic [ref=e24]:
+      - navigation "Side Menu" [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]:
+            - button "Collapse project menu" [expanded] [ref=e30] [cursor=pointer]:
+              - img
+            - separator [ref=e31]
+          - list [ref=e32]:
+            - listitem [ref=e33]:
+              - generic [ref=e34]:
+                - link "Go back one menu level" [ref=e35] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e36]
+                - link "Project settings" [ref=e38] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/general
+              - list [ref=e39]:
+                - listitem [ref=e40]:
+                  - link "Information" [ref=e41] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/general
+                    - generic [ref=e43]: Information
+                - listitem [ref=e44]:
+                  - link "Project life cycle" [ref=e45] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/life_cycle
+                    - generic [ref=e47]: Project life cycle
+                - listitem [ref=e48]:
+                  - link "Project attributes" [ref=e49] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/project_custom_fields
+                    - generic [ref=e51]: Project attributes
+                - listitem [ref=e52]:
+                  - link "Project initiation request" [ref=e53] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/creation_wizard
+                    - generic [ref=e55]: Project initiation request
+                - listitem [ref=e56]:
+                  - link "Modules" [ref=e57] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/modules
+                    - generic [ref=e59]: Modules
+                - listitem [ref=e60]:
+                  - link "Template" [ref=e61] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/template
+                    - generic [ref=e63]: Template
+                - listitem [ref=e64]:
+                  - link "Subitems" [ref=e65] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/subitems
+                    - generic [ref=e67]: Subitems
+                - listitem [ref=e68]:
+                  - link "Work packages" [ref=e69] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/work_packages
+                    - generic [ref=e71]: Work packages
+                - listitem [ref=e72]:
+                  - link "Versions" [ref=e73] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/versions
+                    - generic [ref=e75]: Versions
+                - listitem [ref=e76]:
+                  - link "Repository" [ref=e77] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/repository
+                    - generic [ref=e79]: Repository
+                - listitem [ref=e80]:
+                  - link "Time tracking activities" [ref=e81] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/time_entry_activities
+                    - generic [ref=e83]: Time tracking activities
+                - listitem [ref=e84]:
+                  - link "Required disk storage" [ref=e85] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/storage
+                    - generic [ref=e87]: Required disk storage
+                - listitem [ref=e88]:
+                  - link "Files" [ref=e89] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/projects/claude-assistant-config/settings/project_storages/external_file_storages
+                    - generic [ref=e91]: Files
+      - main [ref=e92]:
+        - generic [ref=e93]:
+          - heading "Content" [level=1] [ref=e94]
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - navigation "Breadcrumb" [ref=e98]:
+                - list [ref=e99]:
+                  - listitem [ref=e100]:
+                    - link "claude-assistant-config" [ref=e101] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e103]: claude-assistant-config
+                  - listitem [ref=e104]:
+                    - link "Project settings" [ref=e105] [cursor=pointer]:
+                      - /url: /projects/6/settings/general
+                      - generic [ref=e107]: Project settings
+                  - listitem [ref=e108]:
+                    - link "Time tracking activities" [ref=e109]:
+                      - /url: "#"
+                      - generic [ref=e111]: Time tracking activities
+              - heading "Time tracking activities" [level=2] [ref=e113]
+            - generic [ref=e114]:
+              - generic [ref=e115]:
+                - generic "Management" [ref=e116]
+                - checkbox "Management" [checked] [ref=e119]
+              - generic [ref=e120]:
+                - generic "Specification" [ref=e121]
+                - checkbox "Specification" [checked] [ref=e124]
+              - generic [ref=e125]:
+                - generic "Development" [ref=e126]
+                - checkbox "Development" [checked] [ref=e129]
+              - generic [ref=e130]:
+                - generic "Testing" [ref=e131]
+                - checkbox "Testing" [checked] [ref=e134]
+              - generic [ref=e135]:
+                - generic "Support" [ref=e136]
+                - checkbox "Support" [checked] [ref=e139]
+              - generic [ref=e140]:
+                - generic "Other" [ref=e141]
+                - checkbox "Other" [checked] [ref=e144]
+              - generic [ref=e145]:
+                - generic "Consulting" [ref=e146]
+                - checkbox "Consulting" [checked] [ref=e149]
+              - button "Save" [ref=e151] [cursor=pointer]

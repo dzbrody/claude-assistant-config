@@ -1,0 +1,6 @@
+[    2599ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://projects.axinagroup.com/api/v3/time_entries?filters=%5B%7B%22ongoing%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%22t%22%5D%7D%7D%5D:0
+[    2600ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://projects.axinagroup.com/api/v3/time_entries?filters=%5B%7B%22ongoing%22%3A%7B%22operator%22%3A%22%3D%22%2C%22values%22%3A%5B%22t%22%5D%7D%7D%5D:0
+[    2609ms] [ERROR] Returned HTTP HAL error resource %O You need to be authenticated to access this resource. @ https://projects.axinagroup.com/assets/frontend/chunk-QSOJOMEQ.js:66
+[    2610ms] [ERROR] Returned HTTP HAL error resource %O You need to be authenticated to access this resource. @ https://projects.axinagroup.com/assets/frontend/chunk-QSOJOMEQ.js:66
+[    2612ms] HttpErrorResponse
+[    2612ms] HttpErrorResponse

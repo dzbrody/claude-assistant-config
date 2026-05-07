@@ -1,0 +1,425 @@
+- generic [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - generic [ref=e37]:
+          - link "Notifications" [ref=e38] [cursor=pointer]:
+            - /url: /notifications
+            - img
+          - generic [ref=e213]: "52"
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e214]
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "claude-assistant-config " [ref=e60] [cursor=pointer]:
+                  - generic "claude-assistant-config" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Wiki" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/projects/claude-assistant-config/wiki/wiki
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - list [ref=e217]:
+                    - listitem [ref=e218]:
+                      - generic [ref=e219]:
+                        - link "Wiki - Claude Assistant" [ref=e220] [cursor=pointer]:
+                          - /url: /projects/claude-assistant-config/wiki/wiki-claude-assistant
+                        - button "Expanded. Click to collapse" [ref=e222]:
+                          - generic [ref=e223]: 
+                          - generic [ref=e224]: Expanded. Click to collapse
+                      - list [ref=e225]:
+                        - listitem [ref=e226]:
+                          - generic [ref=e227]:
+                            - link "Installation — Mac" [ref=e228] [cursor=pointer]:
+                              - /url: /projects/claude-assistant-config/wiki/installation-mac
+                            - button "Expanded. Click to collapse" [ref=e230]:
+                              - generic [ref=e231]: 
+                              - generic [ref=e232]: Expanded. Click to collapse
+                          - list [ref=e233]:
+                            - listitem [ref=e234]:
+                              - link "Installation — Windows" [ref=e236] [cursor=pointer]:
+                                - /url: /projects/claude-assistant-config/wiki/installation-windows
+      - main [ref=e75]:
+        - generic [ref=e76]:
+          - heading "Content" [level=1] [ref=e77]
+          - generic [ref=e78]:
+            - generic [ref=e79]:
+              - navigation "Breadcrumb" [ref=e81]:
+                - list [ref=e82]:
+                  - listitem [ref=e83]:
+                    - link "claude-assistant-config" [ref=e84] [cursor=pointer]:
+                      - /url: /projects/6
+                      - generic [ref=e86]: claude-assistant-config
+                  - listitem [ref=e87]:
+                    - link "Wiki" [ref=e88] [cursor=pointer]:
+                      - /url: /projects/claude-assistant-config/wiki/index
+                      - generic [ref=e90]: Wiki
+                  - listitem [ref=e91]:
+                    - link "Create new wiki page" [ref=e92]:
+                      - /url: "#"
+                      - generic [ref=e94]: Create new wiki page
+              - heading "Create new wiki page" [level=2] [ref=e96]
+            - generic [ref=e97]:
+              - generic [ref=e98]:
+                - generic "Page title" [ref=e99]: Page title*
+                - textbox "Page title*" [active] [ref=e102]
+              - generic [ref=e103]:
+                - generic "Page content" [ref=e104]
+                - generic [ref=e107]:
+                  - generic [ref=e110]:
+                    - toolbar "Editor toolbar" [ref=e112]:
+                      - generic [ref=e113]:
+                        - button "Heading 1, Heading" [ref=e237]:
+                          - generic [ref=e116]: Heading 1
+                          - img
+                        - button "Bold" [ref=e118]:
+                          - img [ref=e119]
+                        - button "Italic" [ref=e121]:
+                          - img [ref=e122]
+                        - button "Strikethrough" [ref=e124]:
+                          - img [ref=e125]
+                        - button "Code" [ref=e128]:
+                          - img [ref=e129]
+                        - button "Insert code snippet" [ref=e131]:
+                          - img [ref=e132]
+                        - button "Link" [ref=e138]:
+                          - img [ref=e139]
+                        - button "Bulleted List" [ref=e141]:
+                          - img [ref=e142]
+                        - button "Numbered List" [ref=e144]:
+                          - img [ref=e145]
+                        - button "To-do List" [ref=e147]:
+                          - img [ref=e148]
+                        - button "Upload image from computer" [ref=e150]:
+                          - img [ref=e151]
+                        - button "Block quote" [ref=e155]:
+                          - img [ref=e156]
+                        - button "Insert table" [ref=e160]:
+                          - img [ref=e161]
+                          - img
+                        - button "Macros" [ref=e164]:
+                          - generic [ref=e165]: Macros
+                          - img
+                        - button "Show local modifications" [ref=e168]:
+                          - img [ref=e169]
+                          - img
+                        - button "Undo" [disabled] [ref=e171]:
+                          - img [ref=e172]
+                        - button "Redo" [disabled] [ref=e174]:
+                          - img [ref=e175]
+                      - button "Show more items" [ref=e179]:
+                        - img [ref=e180]
+                    - textbox "Page content" [ref=e185]:
+                      - heading "MCP Server Ecosystem" [level=1] [ref=e238]
+                      - paragraph [ref=e186]: MCP (Model Context Protocol) servers give Claude tools beyond conversation — email, calendar, WhatsApp, files, browser automation, and project management. Claude Assistant uses a mix of local (stdio) servers that run on your Mac and a remote (SSE) server hosted on EC2.
+                      - heading "Server Inventory" [level=2] [ref=e239]
+                      - figure [ref=e240]:
+                        - img [ref=e242]
+                        - table [ref=e248]:
+                          - rowgroup [ref=e249]:
+                            - row "Server Transport Package / Source What It Does" [ref=e250]:
+                              - textbox [ref=e251]:
+                                - generic [ref=e252]: Server
+                              - textbox [ref=e253]:
+                                - generic [ref=e254]: Transport
+                              - textbox [ref=e255]:
+                                - generic [ref=e256]: Package / Source
+                              - textbox [ref=e257]:
+                                - generic [ref=e258]: What It Does
+                          - rowgroup [ref=e259]:
+                            - row "google-workspace stdio @alanxchen/google-workspace-mcp Gmail, Calendar, Drive, Tasks, Contacts" [ref=e260]:
+                              - textbox [ref=e261]:
+                                - code [ref=e263]: google-workspace
+                              - textbox [ref=e264]:
+                                - generic [ref=e265]: stdio
+                              - textbox [ref=e266]:
+                                - code [ref=e268]: "@alanxchen/google-workspace-mcp"
+                              - textbox [ref=e269]:
+                                - generic [ref=e270]: Gmail, Calendar, Drive, Tasks, Contacts
+                            - row "whatsapp stdio local Python + Go bridge Send/read WhatsApp messages and media" [ref=e271]:
+                              - textbox [ref=e272]:
+                                - code [ref=e274]: whatsapp
+                              - textbox [ref=e275]:
+                                - generic [ref=e276]: stdio
+                              - textbox [ref=e277]:
+                                - generic [ref=e278]: local Python + Go bridge
+                              - textbox [ref=e279]:
+                                - generic [ref=e280]: Send/read WhatsApp messages and media
+                            - row "document-loader stdio uvx markitdown-mcp Read PDF, Word, PowerPoint, Excel files" [ref=e281]:
+                              - textbox [ref=e282]:
+                                - code [ref=e284]: document-loader
+                              - textbox [ref=e285]:
+                                - generic [ref=e286]: stdio
+                              - textbox [ref=e287]:
+                                - code [ref=e289]: uvx markitdown-mcp
+                              - textbox [ref=e290]:
+                                - generic [ref=e291]: Read PDF, Word, PowerPoint, Excel files
+                            - row "filesystem stdio @modelcontextprotocol/server-filesystem Controlled file access to Drive, Documents, OneDrive" [ref=e292]:
+                              - textbox [ref=e293]:
+                                - code [ref=e295]: filesystem
+                              - textbox [ref=e296]:
+                                - generic [ref=e297]: stdio
+                              - textbox [ref=e298]:
+                                - code [ref=e300]: "@modelcontextprotocol/server-filesystem"
+                              - textbox [ref=e301]:
+                                - generic [ref=e302]: Controlled file access to Drive, Documents, OneDrive
+                            - row "playwright stdio @playwright/mcp Browser automation (screenshots, clicks, form fills)" [ref=e303]:
+                              - textbox [ref=e304]:
+                                - code [ref=e306]: playwright
+                              - textbox [ref=e307]:
+                                - generic [ref=e308]: stdio
+                              - textbox [ref=e309]:
+                                - code [ref=e311]: "@playwright/mcp"
+                              - textbox [ref=e312]:
+                                - generic [ref=e313]: Browser automation (screenshots, clicks, form fills)
+                            - row "aws-s3-local stdio @iflow-mcp/samuraikun-aws-s3-mcp S3 file access using local IAM credentials" [ref=e314]:
+                              - textbox [ref=e315]:
+                                - code [ref=e317]: aws-s3-local
+                              - textbox [ref=e318]:
+                                - generic [ref=e319]: stdio
+                              - textbox [ref=e320]:
+                                - code [ref=e322]: "@iflow-mcp/samuraikun-aws-s3-mcp"
+                              - textbox [ref=e323]:
+                                - generic [ref=e324]: S3 file access using local IAM credentials
+                            - row "openproject-remote SSE EC2 FastMCP server OpenProject + S3 — works from any device" [ref=e325]:
+                              - textbox [ref=e326]:
+                                - code [ref=e328]: openproject-remote
+                              - textbox [ref=e329]:
+                                - generic [ref=e330]: SSE
+                              - textbox [ref=e331]:
+                                - generic [ref=e332]: EC2 FastMCP server
+                              - textbox [ref=e333]:
+                                - generic [ref=e334]: OpenProject + S3 — works from any device
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Remote MCP Server" [level=2] [ref=e335]
+                      - paragraph [ref=e336]:
+                        - text: The remote server runs on EC2 at
+                        - code [ref=e337]: https://projects.axinagroup.com/mcp/sse
+                        - text: and works from
+                        - strong [ref=e338]: any device
+                        - text: — Mac, Windows, mobile, or any MCP-compatible IDE.
+                      - paragraph [ref=e339]:
+                        - strong [ref=e340]: "Available tools:"
+                      - figure [ref=e341]:
+                        - img [ref=e343]
+                        - table [ref=e349]:
+                          - rowgroup [ref=e350]:
+                            - row "Tool Description" [ref=e351]:
+                              - textbox [ref=e352]:
+                                - generic [ref=e353]: Tool
+                              - textbox [ref=e354]:
+                                - generic [ref=e355]: Description
+                          - rowgroup [ref=e356]:
+                            - row "list_projects List all OpenProject projects" [ref=e357]:
+                              - textbox [ref=e358]:
+                                - code [ref=e360]: list_projects
+                              - textbox [ref=e361]:
+                                - generic [ref=e362]: List all OpenProject projects
+                            - row "get_project Get project details" [ref=e363]:
+                              - textbox [ref=e364]:
+                                - code [ref=e366]: get_project
+                              - textbox [ref=e367]:
+                                - generic [ref=e368]: Get project details
+                            - row "create_work_package Create a Task / Bug / Feature / Milestone in a project" [ref=e369]:
+                              - textbox [ref=e370]:
+                                - code [ref=e372]: create_work_package
+                              - textbox [ref=e373]:
+                                - generic [ref=e374]: Create a Task / Bug / Feature / Milestone in a project
+                            - row "list_work_packages List work packages (with optional status filter)" [ref=e375]:
+                              - textbox [ref=e376]:
+                                - code [ref=e378]: list_work_packages
+                              - textbox [ref=e379]:
+                                - generic [ref=e380]: List work packages (with optional status filter)
+                            - row "list_s3_buckets List accessible S3 buckets" [ref=e381]:
+                              - textbox [ref=e382]:
+                                - code [ref=e384]: list_s3_buckets
+                              - textbox [ref=e385]:
+                                - generic [ref=e386]: List accessible S3 buckets
+                            - row "list_s3_objects List files in a bucket" [ref=e387]:
+                              - textbox [ref=e388]:
+                                - code [ref=e390]: list_s3_objects
+                              - textbox [ref=e391]:
+                                - generic [ref=e392]: List files in a bucket
+                            - row "get_s3_object Read a text file from S3 (up to 10KB)" [ref=e393]:
+                              - textbox [ref=e394]:
+                                - code [ref=e396]: get_s3_object
+                              - textbox [ref=e397]:
+                                - generic [ref=e398]: Read a text file from S3 (up to 10KB)
+                            - row "search_s3_objects Search filenames across S3 buckets" [ref=e399]:
+                              - textbox [ref=e400]:
+                                - code [ref=e402]: search_s3_objects
+                              - textbox [ref=e403]:
+                                - generic [ref=e404]: Search filenames across S3 buckets
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e405]:
+                        - strong [ref=e406]: "Connect from Claude CLI:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e407]:
+                        - text: claude mcp add --transport sse --scope user openproject-remote "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
+                        - generic [ref=e408]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e409]:
+                        - strong [ref=e410]: Connect from Claude Desktop
+                        - text: "(Desktop uses stdio only, needs mcp-proxy as bridge):"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e411]:
+                        - text: "\"openproject-remote\": { \"command\": \"/Users/YOURUSERNAME/.local/bin/uvx\", \"args\": [\"mcp-proxy\", \"https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>\"] }"
+                        - generic [ref=e412]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e413]:
+                        - strong [ref=e414]: "Connect from Kiro IDE:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e415]:
+                        - text: "\"axina-mcp\": { \"command\": \"uvx\", \"args\": [\"mcp-proxy@latest\", \"https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>\"], \"env\": {} }"
+                        - generic [ref=e416]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e417]:
+                        - strong [ref=e418]: "Connect from Claude Mobile:"
+                        - text: "Settings → MCP Servers → Add Server → URL:"
+                        - code [ref=e419]: https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>
+                      - paragraph [ref=e420]:
+                        - text: API key stored in 1Password as
+                        - strong [ref=e421]: AXINA MCP API Key
+                        - text: . Ask Daniel if you don't have access.
+                      - heading "WhatsApp Architecture" [level=2] [ref=e422]
+                      - paragraph [ref=e423]: "WhatsApp requires two components running simultaneously:"
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e424]:
+                        - text: Claude (MCP client) │ ▼ whatsapp-mcp-server (Python, stdio) ← Claude talks to this │ HTTP on localhost:8080 ▼ whatsapp-bridge (Go, persistent) ← holds the WhatsApp session │ WebSocket ▼ WhatsApp servers
+                        - generic [ref=e425]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e426]:
+                        - text: The Go bridge must be running for WhatsApp tools to work. It runs as a launchd service (starts at login, always alive). The QR code scan is one-time — the session persists in
+                        - code [ref=e427]: ~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db
+                        - text: .
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e428]:
+                        - text: "curl http://localhost:8080/api/health # check bridge status"
+                        - generic [ref=e429]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - heading "Add / Remove Servers" [level=2] [ref=e430]
+                      - generic "Click to select widget and show the toolbar. Double-click to edit widget" [ref=e431]:
+                        - text: "# Add an npm stdio server claude mcp add --transport stdio --scope user <name> -- npx -y <package>"
+                        - generic [ref=e432]: text
+                        - generic:
+                          - generic:
+                            - img
+                          - generic:
+                            - img
+                      - paragraph [ref=e433]
+                      - heading "Auth Design" [level=2] [ref=e434]
+                      - paragraph [ref=e435]:
+                        - text: The remote MCP server authenticates via a 64-character hex API key passed as a query parameter (
+                        - code [ref=e436]: "?key=..."
+                        - text: ) or
+                        - code [ref=e437]: X-MCP-Key
+                        - text: header on the initial SSE connection. After the SSE connection is established, the session ID acts as a bearer token for subsequent
+                        - code [ref=e438]: /mcp/messages/
+                        - text: calls — which is why the messages endpoint doesn't require the key again (it's already authenticated via the session).
+                      - paragraph [ref=e439]:
+                        - text: This design exists because Claude Desktop and
+                        - code [ref=e440]: mcp-proxy
+                        - text: don't forward custom headers on SSE connections — so the key must be in the URL.
+                      - heading "Server Source Code" [level=2] [ref=e441]
+                      - paragraph [ref=e442]:
+                        - text: "Remote server:"
+                        - code [ref=e443]: ~/.claude-assistant/mcp-servers/remote-mcp-server/server.py
+                        - text: "Deployed via S3:"
+                        - code [ref=e444]: aws s3 cp server.py s3://axina-openproject-files/tmp/server.py
+                        - text: ", then SSM pull on EC2."
+                        - text: "GitHub:"
+                        - link "https://github.com/dzbrody/claude-assistant-config" [ref=e445]:
+                          - /url: https://github.com/dzbrody/claude-assistant-config
+                  - group "Attachments" [ref=e187]:
+                    - generic [ref=e188]: Attachments
+                    - generic [ref=e189]:
+                      - button "Attach files" [ref=e190] [cursor=pointer]:
+                        - img [ref=e191]
+                        - generic [ref=e194]: Drop files here or click to attach files.
+                      - button "Attach files" [ref=e196] [cursor=pointer]:
+                        - img [ref=e197]
+                        - generic [ref=e200]: Attach files
+              - generic [ref=e201]:
+                - generic "Parent page" [ref=e202]: Parent page*
+                - combobox [ref=e205]:
+                  - option "-- No parent page --"
+                  - option "Wiki - Claude Assistant"
+                  - option "» Installation — Mac"
+                  - option "» Installation — Windows" [selected]
+              - generic [ref=e206]:
+                - generic "Comment" [ref=e207]
+                - textbox "Comment" [ref=e210]:
+                  - /placeholder: What did you change? Click to add comment
+              - button "Save" [ref=e211] [cursor=pointer]
+              - link "Cancel" [ref=e212] [cursor=pointer]:
+                - /url: /projects/claude-assistant-config/wiki
+  - generic:
+    - application:
+      - generic:
+        - generic:
+          - list
+        - generic:
+          - list

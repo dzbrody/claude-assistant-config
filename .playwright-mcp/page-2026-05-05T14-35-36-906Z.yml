@@ -1,0 +1,112 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]: Open link in a new tab
+  - generic [ref=e6]:
+    - banner [ref=e7]:
+      - generic [ref=e8]:
+        - link "Click here to skip over the menu and go to the content" [ref=e9] [cursor=pointer]:
+          - /url: ""
+          - text: Jump to content
+        - navigation "Top Menu" [ref=e10]:
+          - button "Global modules" [ref=e11] [cursor=pointer]:
+            - img
+          - link "Home" [ref=e13] [cursor=pointer]:
+            - /url: https://projects.axinagroup.com/
+      - search "Search in AXINA Projects" [ref=e17]:
+        - button "Search" [ref=e18] [cursor=pointer]:
+          - generic [ref=e20]: 
+        - generic [ref=e23]:
+          - generic [ref=e25]:
+            - generic [ref=e26]: Search in AXINA Projects
+            - combobox "Search in AXINA Projects" [ref=e28]
+          - status [ref=e29]
+      - generic [ref=e30]:
+        - button "Add…" [ref=e32] [cursor=pointer]:
+          - generic [ref=e33]:
+            - generic:
+              - img
+            - img "Add…" [ref=e35]
+        - link "Notifications" [ref=e38] [cursor=pointer]:
+          - /url: /notifications
+          - img
+        - button "Help" [ref=e40] [cursor=pointer]:
+          - img
+        - button "User menu" [ref=e41] [cursor=pointer]:
+          - img "User menu" [ref=e45]: DB
+    - generic [ref=e46]:
+      - navigation "Side Menu" [ref=e47]:
+        - button "Collapse project menu" [expanded] [ref=e49] [cursor=pointer]:
+          - img [ref=e51]
+        - generic [ref=e53]:
+          - generic [ref=e54]:
+            - generic [ref=e55]:
+              - generic [ref=e59]:
+                - button "All projects " [ref=e60] [cursor=pointer]:
+                  - generic "All projects" [ref=e61]
+                  - generic [ref=e62]: 
+                - note "This is a focus anchor for modals. Press shift+tab to go back to the modal trigger element."
+              - button "Collapse project menu" [expanded] [ref=e64] [cursor=pointer]:
+                - img
+            - separator [ref=e65]
+          - list [ref=e66]:
+            - listitem [ref=e67]:
+              - generic [ref=e68]:
+                - link "Go back one menu level" [ref=e69] [cursor=pointer]:
+                  - /url: "#"
+                  - img [ref=e70]
+                - link "Emails and notifications" [ref=e72] [cursor=pointer]:
+                  - /url: https://projects.axinagroup.com/admin/settings/aggregation
+              - list [ref=e73]:
+                - listitem [ref=e74]:
+                  - link "Aggregation" [ref=e75] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/aggregation
+                    - generic [ref=e77]: Aggregation
+                - listitem [ref=e78]:
+                  - link "Email notifications" [ref=e79] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/mail_notifications
+                    - generic [ref=e81]: Email notifications
+                - listitem [ref=e82]:
+                  - link "Incoming emails" [ref=e83] [cursor=pointer]:
+                    - /url: https://projects.axinagroup.com/admin/settings/incoming_mails
+                    - generic [ref=e85]: Incoming emails
+      - main [ref=e86]:
+        - generic [ref=e87]:
+          - heading "Content" [level=1] [ref=e88]
+          - generic [ref=e89]:
+            - generic [ref=e90]:
+              - navigation "Breadcrumb" [ref=e92]:
+                - list [ref=e93]:
+                  - listitem [ref=e94]:
+                    - link "Administration" [ref=e95] [cursor=pointer]:
+                      - /url: /admin
+                      - generic [ref=e97]: Administration
+                  - listitem [ref=e98]:
+                    - link "Emails and notifications" [ref=e99] [cursor=pointer]:
+                      - /url: /admin/settings/aggregation
+                      - generic [ref=e101]: Emails and notifications
+                  - listitem [ref=e102]:
+                    - link "Aggregation" [ref=e103]:
+                      - /url: "#"
+                      - generic [ref=e105]: Aggregation
+              - heading "Aggregation" [level=2] [ref=e107]
+            - generic [ref=e110]:
+              - generic [ref=e112]:
+                - generic [ref=e113]: Aggregation period
+                - generic [ref=e114]:
+                  - spinbutton "Aggregation period" [ref=e115]: "5"
+                  - generic:
+                    - generic:
+                      - generic: mins
+                - generic [ref=e116]:
+                  - paragraph [ref=e117]:
+                    - text: User actions on a work package (changing description, status, values, or writing comments) are grouped if performed within this period. It also controls notification and
+                    - link "webhook" [ref=e118] [cursor=pointer]:
+                      - /url: /admin/settings/webhooks
+                      - generic [ref=e119]:
+                        - text: webhook
+                        - img [ref=e120]
+                    - text: delays.
+                  - generic [ref=e122]:
+                    - img [ref=e123]
+                    - paragraph [ref=e125]: "Note: Disable with 0"
+              - button "Save" [ref=e127] [cursor=pointer]:
+                - generic [ref=e129]: Save
