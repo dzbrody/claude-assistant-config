@@ -22,12 +22,22 @@ LOG_FILE="$LOG_DIR/${TASK_NAME}.log"
 DATE=$(date '+%Y-%m-%d')
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
-export AWS_PROFILE=claude-assistant
+# Claude uses AWS Bedrock — export required env vars so they survive non-interactive cron runs
+export CLAUDE_CODE_USE_BEDROCK=1
+export AWS_PROFILE=xgc-main
+export AWS_REGION=us-east-1
+export AWS_DEFAULT_REGION=us-east-1
+export ANTHROPIC_DEFAULT_SONNET_MODEL='us.anthropic.claude-sonnet-4-6[1m]'
+export ANTHROPIC_DEFAULT_OPUS_MODEL='global.anthropic.claude-opus-4-6-v1[1m]'
+export ANTHROPIC_DEFAULT_HAIKU_MODEL='us.anthropic.claude-haiku-4-5-20251001-v1:0'
+
+# Use the current claude binary (updated via pnpm)
+CLAUDE_BIN="/Users/dzbrody/Library/pnpm/bin/claude"
 
 echo "[$TIMESTAMP] Checking AWS credentials..."
-if ! aws sts get-caller-identity --profile claude-assistant &>/dev/null; then
-  echo "[$TIMESTAMP] ERROR: claude-assistant IAM credentials invalid or missing"
-  echo "[$TIMESTAMP] Run: aws configure --profile claude-assistant"
+if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
+  echo "[$TIMESTAMP] ERROR: xgc-main AWS SSO session expired"
+  echo "[$TIMESTAMP] Run: aws sso login --profile xgc-main"
   exit 1
 fi
 echo "[$TIMESTAMP] AWS credentials OK"
@@ -54,19 +64,15 @@ if [ -z "$PROMPT" ]; then
   exit 1
 fi
 
-# MCP config for the remote SSE server — passed explicitly so claude -p doesn't
-# trigger an OAuth flow when re-connecting the SSE server in a fresh subprocess.
-MCP_KEY=$(security find-generic-password -s "openproject-mcp-api-key" -w 2>/dev/null || \
-  python3 -c "import json; d=json.load(open('$HOME/.claude.json')); print(d['mcpServers']['openproject-remote']['url'].split('key=')[1])" 2>/dev/null || true)
-
-MCP_CONFIG_ARGS=()
-if [ -n "$MCP_KEY" ]; then
-  MCP_CONFIG_ARGS=(--mcp-config "{\"mcpServers\":{\"openproject-remote\":{\"type\":\"sse\",\"url\":\"https://projects.axinagroup.com/mcp/sse?key=${MCP_KEY}\"}}}")
-fi
-
-# Run Claude non-interactively with all permissions pre-approved (unattended cron)
+# Run Claude non-interactively with all permissions pre-approved (unattended cron).
+# MCP servers are loaded from ~/.claude.json (global config) — no --mcp-config needed.
 echo "[$TIMESTAMP] Running claude -p ..." >> "$LOG_FILE"
-TASK_OUTPUT=$(echo "$PROMPT" | claude -p --dangerously-skip-permissions "${MCP_CONFIG_ARGS[@]}" 2>&1)
+TASK_OUTPUT=$(echo "$PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1)
+EXIT_CODE=$?
+if [ $EXIT_CODE -ne 0 ] || [ -z "$TASK_OUTPUT" ]; then
+  echo "[$TIMESTAMP] ERROR: claude -p exited $EXIT_CODE with empty/no output" >> "$LOG_FILE"
+  exit 1
+fi
 echo "$TASK_OUTPUT" | tee -a "$LOG_FILE"
 
 echo "[$TIMESTAMP] Completed $TASK_NAME" >> "$LOG_FILE"
@@ -81,5 +87,5 @@ Body: Send the following output as a clean plain-text email, organized by sectio
 ${TASK_OUTPUT}"
 
 echo "[$TIMESTAMP] Sending summary email..." >> "$LOG_FILE"
-echo "$EMAIL_PROMPT" | claude -p --dangerously-skip-permissions "${MCP_CONFIG_ARGS[@]}" 2>&1 | tee -a "$LOG_FILE"
+echo "$EMAIL_PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1 | tee -a "$LOG_FILE"
 echo "[$TIMESTAMP] Email sent" >> "$LOG_FILE"
