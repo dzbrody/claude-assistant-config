@@ -62,7 +62,15 @@ PROMPT=$(awk '/^## Prompt/{found=1; next} found{print}' "$TASK_FILE" | sed "s/{d
 # Inject private people/JID data if present (gitignored, not in the task file itself)
 PEOPLE_FILE="$(dirname "$TASK_FILE")/.people.private.md"
 if [ -f "$PEOPLE_FILE" ]; then
-  PROMPT=$(echo "$PROMPT" | sed "s|> Phone numbers, WhatsApp JIDs.*injected at runtime.*\`run-scheduled-task.sh\`\. Do not add them here\.|$(cat "$PEOPLE_FILE")|")
+  PROMPT=$(printf '%s' "$PROMPT" | python3 -c "
+import sys, re
+prompt = sys.stdin.read()
+with open('$PEOPLE_FILE') as f:
+    people = f.read()
+placeholder = re.compile(r'> Phone numbers, WhatsApp JIDs.*?Do not add them here\.\n?', re.DOTALL)
+result = placeholder.sub(people + '\n', prompt, count=1)
+sys.stdout.write(result)
+")
 fi
 
 if [ -z "$PROMPT" ]; then
