@@ -108,7 +108,7 @@ Using `google-workspace` MCP tools:
 
 ### Step 1.5: Scan WhatsApp Groups (whatsapp + filesystem + openproject-remote)
 
-Scan **all five** channels for overnight messages. For each, call `list_messages` with `after=yesterday 17:00`, `limit=100`, `sort_by=oldest`, `include_context=false`.
+Scan **all six** channels for overnight messages. For each, call `list_messages` with `after=yesterday 17:00`, `limit=100`, `sort_by=oldest`, `include_context=false`.
 
 **Before creating any OpenProject task:** call `list_work_packages` on the target project and check for an existing open task with a matching subject. Never create duplicates.
 
@@ -244,6 +244,28 @@ Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared 
 **4. Per-group summary for briefing:**
 ```
 Group: [name]
+Messages scanned: N
+Documents saved: [list filenames or "none"]
+Tasks created: [list #ID + subject or "none"]
+```
+
+#### Group G — Erin Davidson (direct chat)
+**Context:** Erin Davidson — contact details in `.people.private.md`.
+
+**1. Get messages** — `list_messages` with Erin's JID from `.people.private.md`
+
+**2. Download documents and media** — same procedure as Group A.
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+
+**3. Extract action items → OpenProject:**
+- Route using the **Project Routing Guide**
+- Assign to Dan (OP user ID 5) unless context indicates otherwise
+- Prefix subject: `[Erin]`
+- Do not duplicate
+
+**4. Per-group summary for briefing:**
+```
+Group: Erin Davidson
 Messages scanned: N
 Documents saved: [list filenames or "none"]
 Tasks created: [list #ID + subject or "none"]
