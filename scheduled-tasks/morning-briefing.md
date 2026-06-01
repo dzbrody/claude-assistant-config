@@ -108,7 +108,7 @@ Using `google-workspace` MCP tools:
 
 ### Step 1.5: Scan WhatsApp Groups (whatsapp + filesystem + openproject-remote)
 
-Scan **all six** channels for overnight messages. For each, call `list_messages` with `after=yesterday 17:00`, `limit=100`, `sort_by=oldest`, `include_context=false`.
+Scan **all seven** channels for overnight messages. For each, call `list_messages` with `after=yesterday 17:00`, `limit=100`, `sort_by=oldest`, `include_context=false`.
 
 **Before creating any OpenProject task:** call `list_work_packages` on the target project and check for an existing open task with a matching subject. Never create duplicates.
 
@@ -248,6 +248,30 @@ Messages scanned: N
 Documents saved: [list filenames or "none"]
 Tasks created: [list #ID + subject or "none"]
 ```
+
+#### Group H — AXINOD™ Data UKR (`120363408952824635@g.us`)
+**Project scope:** AXINOD hardware, Ukraine deployment, Data Center in a Box production/shipping
+
+**1. Get messages** — `list_messages` with `chat_jid=120363408952824635@g.us`
+
+**2. Download documents and media** — same procedure as Group A.
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+
+**3. Extract action items → OpenProject:**
+- Route using the **Project Routing Guide** (likely `axerp-health`, `engineering`, or `axina-group-admin`)
+- Assign using **Task Assignment Rules**
+- Prefix subject: `[AXINOD]`
+- Do not duplicate
+
+**4. Per-group summary for briefing:**
+```
+Group: AXINOD™ Data UKR
+Messages scanned: N
+Documents saved: [list filenames or "none"]
+Tasks created: [list #ID + subject or "none"]
+```
+
+---
 
 #### Group G — Erin Davidson (direct chat)
 **Context:** Erin Davidson — contact details in `.people.private.md`.
