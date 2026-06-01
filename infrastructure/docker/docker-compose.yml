@@ -36,6 +36,7 @@ services:
     environment:
       OPENPROJECT_HOST__NAME: ${DOMAIN_NAME}
       OPENPROJECT_SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}
+      SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}  # required by OP 17.4+
       OPENPROJECT_DEFAULT__LANGUAGE: en
       DATABASE_URL: "postgres://openproject:${OPENPROJECT_DB_PASSWORD}@postgres:5432/openproject"
       RAILS_CACHE_STORE: memcache

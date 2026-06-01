@@ -59,6 +59,12 @@ fi
 # Extract everything after the first '## Prompt' line, then substitute {date}
 PROMPT=$(awk '/^## Prompt/{found=1; next} found{print}' "$TASK_FILE" | sed "s/{date}/$DATE/g")
 
+# Inject private people/JID data if present (gitignored, not in the task file itself)
+PEOPLE_FILE="$(dirname "$TASK_FILE")/.people.private.md"
+if [ -f "$PEOPLE_FILE" ]; then
+  PROMPT=$(echo "$PROMPT" | sed "s|> Phone numbers, WhatsApp JIDs.*injected at runtime.*\`run-scheduled-task.sh\`\. Do not add them here\.|$(cat "$PEOPLE_FILE")|")
+fi
+
 if [ -z "$PROMPT" ]; then
   echo "[$TIMESTAMP] ERROR: No ## Prompt section found in $TASK_FILE" >> "$LOG_FILE"
   exit 1

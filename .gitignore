@@ -5,6 +5,12 @@
 claude-config.json
 mcp-servers/openproject-mcp/
 
+# Private contact data (phone numbers, WhatsApp JIDs — injected at runtime)
+scheduled-tasks/.people.private.md
+
+# Playwright session artifacts
+.playwright-mcp/
+
 # Terraform
 **/.terraform/*
 *.tfstate

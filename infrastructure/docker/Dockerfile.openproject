@@ -8,7 +8,7 @@
 # Build: docker build -f Dockerfile.openproject -t axina-openproject:latest .
 # Deploy: docker compose up -d --build openproject
 
-FROM openproject/openproject:17
+FROM openproject/openproject:17  # currently 17.4.0
 
 USER root
 

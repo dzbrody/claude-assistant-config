@@ -16,9 +16,9 @@ import httpx
 import boto3
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings  # noqa: F401
-from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
+from starlette.types import ASGIApp, Receive, Scope, Send
 
 # ---- Configuration ----
 OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.axinagroup.com")
@@ -258,19 +258,29 @@ def search_s3_objects(query: str, bucket: str = "") -> str:
 
 
 # ---- Auth Middleware ----
-class APIKeyMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request: Request, call_next):
-        if not MCP_API_KEY:
-            return await call_next(request)
+# Pure ASGI middleware — BaseHTTPMiddleware buffers streaming responses and
+# breaks SSE on Starlette 1.0.0+.
+class APIKeyMiddleware:
+    def __init__(self, app: ASGIApp) -> None:
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        if scope["type"] != "http" or not MCP_API_KEY:
+            await self.app(scope, receive, send)
+            return
+        request = Request(scope)
         path = request.url.path
         # /mcp/messages/ carries a session_id issued after SSE auth — allow through
         # /health is public for monitoring
         if "/messages/" in path or path.endswith("/health"):
-            return await call_next(request)
+            await self.app(scope, receive, send)
+            return
         key = request.query_params.get("key") or request.headers.get("x-mcp-key")
         if key != MCP_API_KEY:
-            return Response("Unauthorized", status_code=401)
-        return await call_next(request)
+            response = Response("Unauthorized", status_code=401)
+            await response(scope, receive, send)
+            return
+        await self.app(scope, receive, send)
 
 
 # ---- ASGI App (SSE transport) ----
