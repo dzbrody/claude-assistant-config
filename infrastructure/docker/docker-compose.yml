@@ -6,7 +6,7 @@ version: '3.8'
 services:
 
   postgres:
-    image: postgres:14.23
+    image: postgres:16.14
     container_name: openproject-postgres
     restart: unless-stopped
     environment:

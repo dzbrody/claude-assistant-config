@@ -90,7 +90,7 @@ version: '3.8'
 services:
   # ---- PostgreSQL ----
   postgres:
-    image: postgres:14.23
+    image: postgres:16.14
     container_name: openproject-postgres
     restart: unless-stopped
     environment:
@@ -107,7 +107,7 @@ services:
 
   # ---- OpenProject ----
   openproject:
-    image: openproject/openproject:17
+    image: openproject/openproject:17.4.1
     container_name: openproject-app
     restart: unless-stopped
     ports:
