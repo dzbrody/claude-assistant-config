@@ -90,7 +90,7 @@ version: '3.8'
 services:
   # ---- PostgreSQL ----
   postgres:
-    image: postgres:14
+    image: postgres:14.23
     container_name: openproject-postgres
     restart: unless-stopped
     environment:
@@ -141,14 +141,14 @@ services:
 
   # ---- Memcached (for Rails caching) ----
   cache:
-    image: memcached:alpine
+    image: memcached:1.6
     container_name: openproject-cache
     restart: unless-stopped
     command: memcached -m 256
 
   # ---- Nginx reverse proxy with Let's Encrypt ----
   nginx:
-    image: nginx:alpine
+    image: nginx:stable-alpine
     container_name: openproject-nginx
     restart: unless-stopped
     ports:
@@ -349,7 +349,7 @@ fi
 mkdir -p /data/mcp-server
 
 cat > /data/mcp-server/Dockerfile << 'DOCKEREOF'
-FROM python:3.11-slim
+FROM python:3.13-slim-bookworm
 
 WORKDIR /app
 
@@ -383,7 +383,7 @@ from pydantic import BaseModel
 OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.axinagroup.com")
 OP_API_KEY = os.environ.get("OPENPROJECT_API_KEY", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKETS = os.environ.get("S3_BUCKETS", "xgccloud-openproject-files").split(",")
+S3_BUCKETS = os.environ.get("S3_BUCKETS", "axina-openproject-files").split(",")
 
 app = FastAPI(title="AXINA Group MCP Server")
 s3_client = boto3.client("s3", region_name=AWS_REGION)

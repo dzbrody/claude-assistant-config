@@ -6,7 +6,7 @@ version: '3.8'
 services:
 
   postgres:
-    image: postgres:14
+    image: postgres:14.23
     container_name: openproject-postgres
     restart: unless-stopped
     environment:
@@ -62,13 +62,13 @@ services:
         condition: service_started
 
   cache:
-    image: memcached:alpine
+    image: memcached:1.6
     container_name: openproject-cache
     restart: unless-stopped
     command: memcached -m 256
 
   nginx:
-    image: nginx:alpine
+    image: nginx:stable-alpine
     container_name: openproject-nginx
     restart: unless-stopped
     ports:

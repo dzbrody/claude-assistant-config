@@ -8,6 +8,8 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.0"
+      # Locked at 5.100.0 — latest 5.x. Provider v6.x (6.49.0) is a breaking
+      # major release; upgrade requires reviewing resource changes first.
     }
   }
   # Optional: store state in S3 for collaboration later
