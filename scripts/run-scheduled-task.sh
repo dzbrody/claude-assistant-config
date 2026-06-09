@@ -49,8 +49,10 @@ fi
 mkdir -p "$LOG_DIR"
 echo "[$TIMESTAMP] Starting $TASK_NAME" >> "$LOG_FILE"
 
-# Check WhatsApp bridge health (non-fatal)
-if ! curl -sf http://localhost:8080/api/health | grep -q '"connected":true' 2>/dev/null; then
+# Check WhatsApp bridge health (non-fatal) — v0.3.0+ requires Bearer token
+WA_TOKEN_FILE="$HOME/whatsapp-mcp/whatsapp-bridge/store/.bridge-token"
+WA_TOKEN=$(cat "$WA_TOKEN_FILE" 2>/dev/null || echo "")
+if ! curl -sf -H "Authorization: Bearer $WA_TOKEN" http://localhost:8080/api/health | grep -q '"connected":true' 2>/dev/null; then
   echo "[$TIMESTAMP] WARNING: WhatsApp bridge not healthy — WhatsApp steps may fail" >> "$LOG_FILE"
 fi
 
