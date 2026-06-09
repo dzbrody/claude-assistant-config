@@ -37,8 +37,6 @@ services:
       OPENPROJECT_HOST__NAME: ${DOMAIN_NAME}
       OPENPROJECT_SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}
       SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}  # required by OP 17.4+
-      OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL: wss://${DOMAIN_NAME}/hocuspocus
-      OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET: ${HOCUSPOCUS_SECRET}
       OPENPROJECT_DEFAULT__LANGUAGE: en
       DATABASE_URL: "postgres://openproject:${OPENPROJECT_DB_PASSWORD}@postgres:5432/openproject"
       RAILS_CACHE_STORE: memcache
@@ -54,6 +52,10 @@ services:
       OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO: "true"
       OPENPROJECT_SMTP__OPENSSL__VERIFY__MODE: peer
       OPENPROJECT_MAIL__FROM: no-reply@axinagroup.com
+      OPENPROJECT_ADDITIONAL__HOST__NAMES: "openproject-app"
+      OPENPROJECT_HTTPS: "true"
+      OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL: wss://${DOMAIN_NAME}/hocuspocus
+      OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET: ${HOCUSPOCUS_SECRET}
     volumes:
       - /data/openproject/assets:/var/openproject/assets
       - /data/openproject/config/configuration.yml:/app/config/configuration.yml:ro
