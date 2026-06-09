@@ -37,6 +37,8 @@ services:
       OPENPROJECT_HOST__NAME: ${DOMAIN_NAME}
       OPENPROJECT_SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}
       SECRET_KEY_BASE: ${OPENPROJECT_SECRET_KEY_BASE}  # required by OP 17.4+
+      OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL: wss://${DOMAIN_NAME}/hocuspocus
+      OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET: ${HOCUSPOCUS_SECRET}
       OPENPROJECT_DEFAULT__LANGUAGE: en
       DATABASE_URL: "postgres://openproject:${OPENPROJECT_DB_PASSWORD}@postgres:5432/openproject"
       RAILS_CACHE_STORE: memcache
@@ -88,6 +90,17 @@ services:
       - certbot-www:/var/www/certbot
       - certbot-conf:/etc/letsencrypt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+  hocuspocus:
+    image: openproject/hocuspocus:latest
+    container_name: openproject-hocuspocus
+    restart: unless-stopped
+    environment:
+      SECRET: ${HOCUSPOCUS_SECRET}
+      OPENPROJECT_URL: http://openproject-app:8080
+      OPENPROJECT_HTTPS: "true"
+    depends_on:
+      - openproject
 
   mcp-server:
     build:
