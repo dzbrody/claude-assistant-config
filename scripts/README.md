@@ -43,11 +43,32 @@ launchctl load ~/Library/LaunchAgents/com.dzbrody.openproject-notifier.plist
 
 ---
 
+## run-scheduled-task.sh
+
+Runs a briefing prompt via the Claude CLI. Called by the menu bar app and can be run directly:
+
+```bash
+bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing
+```
+
+**How it works:**
+1. Checks AWS SSO credentials
+2. Checks WhatsApp bridge health (Bearer token auth since v0.3.0)
+3. Extracts the `## Prompt` section from the task `.md` file
+4. Injects private contact data from `.people.private.md`
+5. Writes prompt to a temp file and runs `claude --print` — streams tool calls live
+6. Captures output, sends summary email to `db@axinagroup.com`
+
+**Requires:**
+- `~/.local/bin/claude` (native install) — resolved dynamically via `command -v claude`
+- AWS SSO session active (`aws sso login --profile xgc-main`)
+- WhatsApp bridge running
+
+---
+
 ## Other Scripts
 
 | Script | Purpose |
 |--------|---------|
 | `health-check.sh` | Verify all MCP servers and directories are in order |
-| `ssm-mcp-tunnel.sh` | Open SSM tunnel to EC2 for MCP access |
-| `sync-nextcloud-to-openproject.sh` | Migrate files from NextCloud to S3 |
-| `decommission-nextcloud.sh` | NextCloud cleanup |
+| `ssm-mcp-tunnel.sh` | Open SSM tunnel to EC2 for direct MCP access |

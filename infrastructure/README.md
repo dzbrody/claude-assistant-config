@@ -7,11 +7,13 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 - **EC2 Instance**: t3.large (2 vCPU, 8GB RAM), Amazon Linux 2023
 - **Elastic IP**: Static IP for consistent DNS and MCP connection
 - **Docker Containers**:
-  - `openproject/openproject:17` — OpenProject application (port 8080)
-  - `postgres:14` — Database
-  - `memcached` — Rails cache
-  - `nginx` — Reverse proxy + SSL termination
-  - `certbot` — Let's Encrypt auto-renewal
+  - `openproject/openproject:17.4.1` — OpenProject application (port 8080)
+  - `postgres:16.14` — Database
+  - `memcached:1.6` — Rails cache
+  - `nginx:stable-alpine` — Reverse proxy + SSL termination
+  - `certbot/certbot` — Let's Encrypt auto-renewal
+  - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
+  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.13, port 39128, internal)
 - **EBS Volumes**:
   - `/dev/xvda` (30GB gp3) — Root
   - `/dev/xvdf` (100GB gp3) — Persistent data (survives instance replacement)

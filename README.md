@@ -37,15 +37,15 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 ## What This Does
 
 **Click ☀️ in the menu bar** → Terminal opens, claude launches, the full morning briefing runs automatically:
-- Scans last 24h of messages across 8 WhatsApp groups (TSPG, TGI Tech, Angola, Uganda, Dev, Marketing, AXINOD UKR, Erin Davidson), downloads and saves documents to Google Drive, creates OpenProject work packages for action items
-- Scans all Gmail in the last 24h, flags urgent items from AXINA/XGC/4ward domains, auto-creates OpenProject tasks for action items
+- Scans last 24h across **8 core WhatsApp groups** (TSPG, TGI Tech, Angola, Uganda, Dev, TGI Geneses, AXINOD UKR, Erin Davidson) — downloads docs to Drive, creates OpenProject tasks
+- Scans **10 NCR Africa WhatsApp groups** — enforces weekly touchpoint rule, drafts nudge messages for review (never auto-sends)
+- Scans all Gmail in the last 24h, auto-creates OpenProject tasks for action items
 - Extracts tasks from Gemini meeting notes and Zoom AI summaries → OpenProject
-- Scans 10 NCR Africa WhatsApp groups, enforces weekly touchpoint rule, drafts nudge messages for review
-- Auto-closes OpenProject tasks when completion is indicated in messages or email
-- Links relevant Drive documents to newly created tasks
+- Auto-closes OpenProject tasks when completion is confirmed in messages or email
+- Links relevant Drive documents to newly created tasks via Drive file ID
 - Reviews today's calendar, flags conflicts
 - Writes daily brief to `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
-- Sends a WhatsApp summary to your number
+- Sends WhatsApp summary to your number
 
 **Click 🌙** → Evening wrap-up: sent emails, Drive activity, TSPG afternoon messages, task status, tomorrow preview.
 
@@ -210,19 +210,19 @@ See **[desktop/README.md](desktop/README.md)** for full installation details.
 | Server | Package | What It Does |
 |--------|---------|-------------|
 | `google-workspace` | `@alanxchen/google-workspace-mcp` | Gmail, Calendar, Drive, Tasks |
-| `whatsapp` | local Python + Go bridge | WhatsApp messages and media |
+| `whatsapp` | local Python + Go bridge (v0.3.0, Bearer auth) | WhatsApp messages and media |
 | `filesystem` | `@modelcontextprotocol/server-filesystem` | Drive, Documents, OneDrive |
 | `document-loader` | `uvx markitdown-mcp` | Read PDF/Office files |
 | `aws-s3-local` | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access |
-| `playwright` | `@playwright/mcp@latest` | Browser automation for web tasks |
+| `playwright` | `@playwright/mcp@latest` | Browser automation |
 
 ### Remote Server (SSE — works from any device)
 
 | Server | Endpoint | Tools |
 |--------|----------|-------|
-| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `create_work_package`, `list_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects` |
+| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `update_work_package`, `search_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects` |
 
-API key stored in 1Password as **AXINA MCP API Key**.
+API key stored in 1Password as **AXINA MCP API Key**. Server: Python 3.13, mcp 1.27.2, FastMCP, EC2 IAM role for S3.
 
 ---
 
@@ -235,6 +235,7 @@ API key stored in 1Password as **AXINA MCP API Key**.
 | Weekend Briefing | 📅 | ~8–10 min |
 | Weekly Review | 📊 | ~5–8 min |
 
+Runs via `scripts/run-scheduled-task.sh` — streams output live, captures for email summary.
 Output: `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 
 WhatsApp summary sent to Daniel's number at the end of every run.

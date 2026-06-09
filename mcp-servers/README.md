@@ -7,12 +7,12 @@ MCP servers extend Claude with tools for email, calendar, messaging, files, brow
 | Server | Transport | Package / Command | What It Does |
 |--------|-----------|------------------|--------------|
 | `google-workspace` | stdio | `@alanxchen/google-workspace-mcp` | Gmail, Calendar, Drive, Tasks |
-| `whatsapp` | stdio | local Python + Go bridge | WhatsApp outbound messages (bridge must be running) |
+| `whatsapp` | stdio | local Python + Go bridge | WhatsApp messages and media (bridge must be running) |
 | `document-loader` | stdio | `uvx markitdown-mcp` | Read PDF/Office/Word files |
 | `filesystem` | stdio | `@modelcontextprotocol/server-filesystem` | Controlled file access |
-| `playwright` | stdio | `@playwright/mcp` | Browser automation |
+| `playwright` | stdio | `@playwright/mcp@latest` | Browser automation |
 | `aws-s3-local` | stdio | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access (local/CLI) |
-| `openproject-remote` | SSE | EC2 FastMCP server | OpenProject + S3 (remote, works anywhere) |
+| `openproject-remote` | SSE | EC2 FastMCP server (Python 3.13) | OpenProject + S3 (remote, works anywhere) |
 
 ---
 
@@ -35,7 +35,21 @@ WhatsApp servers
 
 **The Go bridge must be running** for WhatsApp tools to work. It is installed as a launchd service that starts at login and stays alive permanently. The QR code link is **one-time only** — the session is stored in `~/whatsapp-mcp/whatsapp-bridge/store/whatsapp.db`.
 
-Check bridge status anytime: `curl http://localhost:8080/api/health`
+**v0.3.0+ requires Bearer token auth.** Token is auto-generated on first start at `store/.bridge-token`. The Python MCP server reads it automatically.
+
+Check bridge status:
+```bash
+TOKEN=$(cat ~/whatsapp-mcp/whatsapp-bridge/store/.bridge-token)
+curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/health
+```
+
+If the bridge is failing with `405 client outdated`, rebuild the binary:
+```bash
+launchctl unload ~/Library/LaunchAgents/com.dzbrody.whatsapp-bridge.plist
+cd ~/whatsapp-mcp && git pull
+cd whatsapp-bridge && go build -o whatsapp-bridge .
+launchctl load ~/Library/LaunchAgents/com.dzbrody.whatsapp-bridge.plist
+```
 
 Full setup: see `TEAM-INSTALL.md` Step 5.
 
@@ -55,7 +69,7 @@ This registers all local (stdio) servers with Claude CLI at user scope.
 
 The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and works from **any device** — Mac, mobile, or any MCP client.
 
-**Tools available:**
+**Tools available (10 total):**
 
 | Tool | Description |
 |------|-------------|
@@ -63,6 +77,8 @@ The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and work
 | `get_project` | Get project details |
 | `create_work_package` | Create a task / bug / feature in a project |
 | `list_work_packages` | List work packages in a project (with optional status filter) |
+| `update_work_package` | Update subject, description, status, or assignee (requires lockVersion) |
+| `search_work_packages` | Search work packages by keyword across all or a specific project |
 | `list_s3_buckets` | List accessible S3 buckets |
 | `list_s3_objects` | List files in a bucket |
 | `get_s3_object` | Read a text file from S3 (truncated at 10KB) |
