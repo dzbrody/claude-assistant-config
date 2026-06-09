@@ -11,6 +11,7 @@ Auth: MCP_API_KEY env var, checked via:
 import os
 import json
 import base64
+import urllib.parse
 
 import httpx
 import boto3
@@ -25,7 +26,7 @@ OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.axinagroup.com")
 OP_API_KEY = os.environ.get("OPENPROJECT_API_KEY", "")
 MCP_API_KEY = os.environ.get("MCP_API_KEY", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKETS = os.environ.get("S3_BUCKETS", "xgccloud-openproject-files").split(",")
+S3_BUCKETS = os.environ.get("S3_BUCKETS", "axina-openproject-files").split(",")
 
 # Disable DNS rebinding protection — nginx is the trusted reverse proxy
 _no_dns_rebind = TransportSecuritySettings(enable_dns_rebinding_protection=False)
@@ -63,6 +64,14 @@ def op_get(endpoint: str) -> dict:
 def op_post(endpoint: str, data: dict) -> dict:
     with httpx.Client(verify=True, timeout=30) as client:
         r = client.post(f"{OP_URL}/api/v3/{endpoint}", headers=_op_auth(), json=data)
+        if r.status_code >= 400:
+            return {"error": f"OpenProject {r.status_code}", "detail": r.text}
+        return r.json()
+
+
+def op_patch(endpoint: str, data: dict) -> dict:
+    with httpx.Client(verify=True, timeout=30) as client:
+        r = client.patch(f"{OP_URL}/api/v3/{endpoint}", headers=_op_auth(), json=data)
         if r.status_code >= 400:
             return {"error": f"OpenProject {r.status_code}", "detail": r.text}
         return r.json()
@@ -163,6 +172,68 @@ def list_work_packages(project_id: str, status: str = "") -> str:
         {"project_id": project_id, "work_packages": packages, "count": len(packages)},
         indent=2,
     )
+
+
+@mcp.tool()
+def update_work_package(
+    work_package_id: int,
+    lock_version: int,
+    subject: str = "",
+    description: str = "",
+    status_id: int = 0,
+    assignee_id: int = 0,
+) -> str:
+    """Update a work package. Requires lockVersion from list_work_packages.
+
+    Args:
+        work_package_id: Numeric work package ID
+        lock_version: Current lockVersion (from list_work_packages result)
+        subject: New subject/title (leave empty to keep current)
+        description: New description (leave empty to keep current)
+        status_id: New status ID (e.g. 1=New, 7=In Progress, 12=Closed — leave 0 to keep)
+        assignee_id: New assignee OP user ID (leave 0 to keep current)
+    """
+    data: dict = {"lockVersion": lock_version}
+    if subject:
+        data["subject"] = subject
+    if description:
+        data["description"] = {"raw": description}
+    if status_id:
+        data["_links"] = {"status": {"href": f"/api/v3/statuses/{status_id}"}}
+    if assignee_id:
+        data.setdefault("_links", {})["assignee"] = {"href": f"/api/v3/users/{assignee_id}"}
+    return json.dumps(op_patch(f"work_packages/{work_package_id}", data), indent=2)
+
+
+@mcp.tool()
+def search_work_packages(query: str, project_id: str = "", status: str = "open") -> str:
+    """Search work packages by subject keyword across all or a specific project.
+
+    Args:
+        query: Keyword to search in subject
+        project_id: Limit to this project identifier or ID (searches all projects if empty)
+        status: Status filter — 'open', 'closed', or '' for all
+    """
+    filters = [{"subjectOrId": {"operator": "~", "values": [query]}}]
+    if status == "open":
+        filters.append({"status": {"operator": "o", "values": []}})
+    elif status == "closed":
+        filters.append({"status": {"operator": "c", "values": []}})
+    filters_str = urllib.parse.quote(json.dumps(filters))
+    base = f"projects/{project_id}/work_packages" if project_id else "work_packages"
+    result = op_get(f"{base}?filters={filters_str}&pageSize=50&sortBy=%5B%5B%22updatedAt%22%2C%22desc%22%5D%5D")
+    packages = [
+        {
+            "id": wp.get("id"),
+            "subject": wp.get("subject"),
+            "status": wp.get("_links", {}).get("status", {}).get("title", ""),
+            "project": wp.get("_links", {}).get("project", {}).get("title", ""),
+            "assignee": wp.get("_links", {}).get("assignee", {}).get("title", "Unassigned"),
+            "lockVersion": wp.get("lockVersion"),
+        }
+        for wp in result.get("_embedded", {}).get("elements", [])
+    ]
+    return json.dumps({"query": query, "results": packages, "count": len(packages)}, indent=2)
 
 
 # ---- S3 Tools ----

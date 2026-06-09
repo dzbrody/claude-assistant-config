@@ -1,13 +1,13 @@
-FROM python:3.11-slim
+FROM python:3.13-slim-bookworm
 
 WORKDIR /app
 
 RUN pip install --no-cache-dir \
-    "mcp[cli]" \
-    uvicorn \
-    httpx \
-    boto3 \
-    starlette
+    "mcp[cli]==1.27.2" \
+    "uvicorn==0.49.0" \
+    "httpx==0.28.1" \
+    "boto3==1.43.25" \
+    "starlette==1.2.1"
 
 COPY server.py /app/server.py
 
