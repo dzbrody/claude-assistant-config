@@ -26,7 +26,7 @@ chmod 600 /opt/openproject/.env
 
 # ---- Start MCP Server ----
 cd /opt/openproject
-docker-compose -f docker-compose-mcp.yml up -d
+docker-compose up -d --build mcp-server
 
 echo ""
 echo "============================================"
@@ -34,9 +34,9 @@ echo "  MCP Server Started"
 echo "============================================"
 echo ""
 echo "Test it:"
-echo "  curl http://localhost:39127/sse"
+echo "  curl https://${DOMAIN}/mcp/health"
 echo ""
-echo "Connect Claude CLI (via SSM tunnel from your local machine):"
-echo "  1. scripts/ssm-mcp-tunnel.sh <instance-id>"
-echo "  2. claude mcp add --transport sse openproject http://localhost:39127/sse"
+echo "Connect Claude CLI:"
+echo "  claude mcp add --transport sse --scope user openproject-remote \\"
+echo "    \"https://${DOMAIN}/mcp/sse?key=<MCP_API_KEY>\""
 echo ""

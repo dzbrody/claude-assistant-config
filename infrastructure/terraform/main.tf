@@ -62,7 +62,7 @@ data "aws_ami" "amazon_linux_2023" {
 # 80   — HTTP (redirect to 443)
 # 443  — HTTPS (OpenProject web UI)
 # 8080 — OpenProject direct (optional, internal)
-# 39127 — MCP server: localhost-only on EC2, accessed via SSM tunnel
+# 39128 — MCP server: localhost-only on EC2, accessed via SSM tunnel
 
 resource "aws_security_group" "openproject" {
   name        = "openproject-server"
@@ -382,12 +382,12 @@ output "instance_id" {
 
 output "ssm_tunnel_command" {
   description = "Command to start SSM port forwarding tunnel for MCP"
-  value       = "aws ssm start-session --target ${aws_instance.openproject.id} --document-name AWS-StartPortForwardingSession --parameters '{\"portNumber\":[\"39127\"],\"localPortNumber\":[\"39127\"]}'"
+  value       = "aws ssm start-session --target ${aws_instance.openproject.id} --document-name AWS-StartPortForwardingSession --parameters '{\"portNumber\":[\"39128\"],\"localPortNumber\":[\"39128\"]}'"
 }
 
 output "claude_mcp_command" {
   description = "Claude CLI command to connect MCP (run AFTER starting SSM tunnel)"
-  value       = "claude mcp add --transport sse openproject http://localhost:39127/sse"
+  value       = "claude mcp add --transport sse openproject http://localhost:39128/sse"
 }
 
 output "s3_bucket" {

@@ -184,7 +184,7 @@ services:
       OPENPROJECT_URL: https://$${DOMAIN_NAME}
       OPENPROJECT_API_KEY: $${OPENPROJECT_ADMIN_API_KEY}
       AWS_REGION: us-east-1
-      S3_BUCKETS: xgccloud-openproject-files
+      S3_BUCKETS: axina-openproject-files
     depends_on:
       - openproject
 
@@ -322,11 +322,8 @@ http {
             proxy_set_header X-Forwarded-Proto \$scheme;
         }
 
-        # MCP Server — API key protected
+        # MCP Server — key checked via query param ?key=... in the MCP server itself
         location /mcp {
-            if (\$http_x_mcp_key != "${mcp_api_key}") {
-                return 401;
-            }
             proxy_pass http://mcp-server:39128;
             proxy_http_version 1.1;
             proxy_set_header Upgrade \$http_upgrade;

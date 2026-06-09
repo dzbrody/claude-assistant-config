@@ -12,7 +12,7 @@ output "deployment_summary" {
     Connect MCP to Claude CLI (via SSM tunnel):
       1. terraform output instance_id
       2. ../../scripts/ssm-mcp-tunnel.sh <instance-id>
-      3. claude mcp add --transport sse openproject http://localhost:39127/sse
+      3. claude mcp add --transport sse openproject http://localhost:39128/sse
 
     ==============================================
   EOT
