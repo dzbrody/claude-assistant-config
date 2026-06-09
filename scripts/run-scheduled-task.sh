@@ -80,16 +80,18 @@ fi
 
 echo "[$TIMESTAMP] Running claude -p | Binary: $CLAUDE_BIN" | tee -a "$LOG_FILE"
 
-# Pipe prompt to claude -p — MCP tools work in -p mode in Claude Code 2.1+
-TASK_OUTPUT=$(printf '%s' "$PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1)
-EXIT_CODE=$?
+# Stream output live to terminal + capture to file for email step
+OUTPUT_TMP=$(mktemp /tmp/claude-output-XXXXXX.txt)
+printf '%s' "$PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions --verbose 2>&1 \
+  | tee -a "$LOG_FILE" | tee "$OUTPUT_TMP"
+EXIT_CODE=${PIPESTATUS[0]}
+TASK_OUTPUT=$(cat "$OUTPUT_TMP")
+rm -f "$OUTPUT_TMP"
 
 if [ $EXIT_CODE -ne 0 ] || [ -z "$TASK_OUTPUT" ]; then
   echo "[$TIMESTAMP] ERROR: claude exited $EXIT_CODE with empty output" | tee -a "$LOG_FILE"
   exit 1
 fi
-
-echo "$TASK_OUTPUT" | tee -a "$LOG_FILE"
 
 echo "[$TIMESTAMP] Completed $TASK_NAME" >> "$LOG_FILE"
 
