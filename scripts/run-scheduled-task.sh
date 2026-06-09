@@ -77,11 +77,11 @@ if [ -z "$PROMPT" ]; then
 fi
 
 # Write prompt to temp file — claude reads it as the initial message
-PROMPT_FILE=$(mktemp /tmp/claude-prompt-XXXXXX.txt)
+PROMPT_FILE=$(mktemp /tmp/claude-prompt-XXXXXX)
 printf '%s' "$PROMPT" > "$PROMPT_FILE"
 
 # Output temp file so we can capture for email after streaming
-OUTPUT_FILE=$(mktemp /tmp/claude-output-XXXXXX.txt)
+OUTPUT_FILE=$(mktemp /tmp/claude-output-XXXXXX)
 
 echo "[$TIMESTAMP] Launching claude (interactive, streaming) | $CLAUDE_BIN" | tee -a "$LOG_FILE"
 echo ""
