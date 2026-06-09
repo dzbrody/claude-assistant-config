@@ -3,8 +3,7 @@
 # Usage: run-scheduled-task.sh <task-name>
 # Example: run-scheduled-task.sh morning-briefing
 #
-# Extracts the ## Prompt section from the .md file, substitutes {date},
-# and runs it non-interactively via `claude -p`.
+# Runs claude interactively so tool calls and progress stream live.
 
 set -euo pipefail
 
@@ -31,8 +30,8 @@ export ANTHROPIC_DEFAULT_SONNET_MODEL='us.anthropic.claude-sonnet-4-6[1m]'
 export ANTHROPIC_DEFAULT_OPUS_MODEL='global.anthropic.claude-opus-4-6-v1[1m]'
 export ANTHROPIC_DEFAULT_HAIKU_MODEL='us.anthropic.claude-haiku-4-5-20251001-v1:0'
 
-# Resolve claude binary — prefer native install, fall back to pnpm
-CLAUDE_BIN=$(command -v claude 2>/dev/null || echo "/Users/dzbrody/.local/bin/claude")
+# Resolve claude binary
+CLAUDE_BIN=$(command -v claude 2>/dev/null || echo "$HOME/.local/bin/claude")
 
 echo "[$TIMESTAMP] Checking AWS credentials..."
 if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
@@ -48,18 +47,17 @@ if [ ! -f "$TASK_FILE" ]; then
 fi
 
 mkdir -p "$LOG_DIR"
-
 echo "[$TIMESTAMP] Starting $TASK_NAME" >> "$LOG_FILE"
 
-# Check WhatsApp bridge health (non-fatal — log warning and continue)
+# Check WhatsApp bridge health (non-fatal)
 if ! curl -sf http://localhost:8080/api/health | grep -q '"connected":true' 2>/dev/null; then
   echo "[$TIMESTAMP] WARNING: WhatsApp bridge not healthy — WhatsApp steps may fail" >> "$LOG_FILE"
 fi
 
-# Extract everything after the first '## Prompt' line, then substitute {date}
+# Extract ## Prompt section, substitute {date}
 PROMPT=$(awk '/^## Prompt/{found=1; next} found{print}' "$TASK_FILE" | sed "s/{date}/$DATE/g")
 
-# Inject private people/JID data if present (gitignored, not in the task file itself)
+# Inject private people/JID data if present
 PEOPLE_FILE="$(dirname "$TASK_FILE")/.people.private.md"
 if [ -f "$PEOPLE_FILE" ]; then
   PROMPT=$(printf '%s' "$PROMPT" | python3 -c "
@@ -78,22 +76,39 @@ if [ -z "$PROMPT" ]; then
   exit 1
 fi
 
-echo "[$TIMESTAMP] Running claude -p | Binary: $CLAUDE_BIN" | tee -a "$LOG_FILE"
+# Write prompt to temp file — claude reads it as the initial message
+PROMPT_FILE=$(mktemp /tmp/claude-prompt-XXXXXX.txt)
+printf '%s' "$PROMPT" > "$PROMPT_FILE"
 
-# Stream output live to terminal + capture to file for email step
-OUTPUT_TMP=$(mktemp /tmp/claude-output-XXXXXX.txt)
-printf '%s' "$PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions --verbose 2>&1 \
-  | tee -a "$LOG_FILE" | tee "$OUTPUT_TMP"
+# Output temp file so we can capture for email after streaming
+OUTPUT_FILE=$(mktemp /tmp/claude-output-XXXXXX.txt)
+
+echo "[$TIMESTAMP] Launching claude (interactive, streaming) | $CLAUDE_BIN" | tee -a "$LOG_FILE"
+echo ""
+
+# Run claude interactively — streams tool calls + output live to terminal.
+# stdout goes to terminal AND is captured for the email step.
+"$CLAUDE_BIN" \
+  --dangerously-skip-permissions \
+  --print \
+  < "$PROMPT_FILE" \
+  2>&1 | tee "$OUTPUT_FILE"
+
 EXIT_CODE=${PIPESTATUS[0]}
-TASK_OUTPUT=$(cat "$OUTPUT_TMP")
-rm -f "$OUTPUT_TMP"
+rm -f "$PROMPT_FILE"
+
+TASK_OUTPUT=$(cat "$OUTPUT_FILE")
+rm -f "$OUTPUT_FILE"
+
+# Append full output to log
+echo "$TASK_OUTPUT" >> "$LOG_FILE"
 
 if [ $EXIT_CODE -ne 0 ] || [ -z "$TASK_OUTPUT" ]; then
-  echo "[$TIMESTAMP] ERROR: claude exited $EXIT_CODE with empty output" | tee -a "$LOG_FILE"
+  echo "[$TIMESTAMP] ERROR: claude exited $EXIT_CODE" | tee -a "$LOG_FILE"
   exit 1
 fi
 
-echo "[$TIMESTAMP] Completed $TASK_NAME" >> "$LOG_FILE"
+echo "" && echo "[$TIMESTAMP] Completed $TASK_NAME" | tee -a "$LOG_FILE"
 
 # Send summary email
 TASK_LABEL=$(echo "$TASK_NAME" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')
@@ -104,6 +119,6 @@ Body: Send the following output as a clean plain-text email, organized by sectio
 
 ${TASK_OUTPUT}"
 
-echo "[$TIMESTAMP] Sending summary email..." >> "$LOG_FILE"
-printf '%s' "$EMAIL_PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1 | tee -a "$LOG_FILE"
+echo "[$TIMESTAMP] Sending summary email..." | tee -a "$LOG_FILE"
+printf '%s' "$EMAIL_PROMPT" | "$CLAUDE_BIN" --dangerously-skip-permissions --print 2>&1 | tee -a "$LOG_FILE"
 echo "[$TIMESTAMP] Email sent" >> "$LOG_FILE"
