@@ -31,8 +31,8 @@ export ANTHROPIC_DEFAULT_SONNET_MODEL='us.anthropic.claude-sonnet-4-6[1m]'
 export ANTHROPIC_DEFAULT_OPUS_MODEL='global.anthropic.claude-opus-4-6-v1[1m]'
 export ANTHROPIC_DEFAULT_HAIKU_MODEL='us.anthropic.claude-haiku-4-5-20251001-v1:0'
 
-# Use the current claude binary (updated via pnpm)
-CLAUDE_BIN="/Users/dzbrody/Library/pnpm/bin/claude"
+# Resolve claude binary — prefer native install, fall back to pnpm
+CLAUDE_BIN=$(command -v claude 2>/dev/null || echo "/Users/dzbrody/.local/bin/claude")
 
 echo "[$TIMESTAMP] Checking AWS credentials..."
 if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
@@ -78,20 +78,22 @@ if [ -z "$PROMPT" ]; then
   exit 1
 fi
 
-# Run Claude non-interactively with all permissions pre-approved (unattended cron).
-# MCP servers are loaded from ~/.claude.json (global config) — no --mcp-config needed.
-echo "[$TIMESTAMP] Running claude -p ..." >> "$LOG_FILE"
-TASK_OUTPUT=$(echo "$PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1)
+echo "[$TIMESTAMP] Running claude -p | Binary: $CLAUDE_BIN" | tee -a "$LOG_FILE"
+
+# Pipe prompt to claude -p — MCP tools work in -p mode in Claude Code 2.1+
+TASK_OUTPUT=$(printf '%s' "$PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1)
 EXIT_CODE=$?
+
 if [ $EXIT_CODE -ne 0 ] || [ -z "$TASK_OUTPUT" ]; then
-  echo "[$TIMESTAMP] ERROR: claude -p exited $EXIT_CODE with empty/no output" >> "$LOG_FILE"
+  echo "[$TIMESTAMP] ERROR: claude exited $EXIT_CODE with empty output" | tee -a "$LOG_FILE"
   exit 1
 fi
+
 echo "$TASK_OUTPUT" | tee -a "$LOG_FILE"
 
 echo "[$TIMESTAMP] Completed $TASK_NAME" >> "$LOG_FILE"
 
-# Send summary email to db@axinagroup.com
+# Send summary email
 TASK_LABEL=$(echo "$TASK_NAME" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')
 EMAIL_PROMPT="Use the google-workspace send_email tool to send an email with these exact details:
 To: db@axinagroup.com
@@ -101,5 +103,5 @@ Body: Send the following output as a clean plain-text email, organized by sectio
 ${TASK_OUTPUT}"
 
 echo "[$TIMESTAMP] Sending summary email..." >> "$LOG_FILE"
-echo "$EMAIL_PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1 | tee -a "$LOG_FILE"
+printf '%s' "$EMAIL_PROMPT" | "$CLAUDE_BIN" -p --dangerously-skip-permissions 2>&1 | tee -a "$LOG_FILE"
 echo "[$TIMESTAMP] Email sent" >> "$LOG_FILE"
