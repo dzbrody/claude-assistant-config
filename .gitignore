@@ -5,8 +5,14 @@
 claude-config.json
 mcp-servers/openproject-mcp/
 
+# Claude local settings — contains MCP API keys and personal paths; use .example as template
+.claude/settings.local.json
+
 # Private contact data (phone numbers, WhatsApp JIDs — injected at runtime)
 scheduled-tasks/.people.private.md
+
+# Daily briefing output — operational/private
+daily_briefs/
 
 # Playwright session artifacts
 .playwright-mcp/

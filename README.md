@@ -30,18 +30,21 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 | [scheduled-tasks/README.md](scheduled-tasks/README.md) | Briefing prompts, document saving rules, TSPG group config |
 | [scripts/README.md](scripts/README.md) | OpenProject notifier config, background service management |
 | [infrastructure/README.md](infrastructure/README.md) | Terraform deployment, EC2 operations, Docker containers |
-- [Security Design](#security-design)
+| [axerp-openproject/](axerp-openproject/) | AXERP & AWS project hierarchy docs for OpenProject wiki |
 
 ---
 
 ## What This Does
 
 **Click ☀️ in the menu bar** → Terminal opens, claude launches, the full morning briefing runs automatically:
-- Scans overnight TSPG WhatsApp messages, downloads and saves documents with original filenames to Google Drive, creates OpenProject work packages for action items
-- Scans unread Gmail, flags urgent items from AXINA/XGC/4ward domains
-- Extracts tasks from Gemini meeting notes → OpenProject
+- Scans last 24h of messages across 8 WhatsApp groups (TSPG, TGI Tech, Angola, Uganda, Dev, Marketing, AXINOD UKR, Erin Davidson), downloads and saves documents to Google Drive, creates OpenProject work packages for action items
+- Scans all Gmail in the last 24h, flags urgent items from AXINA/XGC/4ward domains, auto-creates OpenProject tasks for action items
+- Extracts tasks from Gemini meeting notes and Zoom AI summaries → OpenProject
+- Scans 10 NCR Africa WhatsApp groups, enforces weekly touchpoint rule, drafts nudge messages for review
+- Auto-closes OpenProject tasks when completion is indicated in messages or email
+- Links relevant Drive documents to newly created tasks
 - Reviews today's calendar, flags conflicts
-- Writes `~/Documents/daily_briefs/YYYY-MM-DD.md`
+- Writes daily brief to `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 - Sends a WhatsApp summary to your number
 
 **Click 🌙** → Evening wrap-up: sent emails, Drive activity, TSPG afternoon messages, task status, tomorrow preview.
@@ -103,7 +106,8 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 ~/.claude-assistant/
 ├── README.md
 ├── .claude/
-│   └── settings.local.json        # MCP server config for claude CLI
+│   ├── settings.local.json.example  # Template — copy to settings.local.json, fill in keys
+│   └── settings.local.json          # ⚠️ gitignored — contains MCP API keys and personal paths
 │
 ├── desktop/                        # Menu bar app
 │   ├── app.py                     # rumps app — 🤖 in menu bar
@@ -112,11 +116,15 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 │   └── README.md
 │
 ├── scheduled-tasks/                # Briefing prompts
-│   ├── morning-briefing.md
+│   ├── morning-briefing.md        # Full morning briefing — 8 WhatsApp groups, 10 NCR groups
 │   ├── evening-wrap-up.md
 │   ├── weekend-briefing.md
 │   ├── weekly-review.md
 │   └── README.md
+│
+├── axerp-openproject/              # AXERP project hierarchy for OpenProject wiki
+│   ├── PROJECT_HIERARCHY.md       # All OpenProject project definitions
+│   └── wiki/                      # Technical specs (AXERP, AWS, Blockchain, API, Onboarding)
 │
 ├── mcp-servers/                    # MCP server config and install
 │   ├── install-all.sh             # Register all local servers with claude CLI
@@ -155,6 +163,9 @@ git clone <repo-url> ~/.claude-assistant
 bash ~/.claude-assistant/mcp-servers/install-all.sh
 
 # 4. Add remote MCP (key from 1Password: "AXINA MCP API Key")
+# Note: this is stored in .claude/settings.local.json (gitignored).
+# Copy .claude/settings.local.json.example → .claude/settings.local.json and fill in your key,
+# or run this command to register it via the CLI:
 claude mcp add --transport sse --scope user openproject-remote \
   "https://projects.axinagroup.com/mcp/sse?key=<KEY>"
 
@@ -203,6 +214,7 @@ See **[desktop/README.md](desktop/README.md)** for full installation details.
 | `filesystem` | `@modelcontextprotocol/server-filesystem` | Drive, Documents, OneDrive |
 | `document-loader` | `uvx markitdown-mcp` | Read PDF/Office files |
 | `aws-s3-local` | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access |
+| `playwright` | `@playwright/mcp@latest` | Browser automation for web tasks |
 
 ### Remote Server (SSE — works from any device)
 
@@ -218,12 +230,12 @@ API key stored in 1Password as **AXINA MCP API Key**.
 
 | Task | Button | Typical Runtime |
 |------|--------|----------------|
-| Morning Briefing | ☀️ | ~10–12 min |
+| Morning Briefing | ☀️ | ~12–15 min |
 | Evening Wrap-Up | 🌙 | ~5–7 min |
 | Weekend Briefing | 📅 | ~8–10 min |
 | Weekly Review | 📊 | ~5–8 min |
 
-Output: `~/Documents/daily_briefs/YYYY-MM-DD.md` and `YYYY-MM-DD-wrapup.md`
+Output: `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 
 WhatsApp summary sent to Daniel's number at the end of every run.
 
@@ -258,10 +270,11 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 - MCP server binds to `127.0.0.1:39128` only — all access via nginx HTTPS
 - 64-char hex API key required on all `/mcp` endpoints
 - No SSH port open — EC2 management via AWS SSM only
-- No hardcoded secrets — credentials in `.env` (chmod 600) on server, macOS Keychain locally
+- No hardcoded secrets — credentials in `.env` (chmod 600) on server, 1Password / macOS Keychain locally
 - S3: SSE-S3, public access blocked, CORS restricted to `projects.axinagroup.com`
 - WhatsApp bridge binds to `127.0.0.1:8080` only
-- `.gitignore` excludes `.env`, tokens, and `settings.local.json`
+- `.gitignore` excludes `.env`, tokens, `settings.local.json` (MCP API key), `daily_briefs/` (operational output), and private contacts
+- `.claude/settings.local.json.example` provides a redacted template for onboarding new team members
 
 ---
 

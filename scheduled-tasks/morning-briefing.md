@@ -19,12 +19,20 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 > `scheduled-tasks/.people.private.md` (gitignored — injected at runtime by
 > `run-scheduled-task.sh`). Do not add them here.
 
+### OpenProject API — Credentials & REST Reference
+- **Base URL:** `https://projects.axinagroup.com`
+- **API Key:** in `~/.claude-assistant/mcp-servers/openproject-mcp/.env` as `OPENPROJECT_API_KEY`
+- **Auth header:** `Authorization: Basic $(python3 -c "import base64; print(base64.b64encode(b'apikey:{KEY}').decode())")`
+- **Post comment:** `POST /api/v3/work_packages/{id}/activities` with body `{"comment":{"format":"markdown","raw":"..."}}`
+- **Close task:** `PATCH /api/v3/work_packages/{id}` with body `{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}` — get `lockVersion` from `list_work_packages` first
+- **Get Drive file ID:** `xattr -p "com.google.drivefs.item-id#S" "/path/to/file"` — returns the Google Drive file ID. Construct link: Docs/Slides/Sheets → `https://docs.google.com/document/d/{id}/edit`; PDF/other → `https://drive.google.com/file/d/{id}/view`
+
 ### Angola-Admin — Key Context
 - **Deal:** Multi-vertical sovereign technology deployment — Angola National Carbon Registry (ANCR live Apr 13 2026), ADVENT City smart city, Sovereign Smart Seaport, IITS data sovereignty
 - **Deal Stage:** Signed — Active Deployment (pipeline version ID 29)
 - **WhatsApp Group:** Vista Angola — members: Dan, Henry, Nathan Missial (Vista Capital), Jean Lesly
 - **Key Initiatives:** ANCR 12-month rollout, Blue Carbon Spine (1,600km coastline), ADVENT City AXERP integration, Methane mitigation credit quantification, Sovereign Smart Seaport proposal
-- **Documents:** 20 documents live at `projects.axinagroup.com/projects/angola-admin/documents`
+- **Documents:** `AXINAGRP/Sales/Africa/Angola/` — roadmap, LOE, seaport proposal, Huambo carbon report; also at `projects.axinagroup.com/projects/angola-admin/documents`
 - **Sales pipeline version IDs:** 24=Prospecting, 25=Gov Qualification, 26=Proposal Submitted, 27=MOU/Agreement, 28=Negotiation & Legal, 29=Signed Active, 30=Closed Lost
 - **When creating Angola tasks:** set version to "6. Signed — Active Deployment" (ID 29) unless context indicates otherwise
 
@@ -33,10 +41,20 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 - **Deal Stage:** MOU / Agreement (pipeline version ID 20 — "4. MOU / Agreement")
 - **Field Partner:** Aimable Mbarushimana — primary in-country contact (JID in `.people.private.md`)
 - **Key Stakeholders:** Commissioner (Ministry of Water & Environment), State House team, President's Office
-- **Upcoming Milestone #564:** May 25 2026 at 3:00 PM Uganda time (EAT/UTC+3) — presentation to Commissioner and State House team. Aimable must provide guest contact list and emails before this date.
-- **Documents:** 26 documents live at `projects.axinagroup.com/projects/uganda-admin/documents` (Proposals, Outputs, Research, Source Docs)
+- **Milestone #564 — OVERDUE:** Was May 25 2026 at 3:00 PM Uganda time (EAT/UTC+3). Presentation to Commissioner and State House team. Flag every day until Aimable confirms outcome.
+- **Documents:** `AXINAGRP/Sales/Africa/Uganda/` — meeting notes, email proposal, agreements; also at `projects.axinagroup.com/projects/uganda-admin/documents`
 - **Sales pipeline stages (version IDs):** 17=Prospecting, 18=Gov Qualification, 19=Proposal Submitted, 20=MOU/Agreement, 21=Negotiation & Legal, 22=Signed Active, 23=Closed Lost
 - **When creating Uganda tasks:** set version to "4. MOU / Agreement" (ID 20) unless context indicates a different stage
+
+### Panama Canal — Key Context
+- **Deal:** Smart infrastructure / AXINOD JVE with Panama Canal Authority — new opportunity flagged Jun 4 2026
+- **Status:** Warm contact via Henry Val — Canal administrator confirmed meeting interest; wants leadership intro, full tech explanation, JVE structure, projected costs, bid process requirements
+- **OpenProject Task:** #692 in `axina-sales`
+- **Documents:** `AXINAGRP/Sales/SouthAmerica/Panama/` — MoU (Mar 2026), PAN-REG scope framework v3.1
+
+### TGI/M&A — Key Context
+- **Definitive Agreement Deadline:** June 10, 2026 (Task #322) / June 8, 2026 (Task #202) — flag daily until executed
+- **Documents:** `AXINAGRP/XGC-TSPG/AMIRON/` — AMIRON decks, financial reports, Russian translations; `AXINAGRP/LEGAL/TGI_XGC_LEGAL/` — LOIs, signed package; `AXINAGRP/XGC-TSPG/Financials/` — cashflow models, Series A term sheet
 
 ### Task Assignment Rules
 <!-- Phone-to-OP-ID mapping is in .people.private.md (injected at runtime) -->
@@ -101,19 +119,35 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 ### Step 1: Scan Email (google-workspace)
 
 Using `google-workspace` MCP tools:
-- Retrieve all unread Gmail messages received since 5:00 PM yesterday.
+- Retrieve **all** Gmail messages (read and unread) received in the **last 24 hours** using query `newer_than:1d`. Use `maxResults=100`.
 - Flag anything that is:
   - Marked urgent or high importance
   - From anyone at 4ward.earth, XGC, AXINA, or TGI domains
   - A calendar invitation or meeting update
   - A billing alert, AWS notification, or service disruption notice
 - Summarize each flagged message in one sentence: **[From] — [Subject] — [What action, if any, is needed]**
+- **For each action item in email**, create an OpenProject task using the Project Routing Guide and Task Assignment Rules above. Prefix subject `[Email]`. Do not duplicate — check `list_work_packages` first.
+- **For each action item in email**, create an OpenProject task (Project Routing Guide + Task Assignment Rules). Prefix subject `[Email]`. Check `list_work_packages` first — no duplicates.
+- **Link Drive documents to new tasks**: After creating any task, check if a related document exists in AXINAGRP drive. If so, get its Drive ID via `xattr -p "com.google.drivefs.item-id#S" "/path/to/file"` and post a comment with the link using `POST /api/v3/work_packages/{id}/activities`.
+- **Close completed tasks**: For each email indicating a previously-open task was resolved (e.g., "done", "sent", "confirmed", "completed"), find the matching open work package via `list_work_packages`, get its `lockVersion`, then close it:
+  `curl -X PATCH https://projects.axinagroup.com/api/v3/work_packages/{id} -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}'`
 
 ---
 
 ### Step 1.5: Scan WhatsApp Groups (whatsapp + filesystem + openproject-remote)
 
-Scan **all seven** channels for overnight messages. For each, call `list_messages` with `after=yesterday 17:00`, `limit=100`, `sort_by=oldest`, `include_context=false`.
+Scan **all eight** channels for the last 24 hours of messages. For each, call `list_messages` with `after={datetime 24 hours ago}`, `limit=100`, `sort_by=oldest`, `include_context=false`.
+
+**Closing completed tasks**: After scanning each channel, look for messages that indicate a previously-created OpenProject task was completed or resolved (e.g., "done", "sent it", "confirmed", "signed", "paid", "resolved", "finished"). For any match:
+1. Find the open work package via `list_work_packages` (match by subject keyword)
+2. Get its `lockVersion` from the result
+3. Close it via REST: `curl -X PATCH https://projects.axinagroup.com/api/v3/work_packages/{id} -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}'`
+4. Note in the briefing: "Closed #[id] — [reason]"
+
+**Document linking on new tasks**: After creating any OpenProject task from a WhatsApp message, if a relevant document exists in the AXINAGRP drive:
+1. Get the file's Drive ID: `xattr -p "com.google.drivefs.item-id#S" "/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/..."`
+2. Build the link: `.gdoc/.gslides/.gsheet` → `https://docs.google.com/document/d/{id}/edit`; `.pdf`/other → `https://drive.google.com/file/d/{id}/view`
+3. Post as a comment: `curl -X POST https://projects.axinagroup.com/api/v3/work_packages/{id}/activities -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"comment":{"format":"markdown","raw":"📎 Related doc: [filename](url)"}}'`
 
 **Before creating any OpenProject task:** call `list_work_packages` on the target project and check for an existing open task with a matching subject. Never create duplicates.
 
@@ -139,6 +173,7 @@ For any action item, request, decision, or follow-up:
 - Prefix subject: `[TSPG]`
 - Description: include sender name, date, exact message snippet
 - **Do not duplicate** — check `list_work_packages` for existing `[TSPG]` tasks with similar subject first
+- **Link related docs** — see document linking instructions at top of Step 1.5
 
 #### Group B — TGI Tech (`120363428241001289@g.us`)
 **Project scope:** TGI Corporate, Engineering, AXERP, Carbon Registry, M&A
@@ -146,7 +181,7 @@ For any action item, request, decision, or follow-up:
 **1. Get messages** — `list_messages` with `chat_jid=120363428241001289@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/TGI-Tech/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Use the **Project Routing Guide** to route to the correct TGI/Engineering/AXERP project
@@ -161,8 +196,8 @@ Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared 
 **1. Get messages** — `list_messages` with `chat_jid=120363426342012826@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Angola/whatsapp-docs/`
-Also copy to: `~/db@xgccorp.com - Google Drive/Shared drives/AXINAGRP/Sales/Africa/Angola/_source_docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Angola/whatsapp-docs/`
+Also copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Angola/_source_docs/`
 
 **3. Extract action items → OpenProject:**
 - **All tasks go to `angola-admin` (project ID 8)**
@@ -184,13 +219,13 @@ Vista Angola: [X] messages, [X] docs saved, [X] tasks created
 **Project scope:** Uganda-Admin (`uganda-admin`, ID 7)
 **Context:** Aimable is the Uganda field partner for the National Sovereign Carbon Registry deal. Current deal stage: MOU / Agreement. JID is in `.people.private.md`.
 
-**Active milestone to track:** #564 — May 25 2026 at 3:00 PM Uganda time (EAT) — presentation to Commissioner and State House team. Aimable must provide guest contact list and emails before this date. If it is within 3 days of May 25, flag this in the briefing.
+**Overdue milestone #564:** Was May 25 2026 at 3:00 PM Uganda time (EAT) — presentation to Commissioner and State House team. Now overdue as of Jun 5 2026. Flag every day until Aimable confirms outcome. Check if presentation happened, what was the result, and what next steps are.
 
 **1. Get messages** — `list_messages` with Aimable's JID from `.people.private.md`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Uganda/whatsapp-docs/`
-Also copy to the Uganda Sales Drive folder: `~/db@xgccorp.com - Google Drive/Shared drives/AXINAGRP/Sales/Africa/Uganda/_source_docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Uganda/whatsapp-docs/`
+Also copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Uganda/_source_docs/`
 
 **3. Extract action items → OpenProject:**
 - **All tasks go to `uganda-admin` (project ID 7)**
@@ -216,7 +251,7 @@ Aimable (Uganda): [X] messages, [X] docs saved, [X] tasks created
 **1. Get messages** — `list_messages` with `chat_jid=120363404307998608@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/TGI-Tech/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route to `tgi-corporate` (ID 14) for partnership/agreement/business plan items
@@ -224,6 +259,7 @@ Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared 
 - Assign using **Task Assignment Rules** (Dan=5, Henry=13)
 - Prefix subject: `[TGI-Genesys]`
 - Do not duplicate
+- **Link related docs** — check `AXINAGRP/aximedic/`, `AXINAGRP/XGC-TSPG/AMIRON/` for relevant docs and post Drive links as comments
 
 **4. Per-group summary for briefing:**
 ```
@@ -238,7 +274,7 @@ TGI Geneses: [X] messages, [X] docs saved, [X] tasks created
 **1. Get messages** — `list_messages` with `chat_jid=120363407823632328@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Dev-Team/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route to the correct engineering/infra project using the **Project Routing Guide**
@@ -302,9 +338,47 @@ Tasks created: [list #ID + subject or "none"]
 
 ---
 
+### Step 1.6: NCR Africa Groups — Weekly Touchpoint Enforcement (whatsapp + openproject-remote)
+
+Scan all **10 NCR Africa groups** for messages in the last 24 hours. For each group, call `list_messages` with `after={datetime 24 hours ago}`, `limit=50`, `sort_by=oldest`, `include_context=false`.
+
+**Weekly touchpoint rule:** For each group, also check the last message timestamp regardless of the 24-hour window. If the **most recent outbound message from Daniel** (i.e., `is_from_me=true`) is **more than 7 days ago**, flag it and draft a follow-up nudge message. Post the draft in the briefing under "NCR Touchpoint Alerts" — do NOT send automatically. Daniel will review and approve.
+
+**Nudge message template:**
+> "Good [morning/afternoon] [first name or team], just checking in — any updates on the National Carbon Registry? Happy to jump on a call this week."
+> Adapt tone and content based on the last substantive exchange in that chat.
+
+**Extract action items → OpenProject:**
+- All NCR tasks go to `axina-sales` (ID 11) unless the country has a dedicated sub-project (Uganda → 7, Angola → 8)
+- Assign to Dan (OP user ID 5) unless context indicates Henry or another team member
+- Prefix subject: `[NCR-{Country}]`
+- Do not duplicate — check `list_work_packages` first
+
+#### NCR Groups
+
+| Group | JID | Country | OpenProject |
+|---|---|---|---|
+| NCR - Uganda - XGC-Axina | `120363404143054230@g.us` | Uganda | project 7 (`uganda-admin`) |
+| NCR - Tanzania - XGC-Axina | `120363426704399064@g.us` | Tanzania | project 11 (`axina-sales`) |
+| NCR - Namibia - XGC-Axina | `120363425777520890@g.us` | Namibia | project 11 |
+| NCR - Angola - XGC-Axina | `120363409250806282@g.us` | Angola | project 8 (`angola-admin`) |
+| NCR - Burkina Faso Mali - XGC-Axina | `120363405973801557@g.us` | Burkina Faso / Mali | project 11 |
+| NCR - Ethiopia - XGC-Axina | `120363403317252594@g.us` | Ethiopia | project 11 |
+| NCR - DRC Congo - XGC-Axina | `120363423236647070@g.us` | DRC / Congo | project 11 |
+| NCR - Botswana - XGC-Axina | `120363419061103953@g.us` | Botswana | project 11 |
+| NCR - Nigeria - XGC-Axina | *(JID TBD — create group)* | Nigeria | project 11 |
+| NCR - South Africa - XGC-Axina | *(JID TBD — create group)* | South Africa | project 11 |
+
+**Per-group summary for briefing:**
+```
+NCR - [Country]: last outbound [X days ago] | [X] new msgs today | [X] tasks created | ⚠️ NUDGE DUE (if applicable)
+```
+
+---
+
 ### Step 2.5: Extract Tasks from Gemini Meeting Notes (google-workspace + openproject-remote)
 
-Search for emails from `gemini-notes@google.com` received since 5:00 PM yesterday.
+Search for emails from `gemini-notes@google.com` received in the last 24 hours using query `from:gemini-notes@google.com newer_than:1d`.
 
 For each email found:
 1. Read the full email body.
@@ -323,7 +397,7 @@ If no emails found, skip.
 
 ### Step 2.6: Scan ZOOM-MEETINGS Drive Folder for AI Notes (google-workspace + openproject-remote)
 
-1. **List recent files**: `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` (db@xgccorp.com/My Drive/ZOOM-MEETINGS/gemini). Look for files created or modified since 5:00 PM yesterday.
+1. **List recent files**: `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` (db@xgccorp.com/My Drive/ZOOM-MEETINGS/gemini). Look for files created or modified in the last 24 hours.
 
 2. **For each new meeting notes file**:
    - Read full content via `get_file_content`
@@ -361,19 +435,22 @@ For any flagged email or meeting item that requires action today:
 
 ### Step 4: Scan Recent Drive Activity
 
-Using `filesystem` MCP tools, scan for files modified since 5:00 PM yesterday:
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC`
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP`
-- `~/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive`
-- `~/OneDrive`
+Using `google-workspace` `list_files` with `modifiedTime > '{yesterday_iso}' and trashed = false`, scan for files modified in the last 24 hours. Run separate queries for each shared drive context. Also use `filesystem` `search_files` for local sync paths.
 
-Note modified files by folder and org. Flag anything unexpected.
+Key paths to check:
+- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP` — company shared drive
+- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC` — XGC shared drive
+- `/Users/dzbrody/db@xgccorp.com - Google Drive/My Drive/_daily_brief/` — daily briefs (auto-written, skip)
+- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive` — personal drive
+- `/Users/dzbrody/OneDrive` — OneDrive (currently empty)
+
+Note modified files by folder and org. Flag anything unexpected — especially new docs in `Sales/`, `LEGAL/`, or `XGC-TSPG/AMIRON/` that may warrant linking to an open task.
 
 ---
 
 ### Step 5: Write the Briefing File
 
-Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md`:
+Using `mcp__filesystem__write_file`, create `/Users/dzbrody/db@xgccorp.com - Google Drive/My Drive/_daily_brief/{date}.md`:
 
 ```markdown
 # Daily Briefing — {date}
@@ -422,6 +499,43 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md`:
 |--------|---------|-----------------|-----------------|
 | [name] | [one-line] | [filename or —] | [#id or —] |
 
+## WhatsApp — AXINOD™ Data UKR
+| Sender | Summary | Documents Saved | OpenProject Task |
+|--------|---------|-----------------|-----------------|
+| [name] | [one-line] | [filename or —] | [#id or —] |
+
+## WhatsApp — Erin Davidson
+| Sender | Summary | Documents Saved | OpenProject Task |
+|--------|---------|-----------------|-----------------|
+| [name] | [one-line] | [filename or —] | [#id or —] |
+
+## NCR Africa Groups — Touchpoint Status
+| Country | Group | Last Outbound | New Msgs Today | Tasks Created | Alert |
+|---------|-------|--------------|----------------|---------------|-------|
+| Uganda | NCR - Uganda - XGC-Axina | [X days ago] | [N] | [#id or —] | [⚠️ NUDGE DUE / ✅ OK] |
+| Tanzania | NCR - Tanzania - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| Namibia | NCR - Namibia - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| Angola | NCR - Angola - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| Burkina Faso/Mali | NCR - Burkina Faso Mali - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| Ethiopia | NCR - Ethiopia - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| DRC/Congo | NCR - DRC Congo - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| Botswana | NCR - Botswana - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| Nigeria | NCR - Nigeria - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+| South Africa | NCR - South Africa - XGC-Axina | [X days ago] | [N] | [#id or —] | |
+
+## NCR Touchpoint Alerts — Drafted Nudges (review before sending)
+[List any groups overdue for contact, with drafted message for Daniel to approve and send]
+
+## OpenProject Tasks Closed Today
+| Task | Reason |
+|------|--------|
+| #[id] [subject] | [message that triggered close] |
+
+## Drive Documents Linked to Tasks
+| Task | Document | Drive Link |
+|------|----------|------------|
+| #[id] | [filename] | [url] |
+
 ## Tasks Created in OpenProject (from Gemini Notes — Google Meet)
 | Meeting | Project | Work Package | ID |
 |---------|---------|-------------|-----|
@@ -448,8 +562,12 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md`:
 
 ### Sales & Geo Projects
 - [Uganda, Angola, Kazakhstan, DR — country-level engagement updates]
-- **Uganda flag if within 3 days of May 25 2026:** ⚠️ Presentation to Commissioner + State House on May 25 at 3PM EAT — confirm Aimable has provided guest contact list (#564)
+- **Uganda #564 OVERDUE** ⚠️ — Presentation to Commissioner + State House was May 25 2026. Flag every day. Confirm with Aimable: did it happen? What was the outcome? What are next steps?
 - **Angola:** ANCR 12-month rollout active since Apr 13 2026 — flag any ANCR milestone updates, ADVENT City progress, or Seaport proposal activity from Vista Angola group
+
+### NCR Africa Pipeline
+- Uganda, Tanzania, Namibia, Angola, Burkina Faso/Mali, Ethiopia, DRC, Botswana, Nigeria, South Africa
+- Flag any group with no outbound message from Daniel in the last 7 days — draft nudge for review
 
 ### Marketing
 - [Press Releases, Whitepapers, Digital Campaigns, Brand & Creative — Marketing group activity]
@@ -458,10 +576,14 @@ Using `filesystem` MCP tools, create `~/Documents/daily_briefs/{date}.md`:
 [Patterns noticed, scheduling conflicts, cross-group dependencies, NDA blockers, upcoming deadlines, anything that needs follow-up today]
 
 **Standing items to check daily:**
-- **May 25 2026 Uganda presentation** (#564) — confirm Aimable has sent guest contacts. Flag if overdue.
-- **NDA — Henry's contact** (#542) — still outstanding as of May 18 2026. Note if still open.
-- **Benjamin Dach** — new to TSPG group as of May 18 2026. Note any new commitments or context he provides.
-- **TGI Geneses / AX-HEALTH** — check for: (1) formal agreement status (Henry blocks announcements on this), (2) AXINOD unit BOM/pricing progress, (3) Viinay NDA signed?, (4) any UNDP bid deadlines in the group.
+- **Uganda #564 — OVERDUE** — Presentation to Commissioner + State House was May 25 2026. Flag every day until Aimable confirms outcome and next steps. Check for any new messages from Aimable.
+- **TGI Definitive Agreement — URGENT DEADLINE** (#202, #322) — Must be executed by June 8–10 2026. Flag daily. Check TSPG and TGI Tech groups for any updates.
+- **Panama Canal (#692)** — Henry has warm contact with Canal administrator. Follow up on scheduling leadership visit; prep JVE structure + tech brief. Docs in `AXINAGRP/Sales/SouthAmerica/Panama/`.
+- **NDA — Henry's contact (#542)** — outstanding since May 18 2026. Note if still open.
+- **Benjamin Dach** — joined TSPG group May 18 2026. Note any new commitments or doc references he provides.
+- **TGI Geneses / AX-HEALTH** — check for: (1) formal agreement status (Henry blocks announcements on this), (2) AXINOD unit BOM/pricing progress, (3) Viinay NDA signed?, (4) any UNDP bid deadlines.
+- **Angola ADVENT City** — flag any pitch deck updates in `AXINAGRP/XGC-TSPG/AMIRON/`; Russian translations active suggesting investor outreach.
+- **NCR Africa — Weekly Touchpoint Rule** — No country group should go 7+ days without an outbound message from Daniel. Check last outbound date for all 10 NCR groups every morning. Draft nudge for any overdue group and list under "NCR Touchpoint Alerts" for Daniel to approve and send. Countries: Uganda, Tanzania, Namibia, Angola, Burkina Faso/Mali, Ethiopia, DRC, Botswana, Nigeria, South Africa.
 ```
 
 ---
@@ -473,8 +595,12 @@ Using `whatsapp` MCP tools, send me a WhatsApp message (my JID is in `.people.pr
 > ☀️ Morning briefing for {date}:
 > 📅 [X] meetings today — first at [time]: [title]
 > 📬 [X] urgent emails flagged
-> 💬 TSPG: [X] msgs, [X] docs, [X] tasks | TGI Tech: [X] msgs, [X] tasks | Dev: [X] msgs, [X] tasks | Angola: [X] msgs, [X] tasks | Uganda/Aimable: [X] msgs, [X] tasks
+> 💬 TSPG: [X] msgs, [X] docs, [X] tasks | TGI Tech: [X] msgs, [X] tasks | Dev: [X] msgs, [X] tasks | Angola: [X] msgs, [X] tasks | Uganda/Aimable: [X] msgs, [X] tasks | AXINOD: [X] msgs, [X] tasks | Erin: [X] msgs (omit groups with 0 messages)
 > 📝 [X] tasks from Gemini notes, [X] from Zoom AI (omit if 0)
-> 🇺🇬 Uganda May 25 presentation: [guest list received / still pending] (omit if more than 3 days away)
-> ⚠️ [critical alerts, one per line, omit if none]
-> Full briefing: ~/Documents/daily_briefs/{date}.md
+> 🔗 [X] Drive docs linked to tasks, [X] tasks closed (omit if 0)
+> 🇺🇬 Uganda #564 OVERDUE — Aimable: [last message date / no contact since {date}]
+> ⚠️ TGI Definitive Agreement deadline: [X] days away (Jun 8–10 2026) — [signed / still pending]
+> ⚠️ Panama Canal #692 — [scheduled / pending Henry coordination]
+> 🌍 NCR Africa: [list countries with ⚠️ NUDGE DUE, or "all touched this week" if none]
+> ⚠️ [any other critical alerts, omit if none]
+> Full briefing: /Users/dzbrody/db@xgccorp.com - Google Drive/My Drive/_daily_brief/{date}.md

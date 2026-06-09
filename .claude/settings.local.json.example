@@ -1,0 +1,134 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod +x *)",
+      "Bash(bash *)",
+      "Bash(sudo *)",
+      "Bash(aws *)",
+      "Bash(python3 *)",
+      "Bash(uv run *)",
+      "Bash(uvx *)",
+      "Bash(npx *)",
+      "Bash(claude *)",
+      "Bash(curl *)",
+      "Bash(cp *)",
+      "Bash(mv *)",
+      "Bash(mkdir -p *)",
+      "Bash(rm -f *)",
+      "Bash(rm -rf *)",
+      "Bash(find *)",
+      "Bash(grep *)",
+      "Bash(awk *)",
+      "Bash(sed *)",
+      "Bash(xattr *)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)",
+      "Bash(security *)",
+      "Bash(~/.claude-assistant/scripts/run-scheduled-task.sh *)",
+      "Read(//Users/YOUR_USERNAME/**)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "WebFetch(domain:www.openproject.org)",
+      "WebFetch(domain:4ward.earth)",
+      "mcp__whatsapp__list_messages",
+      "mcp__whatsapp__get_chat",
+      "mcp__whatsapp__list_chats",
+      "mcp__whatsapp__send_message",
+      "mcp__whatsapp__get_message_context",
+      "mcp__whatsapp__download_media",
+      "mcp__google-workspace__get_profile",
+      "mcp__google-workspace__list_events",
+      "mcp__google-workspace__create_event",
+      "mcp__google-workspace__search_emails",
+      "mcp__google-workspace__read_email",
+      "mcp__google-workspace__send_email",
+      "mcp__google-workspace__mark_as_read",
+      "mcp__google-workspace__list_files",
+      "mcp__google-workspace__get_file",
+      "mcp__google-workspace__get_file_content",
+      "mcp__filesystem__write_file",
+      "mcp__filesystem__read_file",
+      "mcp__filesystem__read_text_file",
+      "mcp__filesystem__read_multiple_files",
+      "mcp__filesystem__read_media_file",
+      "mcp__filesystem__list_directory",
+      "mcp__filesystem__list_directory_with_sizes",
+      "mcp__filesystem__list_allowed_directories",
+      "mcp__filesystem__directory_tree",
+      "mcp__filesystem__search_files",
+      "mcp__filesystem__get_file_info",
+      "mcp__filesystem__edit_file",
+      "mcp__filesystem__move_file",
+      "mcp__filesystem__create_directory",
+      "mcp__openproject-remote__list_projects",
+      "mcp__openproject-remote__list_work_packages",
+      "mcp__openproject-remote__get_project",
+      "mcp__openproject-remote__create_work_package",
+      "mcp__openproject-remote__search_s3_objects",
+      "mcp__playwright__browser_press_key"
+    ]
+  },
+  "mcpServers": {
+    "google-workspace": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@alanxchen/google-workspace-mcp"
+      ]
+    },
+    "whatsapp": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/Users/YOUR_USERNAME/whatsapp-mcp/whatsapp-mcp-server",
+        "run",
+        "main.py"
+      ]
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/YOUR_USERNAME/Documents",
+        "/Users/YOUR_USERNAME/Downloads",
+        "/Users/YOUR_USERNAME/Desktop",
+        "/Users/YOUR_USERNAME/Library/CloudStorage/GoogleDrive-YOUR_EMAIL/Shared drives",
+        "/Users/YOUR_USERNAME/whatsapp-mcp/whatsapp-bridge/store"
+      ]
+    },
+    "document-loader": {
+      "command": "uvx",
+      "args": [
+        "markitdown-mcp"
+      ]
+    },
+    "aws-s3-local": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@iflow-mcp/samuraikun-aws-s3-mcp"
+      ],
+      "env": {
+        "AWS_REGION": "us-east-1",
+        "S3_BUCKETS": "YOUR_S3_BUCKET_NAME"
+      }
+    },
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    },
+    "openproject-remote": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy",
+        "https://YOUR_OPENPROJECT_HOST/mcp/sse?key=YOUR_MCP_API_KEY"
+      ]
+    }
+  }
+}
