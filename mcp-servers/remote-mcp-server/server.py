@@ -18,7 +18,8 @@ import boto3
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings  # noqa: F401
 from starlette.requests import Request
-from starlette.responses import Response
+from starlette.responses import JSONResponse, Response
+from starlette.routing import Route
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 # ---- Configuration ----
@@ -354,9 +355,20 @@ class APIKeyMiddleware:
         await self.app(scope, receive, send)
 
 
+# ---- Health endpoint ----
+async def health(request: Request) -> JSONResponse:
+    return JSONResponse({
+        "status": "ok",
+        "tools": len(mcp._tool_manager.list_tools()),
+        "openproject_url": OP_URL,
+        "s3_buckets": S3_BUCKETS,
+    })
+
+
 # ---- ASGI App (SSE transport) ----
 app = mcp.sse_app()
 app.add_middleware(APIKeyMiddleware)  # type: ignore[attr-defined]
+app.routes.append(Route("/mcp/health", health, methods=["GET"]))  # type: ignore[attr-defined]
 
 
 if __name__ == "__main__":
