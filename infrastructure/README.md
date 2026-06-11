@@ -13,7 +13,7 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
   - `nginx:stable-alpine` — Reverse proxy + SSL termination
   - `certbot/certbot` — Let's Encrypt auto-renewal
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
-  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.13, port 39128, internal)
+  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, port 39128, internal; includes Whisper transcription)
 - **EBS Volumes**:
   - `/dev/xvda` (30GB gp3) — Root
   - `/dev/xvdf` (100GB gp3) — Persistent data (survives instance replacement)
@@ -261,10 +261,14 @@ nginx (/mcp location) → openproject-mcp-server:39128
 | `list_projects` | List all OpenProject projects |
 | `get_project` | Get project details |
 | `create_work_package` | Create a task/feature/bug in a project |
+| `list_work_packages` | List work packages in a project |
+| `update_work_package` | Update status, assignee, or subject |
+| `search_work_packages` | Search work packages by keyword |
 | `list_s3_buckets` | List accessible S3 buckets |
 | `list_s3_objects` | List objects in a bucket |
-| `get_s3_object` | Read a file from S3 |
+| `get_s3_object` | Read a file from S3 (first 10KB via byte-range) |
 | `search_s3_objects` | Search files by name pattern |
+| `transcribe_s3_audio` | Transcribe an audio file from S3 using Whisper (CPU, int8) |
 
 ### First-Time Setup (on the running EC2)
 
@@ -312,6 +316,36 @@ claude mcp add --transport sse --scope user openproject-remote \
 3. URL: `https://projects.axinagroup.com/mcp/sse`
 4. Header: `X-MCP-Key: <your-mcp-api-key>`
 5. Name: `AXINA Group`
+
+### Rebuild and Deploy the MCP Container
+
+After updating `server.py` or `Dockerfile`, deploy via SSM — no SSH required:
+
+```bash
+# 1. Push changes to GitHub
+git push
+
+# 2. Connect to EC2
+aws ssm start-session --target <instance-id>
+
+# 3. Pull latest and rebuild
+cd /opt/openproject
+git pull   # or copy files via S3: aws s3 cp s3://axina-openproject-files/tmp/server.py /data/mcp-server/server.py
+docker compose up -d --build mcp-server
+
+# 4. Verify — tools count will increase when new tools are added
+curl https://projects.axinagroup.com/mcp/health -H "X-MCP-Key: <MCP_API_KEY>"
+```
+
+The `tools` field in the health response reflects the number of registered MCP tools. Confirm it matches after a rebuild.
+
+### Voice Memo → OpenProject Workflow
+
+Drop any `.m4a`, `.mp3`, or `.wav` recording into `s3://axina-openproject-files/voice-memos/` then instruct Claude:
+
+> "Find the newest audio file in the `axina-openproject-files` bucket under `voice-memos/` using `search_s3_objects`, transcribe it with `transcribe_s3_audio` using model size `tiny`, summarize the action items, and create work packages in the appropriate projects using the Project Routing Guide."
+
+Whisper runs on the EC2 instance (CPU, int8 quantization). The `tiny` model uses ~75MB RAM and transcribes a 5-minute memo in ~30 seconds on a t3.large. Use `base` for better accuracy on accented speech or technical terminology.
 
 ### Store Key in macOS Keychain
 

@@ -11,6 +11,7 @@ Auth: MCP_API_KEY env var, checked via:
 import os
 import json
 import base64
+import tempfile
 import urllib.parse
 
 import httpx
@@ -329,6 +330,56 @@ def search_s3_objects(query: str, bucket: str = "") -> str:
         except Exception as e:
             results.append({"bucket": b, "error": str(e)})
     return json.dumps({"query": query, "results": results, "count": len(results)}, indent=2)
+
+
+# ---- Audio Transcription Tool ----
+
+@mcp.tool()
+def transcribe_s3_audio(bucket: str, key: str, model_size: str = "tiny") -> str:
+    """Download an audio file from S3 and transcribe it using Whisper on the EC2 instance.
+
+    Args:
+        bucket: S3 bucket name where the audio file is stored
+        key: S3 object key (e.g. voice-memos/2026-06-11.m4a)
+        model_size: Whisper model size — tiny (fastest, ~75MB), base, small. Default: tiny
+    """
+    from faster_whisper import WhisperModel
+
+    if bucket not in S3_BUCKETS:
+        return json.dumps({"error": f"Bucket '{bucket}' is not in the authorized list."})
+
+    tmp_path = None
+    try:
+        suffix = os.path.splitext(key)[1] or ".audio"
+        with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp_file:
+            tmp_path = tmp_file.name
+
+        s3_client.download_file(bucket, key, tmp_path)
+
+        # int8 quantization keeps peak RAM well under 1GB on t3.large
+        model = WhisperModel(model_size, device="cpu", compute_type="int8")
+        segments, info = model.transcribe(tmp_path, beam_size=5)
+
+        lines = [
+            f"[{seg.start:.2f}s -> {seg.end:.2f}s]: {seg.text.strip()}"
+            for seg in segments
+        ]
+        return json.dumps(
+            {
+                "bucket": bucket,
+                "key": key,
+                "detected_language": info.language,
+                "language_probability": round(info.language_probability, 3),
+                "duration_seconds": round(info.duration, 2),
+                "transcript": "\n".join(lines),
+            },
+            indent=2,
+        )
+    except Exception as e:
+        return json.dumps({"error": str(e)})
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 # ---- Auth Middleware ----

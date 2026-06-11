@@ -615,6 +615,21 @@ Using `mcp__filesystem__write_file`, create `/Users/dzbrody/db@xgccorp.com - Goo
 
 ---
 
+### Step 7: Interactive NCR Nudge Dispatch
+
+After writing the briefing file, for each group flagged **⚠️ NUDGE DUE** in the NCR Touchpoint table:
+
+1. Print the drafted nudge message to the terminal.
+2. Ask: `Send nudge to NCR - [Country] group? [y/N]`
+3. Wait for input:
+   - `y` / `yes` → call `mcp__whatsapp__send_message` with the drafted text to that group's JID, then confirm: `✅ Sent to [Country]`
+   - `n` / anything else → print `⏭ Skipped [Country]` and continue to the next overdue group
+4. After processing all overdue groups, print a summary: `NCR nudges: [X] sent, [X] skipped`
+
+Do not auto-send without waiting for input. Do not modify the drafted message before sending — send it exactly as written.
+
+---
+
 ### Step 6: Send WhatsApp Briefing
 
 Using `whatsapp` MCP tools, send me a WhatsApp message (my JID is in `.people.private.md`):
