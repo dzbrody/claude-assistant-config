@@ -1,8 +1,8 @@
-# Claude Personal Assistant — AXINA Group Infrastructure
+# Claude Personal Assistant — CTO Rescues Infrastructure
 
 A complete AI-powered personal assistant ecosystem built with Claude Code and Claude CLI. Runs morning briefings, evening wrap-ups, weekly reviews, and real-time OpenProject notifications — all from a native Mac menu bar app with one click.
 
-> **Author**: dzbrody  
+> **Author**: Daniel Brody (@dzbrody) — [ctorescues.com](https://ctorescues.com/)  
 > **Infrastructure**: AWS us-east-1  
 > **Status**: Active
 
@@ -237,7 +237,7 @@ See **[desktop/README.md](desktop/README.md)** for full installation details.
 |--------|----------|-------|
 | `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `update_work_package`, `search_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects`, `transcribe_s3_audio` |
 
-API key stored in 1Password as **AXINA MCP API Key**. Server: Python 3.12, faster-whisper 1.0.3 (int8 CPU), FastMCP, EC2 IAM role for S3.
+API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12, faster-whisper 1.0.3 (int8 CPU), FastMCP, EC2 IAM role for S3.
 
 ---
 
