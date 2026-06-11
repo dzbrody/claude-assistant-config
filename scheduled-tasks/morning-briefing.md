@@ -243,10 +243,10 @@ Aimable (Uganda): [X] messages, [X] docs saved, [X] tasks created
 
 ---
 
-#### Group F — TGI Geneses / AX-HEALTH (`120363404307998608@g.us`)
+#### Group F — TGI Genesys Health / Aximedic.com (`120363404307998608@g.us`)
 **Project scope:** TGI Corporate, AXERP Health, Engineering — AX-HEALTH partnership, AXINOD hardware
 **Members:** Dan, Henry Val, Dr. Viinay Genis India, Vijaygopal R (contact details in `.people.private.md`)
-**Context:** AX-HEALTH partnership (Care Relay + AXINOD HIS integration + AXINOD Data Center in a Box hardware production). Viinay's team is subcontractor for AXINOD unit assembly/shipping. Henry driving agreement before announcements. Also tracks UNDP Uganda bids submitted through Dan as registered supplier.
+**Context:** Health tech vertical — Aximedic.com / TGI Genesys Health / AX-HEALTH partnership (Care Relay + AXINOD HIS integration + AXINOD Data Center in a Box hardware production). Viinay's team is subcontractor for AXINOD unit assembly/shipping. Henry driving agreement before announcements. Also tracks UNDP Uganda bids submitted through Dan as registered supplier.
 
 **1. Get messages** — `list_messages` with `chat_jid=120363404307998608@g.us`
 
@@ -263,7 +263,7 @@ Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared 
 
 **4. Per-group summary for briefing:**
 ```
-TGI Geneses: [X] messages, [X] docs saved, [X] tasks created
+TGI Genesys Health / Aximedic.com: [X] messages, [X] docs saved, [X] tasks created
 ```
 
 ---
@@ -310,6 +310,28 @@ Group: AXINOD™ Data UKR
 Messages scanned: N
 Documents saved: [list filenames or "none"]
 Tasks created: [list #ID + subject or "none"]
+```
+
+---
+
+#### Group I — TGI Inside (JID TBD)
+**Project scope:** TGI Corporate, M&A, financials, internal corporate communications
+**Context:** Internal corporate/financial channel. JID to be added once group is confirmed — update this file and `.people.private.md` when available.
+
+**1. Get messages** — `list_messages` with TGI Inside JID (add to `.people.private.md` when known)
+
+**2. Download documents and media** — same procedure as Group A.
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+
+**3. Extract action items → OpenProject:**
+- Route to `tgi-corporate` (ID 14) for corporate/financial items; `m-and-a` (ID 13) for M&A items
+- Assign using **Task Assignment Rules**
+- Prefix subject: `[TGI-Inside]`
+- Do not duplicate
+
+**4. Per-group summary for briefing:**
+```
+TGI Inside: [X] messages, [X] docs saved, [X] tasks created
 ```
 
 ---
@@ -494,12 +516,17 @@ Using `mcp__filesystem__write_file`, create `/Users/dzbrody/db@xgccorp.com - Goo
 |--------|---------|-----------------|-----------------|
 | [name] | [one-line] | [filename or —] | [#id or —] |
 
-## WhatsApp — TGI Geneses (AX-HEALTH / AXINOD Hardware)
+## WhatsApp — TGI Genesys Health / Aximedic.com (AX-HEALTH / AXINOD Hardware)
 | Sender | Summary | Documents Saved | OpenProject Task |
 |--------|---------|-----------------|-----------------|
 | [name] | [one-line] | [filename or —] | [#id or —] |
 
 ## WhatsApp — AXINOD™ Data UKR
+| Sender | Summary | Documents Saved | OpenProject Task |
+|--------|---------|-----------------|-----------------|
+| [name] | [one-line] | [filename or —] | [#id or —] |
+
+## WhatsApp — TGI Inside
 | Sender | Summary | Documents Saved | OpenProject Task |
 |--------|---------|-----------------|-----------------|
 | [name] | [one-line] | [filename or —] | [#id or —] |
