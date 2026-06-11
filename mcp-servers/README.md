@@ -12,7 +12,7 @@ MCP servers extend Claude with tools for email, calendar, messaging, files, brow
 | `filesystem` | stdio | `@modelcontextprotocol/server-filesystem` | Controlled file access |
 | `playwright` | stdio | `@playwright/mcp@latest` | Browser automation |
 | `aws-s3-local` | stdio | `@iflow-mcp/samuraikun-aws-s3-mcp` | S3 file access (local/CLI) |
-| `openproject-remote` | SSE | EC2 FastMCP server (Python 3.13) | OpenProject + S3 (remote, works anywhere) |
+| `openproject-remote` | SSE | EC2 FastMCP server (Python 3.12) | OpenProject + S3 + Whisper transcription (remote, works anywhere) |
 
 ---
 
@@ -69,7 +69,7 @@ This registers all local (stdio) servers with Claude CLI at user scope.
 
 The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and works from **any device** — Mac, mobile, or any MCP client.
 
-**Tools available (10 total):**
+**Tools available (11 total):**
 
 | Tool | Description |
 |------|-------------|
@@ -81,8 +81,9 @@ The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and work
 | `search_work_packages` | Search work packages by keyword across all or a specific project |
 | `list_s3_buckets` | List accessible S3 buckets |
 | `list_s3_objects` | List files in a bucket |
-| `get_s3_object` | Read a text file from S3 (truncated at 10KB) |
+| `get_s3_object` | Read a text file from S3 (first 10KB via byte-range header) |
 | `search_s3_objects` | Search file names across S3 buckets |
+| `transcribe_s3_audio` | Transcribe audio/video from S3 using faster-whisper (CPU, int8) |
 
 **Connect via Claude CLI:**
 ```bash

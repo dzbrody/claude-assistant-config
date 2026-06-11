@@ -8,7 +8,7 @@ Prompts for the four automated briefings. These are run via the **🤖 Claude As
 
 | File | When | What It Does |
 |------|------|-------------|
-| `morning-briefing.md` | Weekdays, ~7:00 AM | Scans 8 WhatsApp groups + 10 NCR Africa groups (last 24h), downloads docs to Drive, creates/closes OpenProject tasks, links Drive docs to tasks, scans Gmail (last 24h), extracts Gemini/Zoom meeting notes, enforces NCR weekly touchpoint rule, reviews calendar, writes daily brief to Google Drive `_daily_brief/`, sends WhatsApp summary |
+| `morning-briefing.md` | Weekdays, ~7:00 AM | Scans 8 WhatsApp groups + 10 NCR Africa groups (last 24h), downloads docs to Drive, creates/closes OpenProject tasks, links Drive docs to tasks, scans Gmail (last 24h), extracts tasks from `gemini-notes@google.com` emails and Zoom AI notes, enforces NCR weekly touchpoint rule (interactive y/N nudge dispatch — Step 7), reviews calendar, writes daily brief to Google Drive `_daily_brief/`, sends WhatsApp summary |
 | `evening-wrap-up.md` | Weekdays, ~6:00 PM | Scans WhatsApp groups for daytime activity, reviews sent email, scans modified Drive files, checks open tasks, previews tomorrow, writes wrapup file, sends WhatsApp summary |
 | `weekend-briefing.md` | Sundays, ~8:00 AM | Covers Fri 4 PM → Sun morning: full group catch-up, urgent email scan, Gemini notes, Drive activity, Monday preview, sends WhatsApp summary |
 | `weekly-review.md` | Sundays, ~10:00 AM | Reads all daily brief files, aggregates by org (4ward / XGC / AXINA), flags stale OpenProject tasks, sends WhatsApp summary |

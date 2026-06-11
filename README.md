@@ -24,6 +24,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 
 | File | Contents |
 |------|----------|
+| [RELEASE-NOTES-v2.0.md](RELEASE-NOTES-v2.0.md) | Full changelog for the June 11 2026 release (v2.0.0) |
 | [desktop/README.md](desktop/README.md) | Menu bar app install, accessibility setup, AWS session, CLI usage, logs |
 | [mcp-servers/TEAM-INSTALL.md](mcp-servers/TEAM-INSTALL.md) | Full 12-step new user setup guide — start here for a fresh Mac |
 | [mcp-servers/README.md](mcp-servers/README.md) | MCP server inventory, WhatsApp architecture, add/remove servers |
@@ -38,14 +39,28 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 
 **Click ☀️ in the menu bar** → Terminal opens, claude launches, the full morning briefing runs automatically:
 - Scans last 24h across **8 core WhatsApp groups** (TSPG, TGI Tech, Angola, Uganda, Dev, TGI Geneses, AXINOD UKR, Erin Davidson) — downloads docs to Drive, creates OpenProject tasks
-- Scans **10 NCR Africa WhatsApp groups** — enforces weekly touchpoint rule, drafts nudge messages for review (never auto-sends)
+- Scans **10 NCR Africa WhatsApp groups** — enforces weekly touchpoint rule, prompts y/N before sending nudge messages (never auto-sends)
 - Scans all Gmail in the last 24h, auto-creates OpenProject tasks for action items
-- Extracts tasks from Gemini meeting notes and Zoom AI summaries → OpenProject
+- Extracts tasks from Gemini meeting notes (`gemini-notes@google.com`) and Zoom AI summaries → OpenProject
 - Auto-closes OpenProject tasks when completion is confirmed in messages or email
 - Links relevant Drive documents to newly created tasks via Drive file ID
 - Reviews today's calendar, flags conflicts
 - Writes daily brief to `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 - Sends WhatsApp summary to your number
+
+**CLI command matrix** (`/pmo-*` triggers, run from the terminal at any time):
+
+| Command | What it does |
+|---------|-------------|
+| `/transcribe` | Transcribe audio/video from S3 or a Google Drive / Meet URL via EC2 Whisper |
+| `/ingest-meeting-notes` | Fetch `gemini-notes@google.com`, filter by Axina context, create OP tasks |
+| `/pmo-dedup` | Detect and merge duplicate work packages across all projects |
+| `/pmo-track-time` | Match calendar events to OP tasks and log time entries |
+| `/pmo-sweep-completed` | Auto-close 100%-done or all-children-closed tasks |
+| `/pmo-schedule-focus` | Book "PMO Focus Block" calendar slots for top-priority tasks |
+| `/pmo-clean-backlog` | Triage tasks missing assignee, start date, or due date |
+
+Run `/pmo-menu` to see the full reference table.
 
 **Click 🌙** → Evening wrap-up: sent emails, Drive activity, TSPG afternoon messages, task status, tomorrow preview.
 
@@ -220,9 +235,9 @@ See **[desktop/README.md](desktop/README.md)** for full installation details.
 
 | Server | Endpoint | Tools |
 |--------|----------|-------|
-| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `update_work_package`, `search_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects` |
+| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `update_work_package`, `search_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects`, `transcribe_s3_audio` |
 
-API key stored in 1Password as **AXINA MCP API Key**. Server: Python 3.13, mcp 1.27.2, FastMCP, EC2 IAM role for S3.
+API key stored in 1Password as **AXINA MCP API Key**. Server: Python 3.12, faster-whisper 1.0.3 (int8 CPU), FastMCP, EC2 IAM role for S3.
 
 ---
 

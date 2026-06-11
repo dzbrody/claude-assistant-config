@@ -17,6 +17,8 @@ Posts OpenProject `axina-group-admin` changes to the AXINA-TSPG-TEAM WhatsApp gr
 
 **Every message includes a direct link** to the work package in OpenProject.
 
+**Security note:** WhatsApp bridge v0.3.0+ requires Bearer token auth. The notifier injects the token automatically from `~/whatsapp-mcp/whatsapp-bridge/store/.bridge-token`. `save_state` only runs after all notifications succeed — failures exit 1 to preserve the retry window.
+
 **Setup:**
 ```bash
 # Already installed if you ran TEAM-INSTALL.md
@@ -55,14 +57,42 @@ bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing
 1. Checks AWS SSO credentials
 2. Checks WhatsApp bridge health (Bearer token auth since v0.3.0)
 3. Extracts the `## Prompt` section from the task `.md` file
-4. Injects private contact data from `.people.private.md`
-5. Writes prompt to a temp file and runs `claude --print` — streams tool calls live
-6. Captures output, sends summary email to `db@axinagroup.com`
+4. Injects private contact data via `os.environ` (not shell interpolation — prevents script injection)
+5. Writes prompt to a temp file; `trap EXIT` guarantees the temp file is wiped on any exit path
+6. Runs `claude --print` — streams tool calls live
+7. Captures output, sends summary email to `db@axinagroup.com`
 
 **Requires:**
-- `~/.local/bin/claude` (native install) — resolved dynamically via `command -v claude`
+- `claude` resolved dynamically via `command -v claude`
 - AWS SSO session active (`aws sso login --profile xgc-main`)
 - WhatsApp bridge running
+
+---
+
+## whatsapp-cmd-hub.py
+
+Polls Daniel's direct WhatsApp chat for `!command` triggers and responds automatically.
+
+**Supported triggers:**
+| Command | Response |
+|---------|---------|
+| `!status` | Summary of open OP tasks by project |
+| `!deadlines` | Tasks with due dates in the next 7 days |
+| `!brief` | Short morning-brief-style summary |
+| `!ncr` | NCR Africa pipeline status |
+| `!help` | Lists available commands |
+
+Project shorthands accepted in commands: `uganda`, `angola`, `tgi`, `axinod`, `sales`.
+
+State-tracked via `last_processed` timestamp — safe to run on a 15-minute cron without duplicating replies.
+
+```bash
+# Run manually
+python3 ~/.claude-assistant/scripts/whatsapp-cmd-hub.py
+
+# Install as 15-min cron
+(crontab -l; echo "*/15 * * * * python3 ~/.claude-assistant/scripts/whatsapp-cmd-hub.py") | crontab -
+```
 
 ---
 
@@ -71,4 +101,5 @@ bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing
 | Script | Purpose |
 |--------|---------|
 | `health-check.sh` | Verify all MCP servers and directories are in order |
-| `ssm-mcp-tunnel.sh` | Open SSM tunnel to EC2 for direct MCP access |
+| `ssm-mcp-tunnel.sh` | Open SSM tunnel to EC2 on port 39128 for direct MCP access |
+| `decommission-nextcloud.sh` | Paginated S3 bucket deletion — handles >1,000 object versions |

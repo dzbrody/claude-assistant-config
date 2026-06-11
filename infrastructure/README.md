@@ -13,7 +13,7 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
   - `nginx:stable-alpine` — Reverse proxy + SSL termination
   - `certbot/certbot` — Let's Encrypt auto-renewal
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
-  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, port 39128, internal; includes Whisper transcription)
+  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, faster-whisper 1.0.3 int8, ffmpeg, port 39128, internal; runs as unprivileged `mcp` user)
 - **EBS Volumes**:
   - `/dev/xvda` (30GB gp3) — Root
   - `/dev/xvdf` (100GB gp3) — Persistent data (survives instance replacement)
@@ -261,14 +261,14 @@ nginx (/mcp location) → openproject-mcp-server:39128
 | `list_projects` | List all OpenProject projects |
 | `get_project` | Get project details |
 | `create_work_package` | Create a task/feature/bug in a project |
-| `list_work_packages` | List work packages in a project |
-| `update_work_package` | Update status, assignee, or subject |
+| `list_work_packages` | List work packages in a project (optional status filter) |
+| `update_work_package` | Update status, assignee, subject, or description (requires lockVersion) |
 | `search_work_packages` | Search work packages by keyword |
 | `list_s3_buckets` | List accessible S3 buckets |
 | `list_s3_objects` | List objects in a bucket |
-| `get_s3_object` | Read a file from S3 (first 10KB via byte-range) |
+| `get_s3_object` | Read a file from S3 (first 10KB via `Range: bytes=0-10239` header — OOM-safe) |
 | `search_s3_objects` | Search files by name pattern |
-| `transcribe_s3_audio` | Transcribe an audio file from S3 using Whisper (CPU, int8) |
+| `transcribe_s3_audio` | Download audio/video from S3 and transcribe via faster-whisper (CPU, int8) — returns timestamped transcript; temp file wiped via try/finally |
 
 ### First-Time Setup (on the running EC2)
 
