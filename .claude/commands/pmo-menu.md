@@ -13,7 +13,8 @@ Print the following table to the terminal exactly as shown. Do not execute any o
 | `/brief-evening` | Run evening wrap-up — sent email, calendar, TSPG WhatsApp, Zoom notes, task status, WhatsApp summary |
 | `/review-weekly` | Run weekly review — aggregate Mon–Fri briefs, team velocity, stalled items, NCR touchpoints |
 | `/brief-weekend` | Run weekend briefing — strategic analysis over technical specs and milestones |
-| `/transcribe` | Transcribe an audio file from S3 using Whisper on EC2 — prompts for bucket/key |
+| `/transcribe` | Transcribe audio/video from S3 **or Google Drive / Meet link** using Whisper on EC2 |
+| `/ingest-meeting-notes` | Fetch latest `gemini-notes@google.com` emails, apply business context filter, create OpenProject tasks |
 | `/whatsapp-cmd` | Start WhatsApp command hub polling loop — responds to !status, !deadlines, !brief triggers |
 | `/tunnel-ssm` | Open SSM port-forward tunnel to EC2 MCP server on port 39128 |
 | `/health-check` | Run local health check — MCP servers, Drive mounts, task files, logs directory |
