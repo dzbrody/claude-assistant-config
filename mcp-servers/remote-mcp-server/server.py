@@ -286,16 +286,18 @@ def get_s3_object(bucket: str, key: str) -> str:
         bucket: S3 bucket name
         key: S3 object key
     """
-    response = s3_client.get_object(Bucket=bucket, Key=key)
+    head = s3_client.head_object(Bucket=bucket, Key=key)
+    total_size = head["ContentLength"]
+    response = s3_client.get_object(Bucket=bucket, Key=key, Range="bytes=0-10239")
     content = response["Body"].read().decode("utf-8", errors="replace")
     return json.dumps(
         {
             "bucket": bucket,
             "key": key,
-            "content_type": response.get("ContentType", "unknown"),
-            "size": response["ContentLength"],
-            "content": content[:10000],
-            "truncated": len(content) > 10000,
+            "content_type": head.get("ContentType", "unknown"),
+            "size": total_size,
+            "content": content,
+            "truncated": total_size > 10240,
         },
         indent=2,
     )
@@ -343,8 +345,12 @@ class APIKeyMiddleware:
         request = Request(scope)
         path = request.url.path
         # /mcp/messages/ carries a session_id issued after SSE auth — allow through
+        # only when a session_id param is present (issued by the SSE handshake)
         # /health is public for monitoring
-        if "/messages/" in path or path.endswith("/health"):
+        if path.endswith("/health"):
+            await self.app(scope, receive, send)
+            return
+        if "/mcp/messages/" in path and request.query_params.get("session_id"):
             await self.app(scope, receive, send)
             return
         key = request.query_params.get("key") or request.headers.get("x-mcp-key")

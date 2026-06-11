@@ -21,13 +21,13 @@ echo "  OpenProject MCP — SSM Tunnel"
 echo "============================================"
 echo ""
 echo "  Instance:  $INSTANCE_ID"
-echo "  Tunnel:    localhost:39127 -> EC2:39127"
+echo "  Tunnel:    localhost:39128 -> EC2:39128"
 echo ""
 echo "  Keep this terminal open."
 echo "  Use Ctrl+C to close the tunnel."
 echo ""
 echo "  Then in another terminal:"
-echo "    claude mcp add --transport sse openproject http://localhost:39127/sse"
+echo "    claude mcp add --transport sse openproject http://localhost:39128/sse"
 echo ""
 echo "============================================"
 echo ""
@@ -35,5 +35,5 @@ echo ""
 aws ssm start-session \
   --target "$INSTANCE_ID" \
   --document-name AWS-StartPortForwardingSession \
-  --parameters '{"portNumber":["39127"],"localPortNumber":["39127"]}' \
+  --parameters '{"portNumber":["39128"],"localPortNumber":["39128"]}' \
   --profile claude-assistant

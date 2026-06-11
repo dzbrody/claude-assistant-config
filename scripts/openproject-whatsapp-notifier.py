@@ -26,6 +26,7 @@ PROJECT_ID = 3
 PROJECT_IDENTIFIER = "axina-group-admin"
 STATE_FILE = Path.home() / "logs/claude-assistant/op-notifier-state.json"
 LOG_FILE = Path.home() / "logs/claude-assistant/op-notifier.log"
+WA_TOKEN_FILE = Path.home() / "whatsapp-mcp/whatsapp-bridge/store/.bridge-token"
 
 # Only notify for these change types
 NOTIFY_STATUSES = True       # status changes
@@ -65,8 +66,11 @@ def wp_link(wp_id: int) -> str:
     return f"{OP_URL}/projects/{PROJECT_IDENTIFIER}/work_packages/{wp_id}"
 
 
-def http_get(url: str, headers: dict) -> dict:
-    req = urllib.request.Request(url, headers=headers)
+def http_get(url: str, headers: dict, extra_headers: dict | None = None) -> dict:
+    merged = {**headers}
+    if extra_headers:
+        merged.update(extra_headers)
+    req = urllib.request.Request(url, headers=merged)
     try:
         with urllib.request.urlopen(req, timeout=15) as r:
             return json.loads(r.read().decode())
@@ -75,10 +79,19 @@ def http_get(url: str, headers: dict) -> dict:
         return {}
 
 
-def http_post(url: str, data: dict) -> dict:
+def _wa_token() -> str:
+    try:
+        return WA_TOKEN_FILE.read_text().strip()
+    except Exception:
+        return ""
+
+
+def http_post(url: str, data: dict, extra_headers: dict | None = None) -> dict:
     body = json.dumps(data).encode()
-    req = urllib.request.Request(url, data=body,
-                                  headers={"Content-Type": "application/json"})
+    headers = {"Content-Type": "application/json"}
+    if extra_headers:
+        headers.update(extra_headers)
+    req = urllib.request.Request(url, data=body, headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=10) as r:
             return json.loads(r.read().decode())
@@ -87,13 +100,17 @@ def http_post(url: str, data: dict) -> dict:
         return {}
 
 
-def send_whatsapp(message: str):
+def send_whatsapp(message: str) -> dict:
+    token = _wa_token()
+    auth = {"Authorization": f"Bearer {token}"} if token else {}
     result = http_post(f"{WHATSAPP_BRIDGE}/api/send",
-                       {"recipient": TSPG_JID, "message": message})
+                       {"recipient": TSPG_JID, "message": message},
+                       extra_headers=auth)
     if result.get("success"):
         log(f"WhatsApp sent: {message[:80]}...")
     else:
         log(f"WhatsApp error: {result}")
+    return result
 
 
 def get_changed_work_packages(since: str) -> list:
@@ -198,7 +215,9 @@ def main():
     log("=== OpenProject WhatsApp Notifier starting ===")
 
     # Check WhatsApp bridge is up
-    health = http_get(f"{WHATSAPP_BRIDGE}/api/health", {})
+    token = _wa_token()
+    wa_auth = {"Authorization": f"Bearer {token}"} if token else {}
+    health = http_get(f"{WHATSAPP_BRIDGE}/api/health", {}, extra_headers=wa_auth)
     if not health.get("connected"):
         log("WhatsApp bridge not connected — skipping")
         sys.exit(0)
@@ -208,10 +227,16 @@ def main():
     now = datetime.now(timezone.utc).isoformat()
     log(f"Checking for changes since {since}")
 
-    wps = get_changed_work_packages(since)
+    try:
+        wps = get_changed_work_packages(since)
+    except Exception as e:
+        log(f"ERROR fetching work packages: {e} — state not advanced")
+        sys.exit(1)
+
     log(f"Found {len(wps)} work packages updated since last run")
 
     notifications = []
+    failed = False
 
     for wp in wps:
         # New work package
@@ -227,9 +252,15 @@ def main():
     log(f"Sending {len(notifications)} notification(s)")
 
     for msg in notifications:
-        send_whatsapp(msg)
+        result = send_whatsapp(msg)
+        if isinstance(result, dict) and not result.get("success") and result:
+            failed = True
 
-    # Save state
+    if failed:
+        log("WARNING: one or more notifications failed — state not advanced to preserve retry")
+        sys.exit(1)
+
+    # Only advance state after confirmed success
     save_state({"last_run": now})
     log(f"Done. Next run will check from {now}")
 

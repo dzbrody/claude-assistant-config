@@ -43,8 +43,8 @@ PLIST
 cat > "$APP_PATH/Contents/MacOS/launch" << LAUNCHER
 #!/bin/bash
 # Kill any existing instance
-pkill -f "app.py" 2>/dev/null || true; sleep 1
-exec /usr/local/bin/python3.12 "$SCRIPT_DIR/app.py"
+pkill -f "claude-assistant/desktop/app.py" 2>/dev/null || true; sleep 1
+exec /usr/bin/env python3 "$SCRIPT_DIR/app.py"
 LAUNCHER
 chmod +x "$APP_PATH/Contents/MacOS/launch"
 

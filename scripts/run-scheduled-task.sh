@@ -62,10 +62,10 @@ PROMPT=$(awk '/^## Prompt/{found=1; next} found{print}' "$TASK_FILE" | sed "s/{d
 # Inject private people/JID data if present
 PEOPLE_FILE="$(dirname "$TASK_FILE")/.people.private.md"
 if [ -f "$PEOPLE_FILE" ]; then
-  PROMPT=$(printf '%s' "$PROMPT" | python3 -c "
-import sys, re
+  PROMPT=$(printf '%s' "$PROMPT" | PEOPLE_FILE="$PEOPLE_FILE" python3 -c "
+import sys, re, os
 prompt = sys.stdin.read()
-with open('$PEOPLE_FILE') as f:
+with open(os.environ['PEOPLE_FILE']) as f:
     people = f.read()
 placeholder = re.compile(r'> Phone numbers, WhatsApp JIDs.*?Do not add them here\.\n?', re.DOTALL)
 result = placeholder.sub(people + '\n', prompt, count=1)
@@ -80,10 +80,9 @@ fi
 
 # Write prompt to temp file — claude reads it as the initial message
 PROMPT_FILE=$(mktemp /tmp/claude-prompt-XXXXXX)
-printf '%s' "$PROMPT" > "$PROMPT_FILE"
-
-# Output temp file so we can capture for email after streaming
 OUTPUT_FILE=$(mktemp /tmp/claude-output-XXXXXX)
+trap 'rm -f "$PROMPT_FILE" "$OUTPUT_FILE"' EXIT
+printf '%s' "$PROMPT" > "$PROMPT_FILE"
 
 echo "[$TIMESTAMP] Launching claude (interactive, streaming) | $CLAUDE_BIN" | tee -a "$LOG_FILE"
 echo ""
@@ -97,10 +96,7 @@ echo ""
   2>&1 | tee "$OUTPUT_FILE"
 
 EXIT_CODE=${PIPESTATUS[0]}
-rm -f "$PROMPT_FILE"
-
 TASK_OUTPUT=$(cat "$OUTPUT_FILE")
-rm -f "$OUTPUT_FILE"
 
 # Append full output to log
 echo "$TASK_OUTPUT" >> "$LOG_FILE"

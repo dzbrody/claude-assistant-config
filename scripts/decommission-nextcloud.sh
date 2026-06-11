@@ -24,16 +24,34 @@ if [ "$CONFIRM" != "$BUCKET" ]; then
 fi
 
 echo ""
-echo "Deleting all objects and versions..."
-aws s3api delete-objects \
-  --bucket "$BUCKET" \
-  --delete "$(aws s3api list-object-versions \
+echo "Deleting all objects and versions (paginated)..."
+while true; do
+  BATCH=$(aws s3api list-object-versions \
     --bucket "$BUCKET" \
+    --max-items 1000 \
     --query '{Objects: Versions[].{Key:Key,VersionId:VersionId}}' \
-    --output json)" || true
+    --output json 2>/dev/null)
+  COUNT=$(echo "$BATCH" | python3 -c "import sys,json; d=json.load(sys.stdin); print(len(d.get('Objects') or []))")
+  if [ "$COUNT" -eq 0 ]; then break; fi
+  aws s3api delete-objects --bucket "$BUCKET" --delete "$BATCH"
+  echo "  Deleted $COUNT versions..."
+done
+
+# Also delete any delete markers
+while true; do
+  BATCH=$(aws s3api list-object-versions \
+    --bucket "$BUCKET" \
+    --max-items 1000 \
+    --query '{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}' \
+    --output json 2>/dev/null)
+  COUNT=$(echo "$BATCH" | python3 -c "import sys,json; d=json.load(sys.stdin); print(len(d.get('Objects') or []))")
+  if [ "$COUNT" -eq 0 ]; then break; fi
+  aws s3api delete-objects --bucket "$BUCKET" --delete "$BATCH"
+  echo "  Deleted $COUNT delete markers..."
+done
 
 echo "Removing bucket..."
-aws s3 rb "s3://${BUCKET}" --force
+aws s3 rb "s3://${BUCKET}"
 
 echo ""
 echo "Nextcloud bucket deleted."
