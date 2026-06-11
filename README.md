@@ -300,3 +300,11 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 - [Anthropic](https://www.anthropic.com/) — Claude AI and Claude Code
 - [lharries/whatsapp-mcp](https://github.com/lharries/whatsapp-mcp) — WhatsApp MCP bridge
 - [Model Context Protocol](https://modelcontextprotocol.io/) — MCP specification
+
+---
+
+© 2026 **Yom Shore Ventures LLC**  
+dba: *CTO Rescues* — [ctorescues.com](https://ctorescues.com/)  
+**Author:** Daniel Brody (@dzbrody)  
+**Registered Address:** 8 The Green – Suite 12060, Dover, Delaware 19901, United States  
+*All rights reserved. Unauthorized copying, modification, or distribution is strictly prohibited.*

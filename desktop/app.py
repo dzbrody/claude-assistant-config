@@ -1,3 +1,14 @@
+# Copyright (c) 2026 Yom Shore Ventures LLC
+# dba: CTO Rescues - https://ctorescues.com/
+# Author: Daniel Brody (@dzbrody)
+#
+# Principal Place of Business:
+# 8 The Green – Suite 12060
+# Dover, Delaware 19901
+# United States
+#
+# All rights reserved. Proprietary and confidential.
+
 #!/usr/local/bin/python3.12
 """
 Claude Assistant — Mac menu bar app.

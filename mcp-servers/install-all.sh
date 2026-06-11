@@ -1,4 +1,15 @@
 #!/bin/bash
+# Copyright (c) 2026 Yom Shore Ventures LLC
+# dba: CTO Rescues - https://ctorescues.com/
+# Author: Daniel Brody (@dzbrody)
+#
+# Principal Place of Business:
+# 8 The Green – Suite 12060
+# Dover, Delaware 19901
+# United States
+#
+# All rights reserved. Proprietary and confidential.
+
 # install-all.sh — Install all MCP servers for Claude Code personal assistant
 # Run from any directory. Requires the claude CLI to be installed and authenticated.
 set -e

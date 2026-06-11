@@ -1,4 +1,15 @@
 #!/bin/bash
+# Copyright (c) 2026 Yom Shore Ventures LLC
+# dba: CTO Rescues - https://ctorescues.com/
+# Author: Daniel Brody (@dzbrody)
+#
+# Principal Place of Business:
+# 8 The Green – Suite 12060
+# Dover, Delaware 19901
+# United States
+#
+# All rights reserved. Proprietary and confidential.
+
 # Packages app.py as a native .app bundle using py2app, OR creates a lightweight
 # launcher .app using Automator/shell — we use the simpler shell approach here.
 set -e
