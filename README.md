@@ -235,9 +235,9 @@ See **[desktop/README.md](desktop/README.md)** for full installation details.
 
 | Server | Endpoint | Tools |
 |--------|----------|-------|
-| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | `list_projects`, `get_project`, `create_work_package`, `list_work_packages`, `update_work_package`, `search_work_packages`, `list_s3_buckets`, `list_s3_objects`, `get_s3_object`, `search_s3_objects`, `transcribe_s3_audio` |
+| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | 49 tools across work packages, projects, users, memberships, hierarchy, relations, time entries, versions, weekly reports, news |
 
-API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12, faster-whisper 1.0.3 (int8 CPU), FastMCP, EC2 IAM role for S3.
+API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12, FastMCP 3.4.2, SSE transport, EC2 IAM role for S3. Source: `mcp-servers/openproject-mcp/`.
 
 ---
 
@@ -263,21 +263,24 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 
 | Resource | Detail |
 |----------|--------|
-| EC2 | `t3.large`, Amazon Linux 2023, 30GB root + 100GB data |
+| EC2 | `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, 30GB root + 100GB data |
+| Instance ID | `i-07bb8581203e52527`, AZ `us-east-1f` |
 | Domain | `projects.axinagroup.com` (Route53) |
-| SSL | Let's Encrypt via Certbot (auto-renewing) |
+| SSL | Let's Encrypt via Certbot (auto-renewing, expires 2026-09-12) |
 | Email | SES SMTP `no-reply@axinagroup.com` |
-| Storage | S3 `xgccloud-openproject-files` (versioned, SSE-S3) |
+| Storage | S3 `axina-openproject-files` (versioned, SSE-S3) |
 
 ### Docker Containers on EC2
 
 | Container | Purpose |
 |-----------|---------|
-| `openproject-app` | Project management UI |
-| `openproject-postgres` | Database |
-| `openproject-nginx` | Reverse proxy + SSL |
-| `openproject-certbot` | SSL renewal |
-| `openproject-mcp-server` | Remote MCP endpoint (SSE, :39128 internal) |
+| `openproject-app` | Project management UI (OpenProject 17.4.1) |
+| `openproject-postgres` | PostgreSQL 16 database |
+| `openproject-nginx` | Reverse proxy + SSL termination |
+| `openproject-certbot` | Let's Encrypt auto-renewal |
+| `openproject-hocuspocus` | Real-time collaborative editing |
+| `openproject-cache` | Memcached (Rails cache) |
+| `openproject-mcp-server` | Remote MCP endpoint — 49-tool FastMCP server (SSE, :39128 internal) |
 
 ---
 

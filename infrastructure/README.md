@@ -4,19 +4,19 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 
 ## Architecture
 
-- **EC2 Instance**: t3.large (2 vCPU, 8GB RAM), Amazon Linux 2023
-- **Elastic IP**: Static IP for consistent DNS and MCP connection
+- **EC2 Instance**: `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, `i-07bb8581203e52527`, AZ `us-east-1f`
+- **Elastic IP**: `44.195.198.18` — static, re-associated after migration
 - **Docker Containers**:
   - `openproject/openproject:17.4.1` — OpenProject application (port 8080)
-  - `postgres:16.14` — Database
-  - `memcached:1.6` — Rails cache
-  - `nginx:stable-alpine` — Reverse proxy + SSL termination
-  - `certbot/certbot` — Let's Encrypt auto-renewal
+  - `postgres:16` — Database
+  - `memcached:alpine` — Rails cache
+  - `nginx:alpine` — Reverse proxy + SSL termination
+  - `certbot/certbot` — Let's Encrypt auto-renewal (cert expires 2026-09-12)
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
-  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, faster-whisper 1.0.3 int8, ffmpeg, port 39128, internal; runs as unprivileged `mcp` user)
+  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 49 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
 - **EBS Volumes**:
-  - `/dev/xvda` (30GB gp3) — Root
-  - `/dev/xvdf` (100GB gp3) — Persistent data (survives instance replacement)
+  - `/dev/xvda` (`vol-*`, 30GB gp3) — Root (new instance)
+  - `/dev/xvdf` (`vol-02ddb201266e90a56`, 100GB gp3) — Persistent data volume (migrated from t3.large; survives instance replacement)
 
 ## Storage
 
@@ -239,36 +239,37 @@ docker exec openproject-app bundle exec rails runner "
 
 ## Remote MCP Server
 
-A FastAPI SSE server (`openproject-mcp-server` Docker container) runs alongside OpenProject and exposes OpenProject + S3 tools to Claude Desktop and Claude Mobile from anywhere.
+A FastMCP SSE server (`openproject-mcp-server` Docker container) runs alongside OpenProject and exposes 49 OpenProject tools to Claude CLI, Claude Desktop, and Claude Mobile from anywhere.
+
+Source code: `mcp-servers/openproject-mcp/` — deployed to `/data/mcp-server/` on EC2 via S3.
 
 ### Architecture
 
 ```
-Claude Desktop / Mobile
+Claude CLI / Desktop / Mobile
         |
-        | HTTPS (X-MCP-Key header)
+        | HTTPS (?key= query param)
         v
-nginx (/mcp location) → openproject-mcp-server:39128
-        |                       |
-        |              OpenProject API (internal)
-        |              AWS S3 (via EC2 IAM role)
+nginx (/mcp/ location) → openproject-mcp-server:39128 (FastMCP 3.4.2, SSE)
+                                |
+                       OpenProject API (internal)
 ```
 
-### Tools Available
+### Tools Available (49 total)
 
-| Tool | Description |
-|------|-------------|
-| `list_projects` | List all OpenProject projects |
-| `get_project` | Get project details |
-| `create_work_package` | Create a task/feature/bug in a project |
-| `list_work_packages` | List work packages in a project (optional status filter) |
-| `update_work_package` | Update status, assignee, subject, or description (requires lockVersion) |
-| `search_work_packages` | Search work packages by keyword |
-| `list_s3_buckets` | List accessible S3 buckets |
-| `list_s3_objects` | List objects in a bucket |
-| `get_s3_object` | Read a file from S3 (first 10KB via `Range: bytes=0-10239` header — OOM-safe) |
-| `search_s3_objects` | Search files by name pattern |
-| `transcribe_s3_audio` | Download audio/video from S3 and transcribe via faster-whisper (CPU, int8) — returns timestamped transcript; temp file wiped via try/finally |
+| Module | Tools |
+|--------|-------|
+| `connection` | test_connection, check_permissions |
+| `work_packages` | list, create, update, delete, list_types, list_statuses, list_priorities |
+| `projects` | list, get, create, update, delete |
+| `users` | list_users, get_user, list_roles, get_role, list_project_members, list_user_projects |
+| `memberships` | list, get, create, update, delete |
+| `hierarchy` | set_parent, remove_parent, list_children |
+| `relations` | create, list, get, update, delete |
+| `time_entries` | list, create, update, delete, list_activities |
+| `versions` | list, create |
+| `weekly_reports` | generate_weekly_report, get_report_data, generate_this_week_report, generate_last_week_report |
+| `news` | list_news, create_news, get_news, update_news, delete_news |
 
 ### First-Time Setup (on the running EC2)
 

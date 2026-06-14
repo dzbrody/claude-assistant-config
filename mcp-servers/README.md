@@ -65,25 +65,27 @@ This registers all local (stdio) servers with Claude CLI at user scope.
 
 ---
 
-## Remote MCP Server (AXINA)
+## Remote MCP Server
 
 The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and works from **any device** — Mac, mobile, or any MCP client.
 
-**Tools available (11 total):**
+Source code: `openproject-mcp/` — this is the canonical server deployed to EC2.
 
-| Tool | Description |
-|------|-------------|
-| `list_projects` | List all OpenProject projects |
-| `get_project` | Get project details |
-| `create_work_package` | Create a task / bug / feature in a project |
-| `list_work_packages` | List work packages in a project (with optional status filter) |
-| `update_work_package` | Update subject, description, status, or assignee (requires lockVersion) |
-| `search_work_packages` | Search work packages by keyword across all or a specific project |
-| `list_s3_buckets` | List accessible S3 buckets |
-| `list_s3_objects` | List files in a bucket |
-| `get_s3_object` | Read a text file from S3 (first 10KB via byte-range header) |
-| `search_s3_objects` | Search file names across S3 buckets |
-| `transcribe_s3_audio` | Transcribe audio/video from S3 using faster-whisper (CPU, int8) |
+**Tools available (49 total):**
+
+| Module | Tools |
+|--------|-------|
+| `connection` | test_connection, check_permissions |
+| `work_packages` | list, create, update, delete, list_types, list_statuses, list_priorities |
+| `projects` | list, get, create, update, delete |
+| `users` | list_users, get_user, list_roles, get_role, list_project_members, list_user_projects |
+| `memberships` | list, get, create, update, delete |
+| `hierarchy` | set_parent, remove_parent, list_children |
+| `relations` | create, list, get, update, delete |
+| `time_entries` | list, create, update, delete, list_activities |
+| `versions` | list, create |
+| `weekly_reports` | generate_weekly_report, get_report_data, generate_this_week_report, generate_last_week_report |
+| `news` | list_news, create_news, get_news, update_news, delete_news |
 
 **Connect via Claude CLI:**
 ```bash
@@ -114,8 +116,22 @@ claude mcp add --transport sse --scope user openproject-remote \
 
 **API key:** stored in 1Password as **AXINA MCP API Key** — ask Daniel if you don't have access.
 
-Server source code: `remote-mcp-server/server.py`
+Server source code: `openproject-mcp/` (full 49-tool implementation)
 Infrastructure details: `../infrastructure/README.md`
+
+### Deploy Updates to EC2
+
+```bash
+# 1. Tar and upload source
+cd mcp-servers/openproject-mcp
+tar czf /tmp/openproject-mcp-src.tar.gz src/ openproject-mcp-sse.py openproject-mcp-http.py openproject-mcp-fastmcp.py requirements.txt pyproject.toml
+aws s3 cp /tmp/openproject-mcp-src.tar.gz s3://axina-openproject-files/deploy/openproject-mcp-src.tar.gz
+
+# 2. Pull and rebuild on EC2
+aws ssm send-command --region us-east-1 --instance-ids i-07bb8581203e52527 \
+  --document-name AWS-RunShellScript \
+  --parameters 'commands=["aws s3 cp s3://axina-openproject-files/deploy/openproject-mcp-src.tar.gz /tmp/src.tar.gz && tar xzf /tmp/src.tar.gz -C /data/mcp-server/ && cd /opt/openproject && docker compose build mcp-server && docker compose up -d --no-deps mcp-server"]'
+```
 
 ---
 
