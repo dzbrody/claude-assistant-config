@@ -11,9 +11,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-
-# All next.config.mjs host vars must be set — undefined values cause
-# "Invalid header/redirect found" and abort the build
+ENV NODE_OPTIONS="--max-old-space-size=8192"
 ARG NEXT_PUBLIC_APP_BASE_HOST=vdr.axinagroup.com
 ENV NEXT_PUBLIC_APP_BASE_HOST=$NEXT_PUBLIC_APP_BASE_HOST
 ARG NEXT_PUBLIC_WEBHOOK_BASE_HOST=vdr.axinagroup.com
@@ -36,13 +34,9 @@ ARG NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST=axina-openproject-files.s3.us
 ENV NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST=$NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST
 ARG NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US=axina-openproject-files.s3.us-east-1.amazonaws.com
 ENV NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US=$NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US
-
-# Placeholder DB URLs prevent Prisma from attempting a real connection
-# during Next.js static pre-rendering (causes indefinite build freeze)
 ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
 ENV POSTGRES_PRISMA_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
 ENV POSTGRES_PRISMA_URL_NON_POOLING="postgresql://placeholder:placeholder@localhost:5432/placeholder"
-
 RUN npx prisma generate
 RUN npm run build
 
