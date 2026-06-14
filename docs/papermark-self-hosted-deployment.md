@@ -52,7 +52,8 @@ Build constraints discovered during live compile iterations on Graviton2:
 
 1. **Node 24 required** — `package.json` specifies `engines: { node: ">=24" }`
 2. **`npm ci --ignore-scripts`** — postinstall triggers `prisma generate` before schema is copied; must skip and run explicitly
-3. **All `next.config.mjs` env vars must be ARGs** — Next.js validates route `has` objects at build time; any undefined host env var causes `Invalid header/redirect found` and aborts the build
+3. **All `next.config.mjs` host vars must be ARGs** — Next.js validates route `has` objects at build time; any undefined host env var causes `Invalid header/redirect found` and aborts the build
+4. **Placeholder DB URLs required** — Next.js statically pre-renders pages; Prisma attempts a real DB connection during this phase and freezes the build indefinitely
 
 `/opt/papermark/Dockerfile`:
 
@@ -92,6 +93,12 @@ ARG NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST=axina-openproject-files.s3.us
 ENV NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST=$NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST
 ARG NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US=axina-openproject-files.s3.us-east-1.amazonaws.com
 ENV NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US=$NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US
+
+# Prevents Prisma from attempting a real DB connection during static pre-rendering
+ENV DATABASE_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
+ENV POSTGRES_PRISMA_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
+ENV POSTGRES_PRISMA_URL_NON_POOLING="postgresql://placeholder:placeholder@localhost:5432/placeholder"
+
 RUN npx prisma generate
 RUN npm run build
 
