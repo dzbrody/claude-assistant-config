@@ -239,6 +239,14 @@ See **[desktop/README.md](desktop/README.md)** for full installation details.
 
 API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12, FastMCP 3.4.2, SSE transport, EC2 IAM role for S3. Source: `mcp-servers/openproject-mcp/`.
 
+### VDR (Virtual Data Room)
+
+| Service | URL | Status |
+|---------|-----|--------|
+| Papermark | `https://vdr.axinagroup.com` | Deploying — build in progress |
+
+Managed via MCP tools `create_secure_dataroom`, `issue_vdr_access_link`, `list_datarooms` (tools 50–52 in the remote MCP server). See `docs/papermark-self-hosted-deployment.md` for full deployment notes including aarch64 build constraints.
+
 ---
 
 ## Scheduled Briefings
@@ -275,12 +283,13 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 | Container | Purpose |
 |-----------|---------|
 | `openproject-app` | Project management UI (OpenProject 17.4.1) |
-| `openproject-postgres` | PostgreSQL 16 database |
-| `openproject-nginx` | Reverse proxy + SSL termination |
+| `openproject-postgres` | PostgreSQL 16 database (shared with Papermark) |
+| `openproject-nginx` | Reverse proxy + SSL termination (projects + vdr subdomains) |
 | `openproject-certbot` | Let's Encrypt auto-renewal |
 | `openproject-hocuspocus` | Real-time collaborative editing |
 | `openproject-cache` | Memcached (Rails cache) |
-| `openproject-mcp-server` | Remote MCP endpoint — 49-tool FastMCP server (SSE, :39128 internal) |
+| `openproject-mcp-server` | Remote MCP endpoint — 52-tool FastMCP server (SSE, :39128 internal) |
+| `papermark-app` | Virtual Data Room — `vdr.axinagroup.com` (in progress — build active) |
 
 ---
 

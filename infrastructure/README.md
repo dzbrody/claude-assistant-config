@@ -5,17 +5,18 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 ## Architecture
 
 - **EC2 Instance**: `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, `i-07bb8581203e52527`, AZ `us-east-1f`
-- **Elastic IP**: `44.195.198.18` — static, re-associated after migration
+- **Elastic IP**: `44.195.198.18` — static, re-associated after t3→t4g migration
 - **Docker Containers**:
   - `openproject/openproject:17.4.1` — OpenProject application (port 8080)
-  - `postgres:16` — Database
+  - `postgres:16` — PostgreSQL database (shared: `openproject` + `papermark` databases)
   - `memcached:alpine` — Rails cache
-  - `nginx:alpine` — Reverse proxy + SSL termination
-  - `certbot/certbot` — Let's Encrypt auto-renewal (cert expires 2026-09-12)
+  - `nginx:alpine` — Reverse proxy + SSL for `projects.axinagroup.com` and `vdr.axinagroup.com`
+  - `certbot/certbot` — Let's Encrypt auto-renewal (projects cert expires 2026-09-12, vdr cert expires 2026-09-12)
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
-  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 49 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
+  - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 52 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
+  - `papermark-app` — Virtual Data Room UI at `vdr.axinagroup.com` (Next.js, port 3000 internal). Source: `/opt/papermark/`
 - **EBS Volumes**:
-  - `/dev/xvda` (`vol-*`, 30GB gp3) — Root (new instance)
+  - `/dev/xvda` (30GB gp3) — Root (new instance)
   - `/dev/xvdf` (`vol-02ddb201266e90a56`, 100GB gp3) — Persistent data volume (migrated from t3.large; survives instance replacement)
 
 ## Storage
@@ -270,6 +271,7 @@ nginx (/mcp/ location) → openproject-mcp-server:39128 (FastMCP 3.4.2, SSE)
 | `versions` | list, create |
 | `weekly_reports` | generate_weekly_report, get_report_data, generate_this_week_report, generate_last_week_report |
 | `news` | list_news, create_news, get_news, update_news, delete_news |
+| `vdr` | create_secure_dataroom, issue_vdr_access_link, list_datarooms |
 
 ### First-Time Setup (on the running EC2)
 
@@ -358,6 +360,33 @@ security add-generic-password \
 
 # Retrieve later:
 security find-generic-password -s "openproject-mcp-api-key" -w
+```
+
+## Virtual Data Room (Papermark)
+
+Self-hosted Papermark deployment at `vdr.axinagroup.com`. Full deployment notes including aarch64 build constraints: `docs/papermark-self-hosted-deployment.md`.
+
+| Item | Detail |
+|------|--------|
+| Domain | `vdr.axinagroup.com` — Route53 A record → `44.195.198.18` |
+| TLS | `/etc/letsencrypt/live/vdr.axinagroup.com/` — expires 2026-09-12 |
+| Database | `papermark` DB + `papermark_user` on shared `openproject-postgres` container |
+| Storage | S3 `axina-openproject-files/papermark/*` — IAM user `papermark-vdr-s3` (`AKIAQE3ROVJ3NYPLBHPK`) |
+| Source | `/opt/papermark/` on EC2 (cloned from `github.com/papermark/papermark`) |
+| Build | Node 24, multi-stage, all `next.config.mjs` host env vars must be set as `ARG` at build time |
+
+**Still needed before Papermark is fully operational:**
+- `RESEND_API_KEY` — email gating (resend.com)
+- `TINYBIRD_TOKEN` — viewer analytics (tinybird.co)
+- `QSTASH_TOKEN` + signing keys — background jobs (upstash.com)
+
+Add these to `/opt/openproject/.env` on EC2, then:
+```bash
+cd /opt/openproject
+docker compose build papermark
+docker compose run --rm papermark npx prisma migrate deploy
+docker compose up -d papermark
+docker compose exec nginx nginx -s reload
 ```
 
 ## Security Notes
