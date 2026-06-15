@@ -82,6 +82,7 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - certbot-conf:/etc/letsencrypt
       - certbot-www:/var/www/certbot
+      - /data/cells/custom:/custom:ro
     depends_on:
       - openproject
 
