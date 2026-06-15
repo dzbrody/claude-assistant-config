@@ -121,7 +121,8 @@ services:
 
   # ── Pydio Cells VDR ──────────────────────────────────────────────────────────
   cells-clamav:
-    image: clamav/clamav:latest
+    image: clamav/clamav:latest-debian
+    platform: linux/arm64
     container_name: cells-clamav
     restart: unless-stopped
     # clamd TCP port 3310 — internal only, referenced as cells-clamav:3310
@@ -134,6 +135,7 @@ services:
 
   cells:
     image: pydio/cells:latest
+    platform: linux/arm64
     container_name: cells-app
     restart: unless-stopped
     # Binds internally only — nginx terminates TLS and proxies to this port

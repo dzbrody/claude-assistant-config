@@ -28,7 +28,7 @@ services:
       retries: 5
 
   clamav:
-    image: clamav/clamav:latest
+    image: clamav/clamav:latest-debian
     container_name: cells-local-clamav
     restart: unless-stopped
     # clamd listens on TCP port 3310 — accessible as clamav:3310 within this network.
