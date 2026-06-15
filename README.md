@@ -31,6 +31,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 | [scheduled-tasks/README.md](scheduled-tasks/README.md) | Briefing prompts, document saving rules, TSPG group config |
 | [scripts/README.md](scripts/README.md) | OpenProject notifier config, background service management |
 | [infrastructure/README.md](infrastructure/README.md) | Terraform deployment, EC2 operations, Docker containers |
+| [docs/pydio-cells-vdr-deployment.md](docs/pydio-cells-vdr-deployment.md) | Pydio Cells VDR — local validation + production deployment on EC2 |
 | [axerp-openproject/](axerp-openproject/) | AXERP & AWS project hierarchy docs for OpenProject wiki |
 
 ---
@@ -281,6 +282,8 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 | `openproject-hocuspocus` | Real-time collaborative editing |
 | `openproject-cache` | Memcached (Rails cache) |
 | `openproject-mcp-server` | Remote MCP endpoint — 49-tool FastMCP server (SSE, :39128 internal) |
+| `cells-app` | Pydio Cells VDR — `vdr.axinagroup.com` (port 8090 internal) |
+| `cells-clamav` | ClamAV antivirus sidecar (TCP 3310 internal) |
 
 ---
 

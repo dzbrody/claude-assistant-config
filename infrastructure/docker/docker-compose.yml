@@ -119,6 +119,38 @@ services:
     depends_on:
       - openproject
 
+  # ── Pydio Cells VDR ──────────────────────────────────────────────────────────
+  cells-clamav:
+    image: clamav/clamav:latest
+    container_name: cells-clamav
+    restart: unless-stopped
+    # clamd TCP port 3310 — internal only, referenced as cells-clamav:3310
+    healthcheck:
+      test: ["CMD", "clamdcheck.sh"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 120s
+
+  cells:
+    image: pydio/cells:latest
+    container_name: cells-app
+    restart: unless-stopped
+    # Binds internally only — nginx terminates TLS and proxies to this port
+    ports:
+      - "127.0.0.1:8090:8080"
+    environment:
+      CELLS_SITE_BIND: "0.0.0.0:8080"
+      CELLS_SITE_EXTERNAL: "https://${CELLS_DOMAIN}"
+      # Config and data persist on the EBS data volume
+    volumes:
+      - /data/cells/config:/root/.config/pydio/cells
+    depends_on:
+      postgres:
+        condition: service_healthy
+      cells-clamav:
+        condition: service_started
+
 volumes:
   certbot-www:
   certbot-conf:

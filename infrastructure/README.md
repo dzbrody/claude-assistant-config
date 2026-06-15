@@ -14,6 +14,8 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
   - `certbot/certbot` — Let's Encrypt auto-renewal (cert expires 2026-09-12)
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
   - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 49 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
+  - `cells-app` — Pydio Cells VDR at `vdr.axinagroup.com` (port 8090 internal). Config: `/data/cells/config/`
+  - `cells-clamav` — ClamAV antivirus sidecar (TCP 3310 internal, used by cells-app)
 - **EBS Volumes**:
   - `/dev/xvda` (30GB gp3) — Root (new instance)
   - `/dev/xvdf` (`vol-02ddb201266e90a56`, 100GB gp3) — Persistent data volume (migrated from t3.large; survives instance replacement)
@@ -359,6 +361,19 @@ security add-generic-password \
 # Retrieve later:
 security find-generic-password -s "openproject-mcp-api-key" -w
 ```
+
+## Virtual Data Room (Pydio Cells)
+
+Self-hosted Pydio Cells deployment at `vdr.axinagroup.com`. Full deployment guide: `docs/pydio-cells-vdr-deployment.md`.
+
+| Item | Detail |
+|------|--------|
+| Domain | `vdr.axinagroup.com` — Route53 A record → `44.195.198.18` |
+| TLS | `/etc/letsencrypt/live/vdr.axinagroup.com/` — shared certbot container |
+| Database | `cells` DB + `cells` user on shared `openproject-postgres` container |
+| Storage | S3 `axina-cells-vdr` — IAM user `cells-vdr-s3` (policy: `infrastructure/docker/cells-iam-policy.json`) |
+| Config | `/data/cells/config/` on the 100GB EBS data volume |
+| AV | ClamAV sidecar at `cells-clamav:3310` |
 
 ## Security Notes
 
