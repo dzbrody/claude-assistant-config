@@ -1,0 +1,112 @@
+# Local test stack for Papermark VDR — validates build before EC2 deploy
+#
+# Usage:
+#   cd /path/to/papermark-source   (cloned from github.com/papermark/papermark)
+#   cp /path/to/this/repo/papermark/docker-compose.local.yml .
+#   cp /path/to/this/repo/papermark/Dockerfile .
+#   cp /path/to/this/repo/papermark/next.config.docker.mjs .
+#   cp /path/to/this/repo/papermark/docker-entrypoint.sh .
+#   cp /path/to/this/repo/papermark/.env.local.example .env.local
+#   docker compose -f docker-compose.local.yml --env-file .env.local up --build
+#
+# Success criteria:
+#   - Build completes without error
+#   - http://localhost:3000 loads the Papermark login page
+#   - No "prisma: command not found" or DB connection errors in logs
+#
+# NOTE: This stack is x86_64 on Mac Intel. EC2 is aarch64. Build issues caught here
+# (npm ci failures, Prisma placeholder bypass, missing env vars) apply to both archs.
+# After local green, deploy to EC2 via S3/SSM as documented.
+
+services:
+  postgres-local:
+    image: postgres:16-alpine
+    container_name: papermark-local-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: papermark
+      POSTGRES_PASSWORD: papermark_local_pw
+      POSTGRES_DB: papermark
+    volumes:
+      - papermark-local-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U papermark"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    ports:
+      - "5433:5432"
+
+  papermark:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: "20"
+        NEXT_PUBLIC_APP_BASE_HOST: "localhost:3000"
+        NEXT_PUBLIC_WEBHOOK_BASE_HOST: "localhost:3000"
+        NEXT_PUBLIC_API_BASE_HOST: "localhost:3000"
+        NEXT_PUBLIC_MCP_BASE_HOST: "localhost:3000"
+        NEXT_PUBLIC_MCP_DOCS_URL: "http://localhost:3000/docs"
+        NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+        NEXT_PUBLIC_MARKETING_URL: "http://localhost:3000"
+        NEXT_PRIVATE_UPLOAD_DISTRIBUTION_HOST: "localhost"
+        NEXT_PRIVATE_UPLOAD_DISTRIBUTION_HOST_US: "localhost"
+        NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST: "localhost"
+        NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US: "localhost"
+    image: papermark-local:test
+    container_name: papermark-local-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Database — points to local postgres container
+      DATABASE_URL: "postgresql://papermark:papermark_local_pw@postgres-local:5432/papermark"
+      POSTGRES_PRISMA_URL: "postgresql://papermark:papermark_local_pw@postgres-local:5432/papermark"
+      POSTGRES_PRISMA_URL_NON_POOLING: "postgresql://papermark:papermark_local_pw@postgres-local:5432/papermark"
+      # Auth
+      NEXTAUTH_URL: "http://localhost:3000"
+      NEXTAUTH_SECRET: "local-dev-secret-not-for-production-32chars"
+      NEXT_PRIVATE_DOCUMENT_PASSWORD_KEY: "local-doc-pw-key-32-chars-padded00"
+      # App URLs
+      NEXT_PUBLIC_BASE_URL: "http://localhost:3000"
+      NEXT_PUBLIC_MARKETING_URL: "http://localhost:3000"
+      NEXT_PUBLIC_APP_BASE_HOST: "localhost:3000"
+      NEXT_PUBLIC_WEBHOOK_BASE_HOST: "localhost:3000"
+      # Storage — use local filesystem stub (no S3 needed for build validation)
+      NEXT_PUBLIC_UPLOAD_TRANSPORT: "local"
+      NEXT_PRIVATE_UPLOAD_BUCKET: "local-test"
+      NEXT_PRIVATE_UPLOAD_REGION: "us-east-1"
+      NEXT_PRIVATE_UPLOAD_ACCESS_KEY_ID: "localtest"
+      NEXT_PRIVATE_UPLOAD_SECRET_ACCESS_KEY: "localtest"
+      NEXT_PRIVATE_UPLOAD_DISTRIBUTION_HOST: "localhost"
+      NEXT_PRIVATE_UPLOAD_DISTRIBUTION_HOST_US: "localhost"
+      NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST: "localhost"
+      NEXT_PRIVATE_ADVANCED_UPLOAD_DISTRIBUTION_HOST_US: "localhost"
+      # Optional integrations — stubbed so app starts without crashing
+      RESEND_API_KEY: "re_placeholder_local"
+      TINYBIRD_TOKEN: "p.placeholder_local"
+      QSTASH_TOKEN: "placeholder_local"
+      QSTASH_CURRENT_SIGNING_KEY: "sig_placeholder_local"
+      QSTASH_NEXT_SIGNING_KEY: "sig_placeholder_local_next"
+      OPENAI_API_KEY: "sk-placeholder"
+      HANKO_API_KEY: "placeholder"
+      NEXT_PUBLIC_HANKO_TENANT_ID: "placeholder"
+      SLACK_CLIENT_ID: "placeholder"
+      SLACK_CLIENT_SECRET: "placeholder"
+      # Runtime
+      NODE_ENV: "production"
+      PORT: "3000"
+      HOSTNAME: "0.0.0.0"
+    depends_on:
+      postgres-local:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 10s
+      start_period: 60s
+      retries: 5
+
+volumes:
+  papermark-local-pgdata:
