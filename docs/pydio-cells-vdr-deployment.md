@@ -1,7 +1,7 @@
 # Pydio Cells VDR — Deployment Guide
 
 Self-hosted Virtual Data Room at `vdr.axinagroup.com`.
-Replaces the abandoned Papermark stack. Uses existing EC2 instance, shared PostgreSQL, and a dedicated S3 bucket.
+Uses existing EC2 instance, shared PostgreSQL, and a dedicated S3 bucket.
 
 ---
 
