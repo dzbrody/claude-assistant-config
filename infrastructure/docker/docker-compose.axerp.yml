@@ -23,7 +23,7 @@
 #   docker logs axerp-create-site -f    # exits 0 on success (~5–15 min)
 
 x-axerp-image: &axerp_image
-  image: axerp:v16.22.0-axerp.2
+  image: axerp:v16.22.0-axerp.3
   platform: linux/arm64
   restart: unless-stopped
   networks:
