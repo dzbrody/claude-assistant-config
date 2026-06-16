@@ -1,26 +1,25 @@
 # AXERP (ERPNext v16) — Production Compose
-# Domain: erp.axinagroup.com
-# Database: shared openproject-postgres (PostgreSQL 16)
-# Port: 127.0.0.1:8082:8080 (proxied by openproject-nginx)
+# Domain:   erp.axinagroup.com
+# Database: axerp-mariadb (MariaDB 10.6) — dedicated container, arm64
+#           ERPNext requires MariaDB; PostgreSQL has thousands of incompatible
+#           raw SQL queries (sum(unknown), DATE_SUB, etc.) across the codebase.
+# Port:     127.0.0.1:8082:8080 (proxied by openproject-nginx)
 # Platform: linux/arm64 (Graviton2 EC2)
 #
-# Image tag convention: axerp:<AXERP_TAG>
-#   AXERP_TAG = upstream erpnext version + axerp patch (e.g. v16.22.0-axerp.2)
-#   Pinned here so production is always on a known build.
-#   To upgrade: bump AXERP_TAG, rebuild on EC2, redeploy.
+# Database layout on this host:
+#   openproject-postgres  → OpenProject + Nextcloud  (PostgreSQL 16)
+#   axerp-mariadb         → ERPNext only              (MariaDB 10.6)
 #
-# To upgrade to a new upstream release:
-#   1. cd /data/axerp-src && git pull && git checkout version-16
-#   2. docker build -f docker/Dockerfile -t axerp:<new-tag> -t axerp:prod .
-#   3. Update AXERP_TAG in this file, push to infra repo.
-#   4. docker compose -f docker-compose.axerp.yml up -d --force-recreate
+# Image tag convention: axerp:<ERPNEXT_VERSION>-axerp.<PATCH>
+# To upgrade upstream: bump tag, pull + rebuild on EC2, redeploy.
 #
-# Deploy:
+# Deploy (EC2 via SSM):
 #   aws s3 cp docker-compose.axerp.yml s3://axina-openproject-files/deploy/
-#   # On EC2: cd /opt/openproject && docker compose -f docker-compose.axerp.yml up -d
+#   # On EC2:
+#   cd /opt/openproject && docker compose -f docker-compose.axerp.yml up -d
 #
 # Monitor first-run site creation:
-#   docker logs axerp-create-site -f    # exits 0 on success (~5–15 min)
+#   docker logs axerp-create-site -f    # exits 0 on success (~5–10 min)
 
 x-axerp-image: &axerp_image
   image: axerp:v16.22.0-axerp.3
@@ -34,6 +33,32 @@ x-axerp-image: &axerp_image
 
 services:
 
+  # ── MariaDB — dedicated to ERPNext ───────────────────────────────────────
+  axerp-mariadb:
+    image: mariadb:10.6
+    platform: linux/arm64
+    container_name: axerp-mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${AXERP_DB_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: "%"
+    volumes:
+      - /data/axerp/mariadb:/var/lib/mysql
+    networks:
+      - openproject_default
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
+      - --skip-innodb-read-only-compressed
+      - --bind-address=0.0.0.0
+
+  # ── Frappe services ───────────────────────────────────────────────────────
   backend:
     <<: *axerp_image
     container_name: axerp-backend
@@ -52,7 +77,6 @@ services:
       - >
         ls -1 apps > sites/apps.txt;
         [ -f sites/common_site_config.json ] || echo '{}' > sites/common_site_config.json;
-        bench set-config -g db_type postgres;
         bench set-config -g db_host $$DB_HOST;
         bench set-config -gp db_port $$DB_PORT;
         bench set-config -g redis_cache "redis://$$REDIS_CACHE";
@@ -60,12 +84,14 @@ services:
         bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
         bench set-config -gp socketio_port $$SOCKETIO_PORT;
     environment:
-      DB_HOST: openproject-postgres
-      DB_PORT: "5432"
+      DB_HOST: axerp-mariadb
+      DB_PORT: "3306"
       REDIS_CACHE: axerp-redis-cache:6379
       REDIS_QUEUE: axerp-redis-queue:6379
       SOCKETIO_PORT: "9000"
     depends_on:
+      axerp-mariadb:
+        condition: service_healthy
       axerp-redis-cache:
         condition: service_started
       axerp-redis-queue:
@@ -80,7 +106,7 @@ services:
       - -c
     command:
       - >
-        wait-for-it -t 120 openproject-postgres:5432;
+        wait-for-it -t 120 axerp-mariadb:3306;
         wait-for-it -t 120 axerp-redis-cache:6379;
         wait-for-it -t 120 axerp-redis-queue:6379;
         export start=`date +%s`;
@@ -99,24 +125,23 @@ services:
           echo "Site $$SITE_NAME already exists — skipping creation.";
           exit 0;
         fi;
-        echo "Creating site $$SITE_NAME with PostgreSQL...";
+        echo "Creating site $$SITE_NAME on MariaDB...";
         bench new-site \
-          --db-type postgres \
-          --db-root-username $$DB_ROOT_USER \
-          --db-root-password $$DB_ROOT_PASSWORD \
+          --mariadb-root-password $$DB_ROOT_PASSWORD \
+          --mariadb-user-host-login-scope='%' \
           --admin-password $$SITE_ADMIN_PASSWORD \
           --install-app erpnext \
           --set-default $$SITE_NAME;
         echo "Site creation complete.";
     environment:
       SITE_NAME: ${AXERP_SITE_NAME:-erp.axinagroup.com}
-      # DB_ROOT_USER must be a PostgreSQL superuser — reuse the existing openproject superuser
-      DB_ROOT_USER: openproject
-      DB_ROOT_PASSWORD: ${OPENPROJECT_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${AXERP_DB_ROOT_PASSWORD}
       SITE_ADMIN_PASSWORD: ${AXERP_ADMIN_PASSWORD}
     depends_on:
       configurator:
         condition: service_completed_successfully
+      axerp-mariadb:
+        condition: service_healthy
 
   frontend:
     <<: *axerp_image
@@ -125,7 +150,6 @@ services:
     command:
       - nginx-entrypoint.sh
     environment:
-      # Use container names — service aliases aren't guaranteed on external networks
       BACKEND: axerp-backend:8000
       FRAPPE_SITE_NAME_HEADER: ${AXERP_SITE_NAME:-erp.axinagroup.com}
       SOCKETIO: axerp-websocket:9000
