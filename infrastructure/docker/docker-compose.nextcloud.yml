@@ -63,8 +63,8 @@ services:
       # Custom hooks: s3 objectstore config injected before first-run
       - /data/nextcloud/hooks:/docker-entrypoint-hooks.d:ro
     depends_on:
-      openproject-postgres:
-        condition: service_healthy
+      # openproject-postgres is external (defined in docker-compose.yml) —
+      # cannot reference cross-project; it must already be running
       nextcloud-redis:
         condition: service_started
     networks:
