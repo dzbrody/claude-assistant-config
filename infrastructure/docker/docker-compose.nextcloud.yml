@@ -33,7 +33,7 @@ services:
       # ── S3 primary object store ─────────────────────────────────────────────
       # Injected into config.php via the autoconfig.php hook on first boot.
       # These env vars are read by /docker-entrypoint-hooks.d/s3-objectstore.sh
-      NC_S3_BUCKET: ${NC_S3_BUCKET}
+      NC_S3_BUCKET: axina-openproject-files
       NC_S3_REGION: ${NC_S3_REGION}
       NC_S3_KEY: ${NC_S3_ACCESS_KEY_ID}
       NC_S3_SECRET: ${NC_S3_SECRET_ACCESS_KEY}

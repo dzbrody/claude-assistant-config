@@ -375,7 +375,7 @@ Self-hosted Nextcloud at `files.axinagroup.com`. Full deployment guide: `docs/ne
 | Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` ✅ (created 2026-06-16, zone Z03662342MPWYW6ZEPJLC) |
 | TLS | Let's Encrypt via shared certbot container |
 | Database | `nextcloud` DB on shared `openproject-postgres` container |
-| Storage | S3 `axina-nextcloud-files` — IAM user `nextcloud-s3` (policy: `infrastructure/nextcloud/nextcloud-iam-policy.json`) |
+| Storage | `s3://axina-openproject-files/nextcloud/` — shared bucket, `nextcloud/` prefix. IAM user `nextcloud-s3` (policy: `infrastructure/nextcloud/nextcloud-iam-policy.json`) |
 | Config | `nextcloud-config` Docker named volume |
 | Hooks | `/data/nextcloud/hooks/` on EBS data volume |
 | OpenProject | OAuth 2.0 two-way integration — project folder auto-management enabled |

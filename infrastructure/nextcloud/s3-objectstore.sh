@@ -5,6 +5,10 @@
 # Creates /var/www/html/config/s3.config.php with S3 primary objectstore.
 # Nextcloud merges all *.config.php files in /var/www/html/config/ at startup.
 #
+# Storage layout:  s3://axina-openproject-files/nextcloud/<urn>
+# Bucket:          axina-openproject-files   (shared with OpenProject)
+# Prefix:          nextcloud/                (isolates all Nextcloud objects)
+#
 # This hook runs BEFORE the web installer so S3 is active from the first login —
 # no local data directory is ever written.
 
@@ -26,6 +30,7 @@ cat > "$CONFIG_FILE" << PHPEOF
     'class'     => '\\OC\\Files\\ObjectStore\\S3',
     'arguments' => array(
       'bucket'          => '${NC_S3_BUCKET}',
+      'prefix'          => 'nextcloud/',
       'autocreate'      => false,
       'key'             => '${NC_S3_KEY}',
       'secret'          => '${NC_S3_SECRET}',
@@ -43,4 +48,4 @@ PHPEOF
 
 chown www-data:www-data "$CONFIG_FILE"
 chmod 640 "$CONFIG_FILE"
-echo "[hook] s3.config.php written."
+echo "[hook] s3.config.php written — bucket: ${NC_S3_BUCKET}/nextcloud/"

@@ -17,7 +17,7 @@ nextcloud-app:80  (port 8091 internal)
      │         │
      │         ├── openproject-postgres:5432  (nextcloud DB)
      │         ├── nextcloud-redis:6379       (APCu + lock cache)
-     │         └── S3: axina-nextcloud-files  (primary file store — no local disk)
+     │         └── S3: axina-openproject-files/nextcloud/  (primary — no local disk)
      │
 nextcloud-cron  (background jobs every 5 min)
 ```
@@ -27,7 +27,7 @@ nextcloud-cron  (background jobs every 5 min)
 | Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` ✅ created 2026-06-16 |
 | TLS | Let's Encrypt via shared certbot container — cert to be issued on first deploy |
 | Database | `nextcloud` DB on shared `openproject-postgres` |
-| Storage | S3 `axina-nextcloud-files` — IAM user `nextcloud-s3` |
+| Storage | `s3://axina-openproject-files/nextcloud/` — shared bucket, scoped prefix. IAM user `nextcloud-s3` |
 | Config | `nextcloud-config` Docker named volume → `/data/docker/volumes/` |
 | Hooks | `/data/nextcloud/hooks/` on EBS data volume |
 | OpenProject integration | OAuth 2.0 two-way; `files.axinagroup.com` → `projects.axinagroup.com` |
@@ -52,29 +52,36 @@ dig +short files.axinagroup.com
 # Expected: 44.195.198.18
 ```
 
-### 1.1 Create S3 Bucket
+### 1.1 S3 Storage — No new bucket needed ✅
+
+Nextcloud uses the existing `axina-openproject-files` bucket under the `nextcloud/` prefix.
+All Nextcloud objects are stored at `s3://axina-openproject-files/nextcloud/<urn>` and are
+fully isolated from OpenProject objects by prefix.
+
+Create the prefix placeholder (S3 doesn't require it but makes the layout explicit):
 
 ```bash
-aws s3api create-bucket \
-  --bucket axina-nextcloud-files \
-  --region us-east-1
+aws s3api put-object \
+  --bucket axina-openproject-files \
+  --key nextcloud/ \
+  --region us-east-1 && echo "prefix created"
+```
 
-aws s3api put-bucket-versioning \
-  --bucket axina-nextcloud-files \
-  --versioning-configuration Status=Enabled
+Verify the existing bucket already has versioning and encryption:
 
-aws s3api put-bucket-encryption \
-  --bucket axina-nextcloud-files \
-  --server-side-encryption-configuration \
-  '{"Rules":[{"ApplyServerSideEncryptionByDefault":{"SSEAlgorithm":"AES256"},"BucketKeyEnabled":true}]}'
+```bash
+aws s3api get-bucket-versioning --bucket axina-openproject-files
+# Expected: {"Status": "Enabled"}
 
-aws s3api put-public-access-block \
-  --bucket axina-nextcloud-files \
-  --public-access-block-configuration \
-  "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+aws s3api get-bucket-encryption --bucket axina-openproject-files
+# Expected: AES256
 ```
 
 ### 1.2 Create IAM User and Keys
+
+The policy (`infrastructure/nextcloud/nextcloud-iam-policy.json`) grants access
+to `axina-openproject-files` bucket-level operations and object access scoped
+to the `nextcloud/*` prefix only — cannot touch OpenProject objects.
 
 ```bash
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
@@ -92,6 +99,25 @@ aws iam attach-user-policy \
 
 # Save output immediately — secret shown only once
 aws iam create-access-key --user-name nextcloud-s3
+```
+
+Test the keys before proceeding:
+
+```bash
+AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> \
+aws s3api list-objects-v2 \
+  --bucket axina-openproject-files \
+  --prefix nextcloud/ \
+  --region us-east-1
+# Expected: empty Contents (prefix exists, no files yet)
+
+# Confirm it CANNOT access openproject objects:
+AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> \
+aws s3api list-objects-v2 \
+  --bucket axina-openproject-files \
+  --prefix backups/ \
+  --region us-east-1
+# Expected: AccessDenied
 ```
 
 ### 1.3 Route53 — add files subdomain
@@ -154,7 +180,7 @@ cat >> /opt/openproject/.env << 'EOF'
 # ---- Nextcloud ----
 NC_DB_PASSWORD=<generated_with_openssl_rand_hex_32>
 NC_ADMIN_PASSWORD=<generated_with_openssl_rand_hex_16>
-NC_S3_BUCKET=axina-nextcloud-files
+NC_S3_BUCKET=axina-openproject-files
 NC_S3_REGION=us-east-1
 NC_S3_ACCESS_KEY_ID=<from_iam_create_access_key>
 NC_S3_SECRET_ACCESS_KEY=<from_iam_create_access_key>
@@ -251,7 +277,7 @@ echo | openssl s_client -connect files.axinagroup.com:443 \
 docker exec nextcloud-app php occ files:scan --all
 
 # Check a file actually landed in S3
-aws s3 ls s3://axina-nextcloud-files/ --recursive | head -10
+aws s3 ls s3://axina-openproject-files/nextcloud/ --recursive | head -10
 ```
 
 ### 3.2 Database connectivity

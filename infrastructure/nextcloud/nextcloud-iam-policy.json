@@ -2,13 +2,14 @@
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "NextcloudBucketList",
+      "Sid": "NextcloudListBucket",
       "Effect": "Allow",
       "Action": [
         "s3:ListBucket",
-        "s3:GetBucketLocation"
+        "s3:GetBucketLocation",
+        "s3:ListAllMyBuckets"
       ],
-      "Resource": "arn:aws:s3:::axina-nextcloud-files"
+      "Resource": "arn:aws:s3:::axina-openproject-files"
     },
     {
       "Sid": "NextcloudObjectAccess",
@@ -22,7 +23,7 @@
         "s3:GetObjectTagging",
         "s3:PutObjectTagging"
       ],
-      "Resource": "arn:aws:s3:::axina-nextcloud-files/*"
+      "Resource": "arn:aws:s3:::axina-openproject-files/nextcloud/*"
     }
   ]
 }
