@@ -1,0 +1,28 @@
+{
+  "_comment_company": "POST /api/resource/Company — Axina Group Inc.",
+  "_comment_address": "Address is a separate Doctype; see address_payload.json",
+
+  "company_name": "Axina Group Inc.",
+  "abbr": "AGI",
+  "default_currency": "USD",
+  "country": "United States",
+
+  "domain": "Services",
+
+  "website": "https://axinagroup.com/",
+  "email": "db@axinagroup.com",
+  "phone_no": "",
+
+  "create_chart_of_accounts_based_on": "Standard Template",
+  "chart_of_accounts": "Standard",
+
+  "date_of_establishment": "2020-01-01",
+  "fiscal_year_end_month": "December",
+
+  "company_description": "Axina Group Inc. (DBA Axina Group Inc.) is a Florida-registered enterprise headquartered at 1801 NE 123rd St Suite 314, North Miami, FL 33181, USA. The company delivers sustainable infrastructure, carbon sovereignty solutions, and project management services across international markets.",
+
+  "enable_perpetual_inventory": 1,
+  "auto_exchange_rate_revaluation": 0,
+
+  "tax_id": ""
+}

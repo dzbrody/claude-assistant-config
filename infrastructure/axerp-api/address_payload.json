@@ -1,0 +1,21 @@
+{
+  "_comment": "POST /api/resource/Address — linked to Axina Group Inc. Company",
+
+  "address_title": "Axina Group Inc.",
+  "address_type": "Office",
+  "address_line1": "1801 NE 123rd St",
+  "address_line2": "Suite 314",
+  "city": "North Miami",
+  "state": "FL",
+  "pincode": "33181",
+  "country": "United States",
+  "email_id": "db@axinagroup.com",
+  "is_primary_address": 1,
+  "is_shipping_address": 1,
+  "links": [
+    {
+      "link_doctype": "Company",
+      "link_name": "Axina Group Inc."
+    }
+  ]
+}
