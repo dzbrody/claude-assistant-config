@@ -22,7 +22,7 @@
 #   docker logs axerp-create-site -f    # exits 0 on success (~5–10 min)
 
 x-axerp-image: &axerp_image
-  image: axerp:v16.22.0-axerp.3
+  image: axerp:v16.23.0-axerp.1
   platform: linux/arm64
   restart: unless-stopped
   networks:
@@ -132,6 +132,10 @@ services:
           --admin-password $$SITE_ADMIN_PASSWORD \
           --install-app erpnext \
           --set-default $$SITE_NAME;
+        echo "Installing hrms...";
+        bench --site $$SITE_NAME install-app hrms;
+        echo "Installing crm...";
+        bench --site $$SITE_NAME install-app crm;
         echo "Site creation complete.";
     environment:
       SITE_NAME: ${AXERP_SITE_NAME:-erp.axinagroup.com}
