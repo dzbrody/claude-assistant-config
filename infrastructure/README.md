@@ -8,12 +8,14 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 - **Elastic IP**: `44.195.198.18` — static, re-associated after t3→t4g migration
 - **Docker Containers**:
   - `openproject/openproject:17.4.1` — OpenProject application (port 8080)
-  - `postgres:16` — PostgreSQL database
+  - `postgres:16` — PostgreSQL database (shared by OpenProject, Nextcloud, and AXERP)
   - `memcached:alpine` — Rails cache
-  - `nginx:alpine` — Reverse proxy + SSL for `projects.axinagroup.com`
+  - `nginx:alpine` — Reverse proxy + SSL for all three domains
   - `certbot/certbot` — Let's Encrypt auto-renewal (cert expires 2026-09-12)
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
   - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 49 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
+  - `nextcloud:stable` — Nextcloud document store (port 8091 internal)
+  - `axerp:prod` — ERPNext v16 (AXERP fork, port 8082 internal). Source: `github.com/axinagroup/axerp@version-16`
 - **EBS Volumes**:
   - `/dev/xvda` (60GB gp3) — Root volume (`/`) — OS, minimal system files only (~7GB used)
   - `/dev/xvdf` (`vol-02ddb201266e90a56`, 500GB gp3) — Persistent data volume mounted at `/data` — Docker data dir, PostgreSQL, OpenProject assets, backups
@@ -380,6 +382,22 @@ Self-hosted Nextcloud at `files.axinagroup.com`. Full deployment guide: `docs/ne
 | Hooks | `/data/nextcloud/hooks/` on EBS data volume |
 | OpenProject | OAuth 2.0 two-way integration — project folder auto-management enabled |
 | Compose file | `infrastructure/docker/docker-compose.nextcloud.yml` |
+
+## AXERP (ERPNext)
+
+AXERP fork of ERPNext v16 at `erp.axinagroup.com`. Full deployment guide: `docs/axerp-deployment.md`.
+
+| Item | Detail |
+|------|--------|
+| Domain | `erp.axinagroup.com` — Route53 A → `44.195.198.18` |
+| TLS | Let's Encrypt via shared certbot container |
+| Database | `erp.axinagroup.com` DB on shared `openproject-postgres` container (PostgreSQL) |
+| Storage | `/data/axerp/sites/` on EBS data volume |
+| Source | `github.com/axinagroup/axerp`, branch `version-16` — cloned to `/data/axerp-src` on EC2 |
+| Image | `axerp:prod` — built on EC2 from `frappe/erpnext:v16.13.3` (arm64 native) |
+| Port | `127.0.0.1:8082:8080` (nginx proxied) |
+| Compose file | `infrastructure/docker/docker-compose.axerp.yml` |
+| Admin password | 1Password → "AXERP Admin" |
 
 ## Security Notes
 

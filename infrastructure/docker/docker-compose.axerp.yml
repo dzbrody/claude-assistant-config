@@ -1,0 +1,215 @@
+# AXERP (ERPNext v16) — Production Compose
+# Domain: erp.axinagroup.com
+# Database: shared openproject-postgres (PostgreSQL 16)
+# Port: 127.0.0.1:8082:8080 (proxied by openproject-nginx)
+# Platform: linux/arm64 (Graviton2 EC2)
+#
+# Pre-deploy (on EC2 via SSM):
+#   git clone https://github.com/axinagroup/axerp.git /data/axerp-src
+#   cd /data/axerp-src && git checkout version-16
+#   docker build -f docker/Dockerfile -t axerp:prod .
+#
+# Deploy:
+#   aws s3 cp docker-compose.axerp.yml s3://axina-openproject-files/deploy/
+#   # On EC2: cd /opt/openproject && docker compose -f docker-compose.axerp.yml up -d
+#
+# Monitor first-run site creation:
+#   docker logs axerp-create-site -f    # exits 0 on success (~5–15 min)
+#
+# After create-site completes, restart backend workers:
+#   docker compose -f docker-compose.axerp.yml restart backend queue-long queue-short scheduler
+
+x-axerp-image: &axerp_image
+  image: axerp:prod
+  platform: linux/arm64
+  restart: unless-stopped
+  networks:
+    - openproject_default
+  volumes:
+    - /data/axerp/sites:/home/frappe/frappe-bench/sites
+    - /data/axerp/logs:/home/frappe/frappe-bench/logs
+
+services:
+
+  backend:
+    <<: *axerp_image
+    container_name: axerp-backend
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+
+  configurator:
+    <<: *axerp_image
+    container_name: axerp-configurator
+    restart: "no"
+    entrypoint:
+      - bash
+      - -c
+    command:
+      - >
+        ls -1 apps > sites/apps.txt;
+        bench set-config -g db_type postgres;
+        bench set-config -g db_host $$DB_HOST;
+        bench set-config -gp db_port $$DB_PORT;
+        bench set-config -g redis_cache "redis://$$REDIS_CACHE";
+        bench set-config -g redis_queue "redis://$$REDIS_QUEUE";
+        bench set-config -g redis_socketio "redis://$$REDIS_QUEUE";
+        bench set-config -gp socketio_port $$SOCKETIO_PORT;
+    environment:
+      DB_HOST: openproject-postgres
+      DB_PORT: "5432"
+      REDIS_CACHE: axerp-redis-cache:6379
+      REDIS_QUEUE: axerp-redis-queue:6379
+      SOCKETIO_PORT: "9000"
+    depends_on:
+      axerp-redis-cache:
+        condition: service_started
+      axerp-redis-queue:
+        condition: service_started
+
+  create-site:
+    <<: *axerp_image
+    container_name: axerp-create-site
+    restart: "no"
+    entrypoint:
+      - bash
+      - -c
+    command:
+      - >
+        wait-for-it -t 120 openproject-postgres:5432;
+        wait-for-it -t 120 axerp-redis-cache:6379;
+        wait-for-it -t 120 axerp-redis-queue:6379;
+        export start=`date +%s`;
+        until [[ -n `grep -hs ^ sites/common_site_config.json | jq -r ".db_host // empty"` ]] && \
+          [[ -n `grep -hs ^ sites/common_site_config.json | jq -r ".redis_cache // empty"` ]] && \
+          [[ -n `grep -hs ^ sites/common_site_config.json | jq -r ".redis_queue // empty"` ]];
+        do
+          echo "Waiting for sites/common_site_config.json...";
+          sleep 5;
+          if (( `date +%s`-start > 120 )); then
+            echo "ERROR: sites/common_site_config.json not ready after 120s";
+            exit 1;
+          fi;
+        done;
+        if [ -f "sites/$$SITE_NAME/site_config.json" ]; then
+          echo "Site $$SITE_NAME already exists — skipping creation.";
+          exit 0;
+        fi;
+        echo "Creating site $$SITE_NAME with PostgreSQL...";
+        bench new-site \
+          --db-type postgres \
+          --db-root-username $$DB_ROOT_USER \
+          --db-root-password $$DB_ROOT_PASSWORD \
+          --admin-password $$SITE_ADMIN_PASSWORD \
+          --install-app erpnext \
+          --set-default $$SITE_NAME;
+        echo "Site creation complete.";
+    environment:
+      SITE_NAME: ${AXERP_SITE_NAME:-erp.axinagroup.com}
+      # DB_ROOT_USER must be a PostgreSQL superuser — reuse the existing openproject superuser
+      DB_ROOT_USER: openproject
+      DB_ROOT_PASSWORD: ${OPENPROJECT_DB_PASSWORD}
+      SITE_ADMIN_PASSWORD: ${AXERP_ADMIN_PASSWORD}
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+
+  frontend:
+    <<: *axerp_image
+    container_name: axerp-frontend
+    restart: on-failure
+    command:
+      - nginx-entrypoint.sh
+    environment:
+      # Use container names — service aliases aren't guaranteed on external networks
+      BACKEND: axerp-backend:8000
+      FRAPPE_SITE_NAME_HEADER: ${AXERP_SITE_NAME:-erp.axinagroup.com}
+      SOCKETIO: axerp-websocket:9000
+      UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
+      UPSTREAM_REAL_IP_HEADER: X-Forwarded-For
+      UPSTREAM_REAL_IP_RECURSIVE: "off"
+      PROXY_READ_TIMEOUT: 120
+      CLIENT_MAX_BODY_SIZE: 100m
+    ports:
+      - "127.0.0.1:8082:8080"
+    depends_on:
+      backend:
+        condition: service_started
+      websocket:
+        condition: service_started
+
+  websocket:
+    <<: *axerp_image
+    container_name: axerp-websocket
+    command:
+      - node
+      - /home/frappe/frappe-bench/apps/frappe/socketio.js
+    environment:
+      FRAPPE_REDIS_CACHE: redis://axerp-redis-cache:6379
+      FRAPPE_REDIS_QUEUE: redis://axerp-redis-queue:6379
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+
+  queue-long:
+    <<: *axerp_image
+    container_name: axerp-queue-long
+    command:
+      - bench
+      - worker
+      - --queue
+      - long,default,short
+    environment:
+      FRAPPE_REDIS_CACHE: redis://axerp-redis-cache:6379
+      FRAPPE_REDIS_QUEUE: redis://axerp-redis-queue:6379
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+
+  queue-short:
+    <<: *axerp_image
+    container_name: axerp-queue-short
+    command:
+      - bench
+      - worker
+      - --queue
+      - short,default
+    environment:
+      FRAPPE_REDIS_CACHE: redis://axerp-redis-cache:6379
+      FRAPPE_REDIS_QUEUE: redis://axerp-redis-queue:6379
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+
+  scheduler:
+    <<: *axerp_image
+    container_name: axerp-scheduler
+    command:
+      - bench
+      - schedule
+    depends_on:
+      configurator:
+        condition: service_completed_successfully
+
+  axerp-redis-cache:
+    image: redis:6.2-alpine
+    platform: linux/arm64
+    container_name: axerp-redis-cache
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no
+    networks:
+      - openproject_default
+
+  axerp-redis-queue:
+    image: redis:6.2-alpine
+    platform: linux/arm64
+    container_name: axerp-redis-queue
+    restart: unless-stopped
+    volumes:
+      - /data/axerp/redis-queue:/data
+    networks:
+      - openproject_default
+
+networks:
+  openproject_default:
+    external: true
