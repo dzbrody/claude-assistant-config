@@ -366,6 +366,21 @@ security add-generic-password \
 security find-generic-password -s "openproject-mcp-api-key" -w
 ```
 
+## Nextcloud (Document Store / VDR)
+
+Self-hosted Nextcloud at `files.axinagroup.com`. Full deployment guide: `docs/nextcloud-deployment.md`.
+
+| Item | Detail |
+|------|--------|
+| Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` |
+| TLS | Let's Encrypt via shared certbot container |
+| Database | `nextcloud` DB on shared `openproject-postgres` container |
+| Storage | S3 `axina-nextcloud-files` — IAM user `nextcloud-s3` (policy: `infrastructure/nextcloud/nextcloud-iam-policy.json`) |
+| Config | `nextcloud-config` Docker named volume |
+| Hooks | `/data/nextcloud/hooks/` on EBS data volume |
+| OpenProject | OAuth 2.0 two-way integration — project folder auto-management enabled |
+| Compose file | `infrastructure/docker/docker-compose.nextcloud.yml` |
+
 ## Security Notes
 
 - Port 39128 (MCP server) binds to `127.0.0.1` only — not reachable directly from internet

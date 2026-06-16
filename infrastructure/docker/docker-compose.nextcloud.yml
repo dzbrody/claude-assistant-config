@@ -1,0 +1,98 @@
+# Nextcloud Community Edition — Axina VDR / Document Store
+#
+# Storage: Amazon S3 primary (stateless — no local data dir mounted)
+# Database: shared openproject-postgres container on openproject_default network
+# Domain: files.axinagroup.com (proxied by openproject-nginx)
+#
+# Deploy:
+#   aws s3 cp docker-compose.nextcloud.yml s3://axina-openproject-files/deploy/
+#   aws ssm send-command ... "cd /opt/openproject && docker compose -f docker-compose.nextcloud.yml up -d"
+
+services:
+
+  nextcloud:
+    image: nextcloud:stable
+    container_name: nextcloud-app
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8091:80"
+    environment:
+      # ── Database (existing openproject-postgres container) ──────────────────
+      POSTGRES_HOST: openproject-postgres
+      POSTGRES_DB: nextcloud
+      POSTGRES_USER: nextcloud
+      POSTGRES_PASSWORD: ${NC_DB_PASSWORD}
+
+      # ── Admin account (first-run only) ──────────────────────────────────────
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: ${NC_ADMIN_PASSWORD}
+
+      # ── Trusted domain ──────────────────────────────────────────────────────
+      NEXTCLOUD_TRUSTED_DOMAINS: files.axinagroup.com
+
+      # ── S3 primary object store ─────────────────────────────────────────────
+      # Injected into config.php via the autoconfig.php hook on first boot.
+      # These env vars are read by /docker-entrypoint-hooks.d/s3-objectstore.sh
+      NC_S3_BUCKET: ${NC_S3_BUCKET}
+      NC_S3_REGION: ${NC_S3_REGION}
+      NC_S3_KEY: ${NC_S3_ACCESS_KEY_ID}
+      NC_S3_SECRET: ${NC_S3_SECRET_ACCESS_KEY}
+
+      # ── Redis cache ─────────────────────────────────────────────────────────
+      REDIS_HOST: nextcloud-redis
+      REDIS_HOST_PORT: 6379
+
+      # ── Mail (SES) ──────────────────────────────────────────────────────────
+      SMTP_HOST: email-smtp.us-east-1.amazonaws.com
+      SMTP_SECURE: tls
+      SMTP_PORT: "587"
+      SMTP_AUTHTYPE: LOGIN
+      SMTP_NAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      MAIL_FROM_ADDRESS: no-reply
+      MAIL_DOMAIN: axinagroup.com
+
+      # ── Overwrite URL (required behind nginx reverse proxy) ─────────────────
+      OVERWRITEPROTOCOL: https
+      OVERWRITECLIURL: https://files.axinagroup.com
+      TRUSTED_PROXIES: 127.0.0.1
+
+    volumes:
+      # Config dir only — no data dir (S3 is primary storage)
+      - nextcloud-config:/var/www/html/config
+      # Custom hooks: s3 objectstore config injected before first-run
+      - /data/nextcloud/hooks:/docker-entrypoint-hooks.d:ro
+    depends_on:
+      openproject-postgres:
+        condition: service_healthy
+      nextcloud-redis:
+        condition: service_started
+    networks:
+      - openproject_default
+
+  nextcloud-redis:
+    image: redis:7-alpine
+    container_name: nextcloud-redis
+    restart: unless-stopped
+    command: redis-server --save "" --appendonly no
+    networks:
+      - openproject_default
+
+  nextcloud-cron:
+    image: nextcloud:stable
+    container_name: nextcloud-cron
+    restart: unless-stopped
+    entrypoint: /cron.sh
+    volumes:
+      - nextcloud-config:/var/www/html/config
+    depends_on:
+      - nextcloud
+    networks:
+      - openproject_default
+
+volumes:
+  nextcloud-config:
+
+networks:
+  openproject_default:
+    external: true
