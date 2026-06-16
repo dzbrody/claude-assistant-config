@@ -24,8 +24,8 @@ nextcloud-cron  (background jobs every 5 min)
 
 | Item | Detail |
 |------|--------|
-| Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` |
-| TLS | Let's Encrypt via shared certbot container |
+| Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` ✅ created 2026-06-16 |
+| TLS | Let's Encrypt via shared certbot container — cert to be issued on first deploy |
 | Database | `nextcloud` DB on shared `openproject-postgres` |
 | Storage | S3 `axina-nextcloud-files` — IAM user `nextcloud-s3` |
 | Config | `nextcloud-config` Docker named volume → `/data/docker/volumes/` |
@@ -35,6 +35,22 @@ nextcloud-cron  (background jobs every 5 min)
 ---
 
 ## Phase 1 — AWS Pre-requisites
+
+### 1.0 Route53 DNS — files.axinagroup.com ✅ Already done
+
+The A record was created on 2026-06-16 (hosted zone `Z03662342MPWYW6ZEPJLC`):
+
+```bash
+# Verify (already INSYNC):
+aws route53 list-resource-record-sets \
+  --hosted-zone-id Z03662342MPWYW6ZEPJLC \
+  --query "ResourceRecordSets[?Name=='files.axinagroup.com.']" \
+  --output table
+
+# Live DNS check:
+dig +short files.axinagroup.com
+# Expected: 44.195.198.18
+```
 
 ### 1.1 Create S3 Bucket
 
@@ -177,11 +193,26 @@ docker exec nextcloud-app chown www-data:www-data \
 docker restart nextcloud-app
 ```
 
-### 2.6 Issue TLS certificate
+### 2.6 Deploy updated nginx.conf and issue TLS certificate
+
+The `nginx.conf` in this repo already includes the `files.axinagroup.com` server block
+and the `upstream nextcloud` entry. Deploy it before issuing the cert so the ACME
+HTTP-01 challenge can be served.
 
 ```bash
-cd /opt/openproject
+# Upload updated nginx.conf to S3
+aws s3 cp infrastructure/docker/nginx.conf \
+  s3://axina-openproject-files/deploy/nginx.conf
 
+# Pull to EC2 and restart nginx
+aws ssm start-session --target i-07bb8581203e52527
+cd /opt/openproject
+aws s3 cp s3://axina-openproject-files/deploy/nginx.conf /opt/openproject/nginx.conf
+
+# nginx needs to start without the TLS cert — temporarily comment out the
+# files.axinagroup.com 443 block, reload, then issue the cert, then uncomment.
+# Easier: issue cert first via standalone mode while nginx is serving port 80.
+docker compose restart openproject-nginx
 docker compose run --rm certbot certonly \
   --webroot --webroot-path /var/www/certbot \
   -d files.axinagroup.com \
@@ -189,25 +220,24 @@ docker compose run --rm certbot certonly \
   --agree-tos --non-interactive
 ```
 
-### 2.7 Add Nextcloud nginx server block
-
-Append the `upstream nextcloud` and both server blocks from `infrastructure/nextcloud/nginx-nextcloud.conf` into `/opt/openproject/nginx.conf`, then reload:
+Reload nginx to activate the HTTPS block with the new cert:
 
 ```bash
-# The nginx.conf must gain:
-#   upstream nextcloud { server nextcloud-app:80; }
-#   server { listen 80; server_name files.axinagroup.com; ... }
-#   server { listen 443 ssl; server_name files.axinagroup.com; ... }
-
-docker exec openproject-nginx nginx -t && \
+docker exec openproject-nginx nginx -t
 docker exec openproject-nginx nginx -s reload
 ```
 
 Verify:
 
 ```bash
-curl -sI https://files.axinagroup.com | grep -E "HTTP|Location"
-# Expect: HTTP/2 200 or redirect to /login
+curl -sI https://files.axinagroup.com | grep -E "HTTP|Location|Server"
+# Expect: HTTP/2 200 (or 302 to /login)
+
+# Check cert subject
+echo | openssl s_client -connect files.axinagroup.com:443 \
+  -servername files.axinagroup.com 2>/dev/null \
+  | openssl x509 -noout -subject -dates
+# Expected: subject=CN=files.axinagroup.com
 ```
 
 ---
