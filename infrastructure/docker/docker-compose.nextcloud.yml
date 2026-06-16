@@ -60,6 +60,8 @@ services:
     volumes:
       # Config dir only — no data dir (S3 is primary storage)
       - nextcloud-config:/var/www/html/config
+      # custom_apps persists installed apps across container restarts
+      - nextcloud-custom-apps:/var/www/html/custom_apps
       # Custom hooks: s3 objectstore config injected before first-run
       - /data/nextcloud/hooks:/docker-entrypoint-hooks.d:ro
     depends_on:
@@ -85,6 +87,7 @@ services:
     entrypoint: /cron.sh
     volumes:
       - nextcloud-config:/var/www/html/config
+      - nextcloud-custom-apps:/var/www/html/custom_apps
     depends_on:
       - nextcloud
     networks:
@@ -92,6 +95,7 @@ services:
 
 volumes:
   nextcloud-config:
+  nextcloud-custom-apps:
 
 networks:
   openproject_default:
