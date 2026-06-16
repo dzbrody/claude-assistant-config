@@ -263,7 +263,7 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 
 | Resource | Detail |
 |----------|--------|
-| EC2 | `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, 30GB root + 100GB data |
+| EC2 | `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, 60GB root + 500GB data |
 | Instance ID | `i-07bb8581203e52527`, AZ `us-east-1f` |
 | Domain | `projects.axinagroup.com` (Route53) |
 | SSL | Let's Encrypt via Certbot (auto-renewing, expires 2026-09-12) |
@@ -271,6 +271,8 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 | Storage | S3 `axina-openproject-files` (versioned, SSE-S3) |
 
 ### Docker Containers on EC2
+
+Docker data dir: `/data/docker` (500GB EBS, configured via `/etc/docker/daemon.json`)
 
 | Container | Purpose |
 |-----------|---------|

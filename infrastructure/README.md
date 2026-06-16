@@ -15,8 +15,8 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
   - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 49 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
 - **EBS Volumes**:
-  - `/dev/xvda` (30GB gp3) — Root (new instance)
-  - `/dev/xvdf` (`vol-02ddb201266e90a56`, 100GB gp3) — Persistent data volume (migrated from t3.large; survives instance replacement)
+  - `/dev/xvda` (60GB gp3) — Root volume (`/`) — OS, minimal system files only (~7GB used)
+  - `/dev/xvdf` (`vol-02ddb201266e90a56`, 500GB gp3) — Persistent data volume mounted at `/data` — Docker data dir, PostgreSQL, OpenProject assets, backups
 
 ## Storage
 
@@ -27,7 +27,13 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
   - CORS configured for `projects.axinagroup.com`
   - No public access
   - Access granted to EC2 via IAM role (no hardcoded credentials)
-- **EBS**: 100GB gp3 for Docker volumes and container data
+- **Docker data dir**: `/data/docker` on the 500GB EBS volume (`/etc/docker/daemon.json` → `"data-root": "/data/docker"`)
+- **EBS layout** (`/data`, 500GB gp3):
+  - `/data/docker/` — Docker images, container layers, named volumes
+  - `/data/openproject/pgdata/` — PostgreSQL data
+  - `/data/openproject/assets/` — OpenProject file attachments
+  - `/data/mcp-server/` — Remote MCP server source
+  - `/data/backups/` — Backup archives
 
 ## Quick Deploy
 
