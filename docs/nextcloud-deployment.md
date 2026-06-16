@@ -205,6 +205,46 @@ docker logs nextcloud-app -f
 # Wait for: "Apache started" — indicates installer completed
 ```
 
+### 2.4b Configure writable apps directory and install required apps
+
+The built-in `/apps` dir is owned by root — Nextcloud cannot write new apps there.
+Configure `apps_paths` to mark `custom_apps` as the writable install target,
+then install both required apps from the Nextcloud app store:
+
+```bash
+# Fix apps directory permissions
+docker exec nextcloud-app chown -R www-data:www-data /var/www/html/custom_apps/
+docker exec nextcloud-app chmod 755 /var/www/html/custom_apps/
+
+# Configure apps_paths: /apps = read-only (bundled), /custom_apps = writable
+docker exec -u www-data nextcloud-app php occ config:system:set apps_paths 0 path --value="/var/www/html/apps"
+docker exec -u www-data nextcloud-app php occ config:system:set apps_paths 0 url --value="/apps"
+docker exec -u www-data nextcloud-app php occ config:system:set apps_paths 0 writable --type boolean --value=false
+docker exec -u www-data nextcloud-app php occ config:system:set apps_paths 1 path --value="/var/www/html/custom_apps"
+docker exec -u www-data nextcloud-app php occ config:system:set apps_paths 1 url --value="/custom_apps"
+docker exec -u www-data nextcloud-app php occ config:system:set apps_paths 1 writable --type boolean --value=true
+
+# Install groupfolders (Team Folders) — required by OpenProject integration for project folders
+docker exec -u www-data nextcloud-app php occ app:install groupfolders
+# Expected: groupfolders 21.0.8 installed + enabled
+
+# Install OpenProject integration app from tarball (see note below)
+# The app store version downloads correctly via occ after apps_paths is set:
+docker exec -u www-data nextcloud-app php occ app:install integration_openproject
+# If it errors with "Cannot write into apps directory", extract manually:
+#   aws s3 cp s3://axina-openproject-files/deploy/integration_openproject-3.0.0.tar.gz /tmp/
+#   docker cp /tmp/integration_openproject-3.0.0.tar.gz nextcloud-app:/tmp/
+#   docker exec nextcloud-app tar xzf /tmp/integration_openproject-3.0.0.tar.gz -C /var/www/html/custom_apps/
+#   docker exec nextcloud-app chown -R www-data:www-data /var/www/html/custom_apps/integration_openproject
+#   docker exec -u www-data nextcloud-app php occ app:enable integration_openproject
+
+# Verify both apps are enabled
+docker exec -u www-data nextcloud-app php occ app:list --enabled | grep -E "groupfolders|integration_openproject"
+# Expected:
+#   - groupfolders: 21.0.8
+#   - integration_openproject: 3.0.0
+```
+
 ### 2.5 Copy Redis config into named volume
 
 After the installer completes (Apache started log line), copy the Redis config:
