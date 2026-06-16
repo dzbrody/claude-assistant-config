@@ -4,10 +4,16 @@
 # Port: 127.0.0.1:8082:8080 (proxied by openproject-nginx)
 # Platform: linux/arm64 (Graviton2 EC2)
 #
-# Pre-deploy (on EC2 via SSM):
-#   git clone https://github.com/axinagroup/axerp.git /data/axerp-src
-#   cd /data/axerp-src && git checkout version-16
-#   docker build -f docker/Dockerfile -t axerp:prod .
+# Image tag convention: axerp:<AXERP_TAG>
+#   AXERP_TAG = upstream erpnext version + axerp patch (e.g. v16.22.0-axerp.2)
+#   Pinned here so production is always on a known build.
+#   To upgrade: bump AXERP_TAG, rebuild on EC2, redeploy.
+#
+# To upgrade to a new upstream release:
+#   1. cd /data/axerp-src && git pull && git checkout version-16
+#   2. docker build -f docker/Dockerfile -t axerp:<new-tag> -t axerp:prod .
+#   3. Update AXERP_TAG in this file, push to infra repo.
+#   4. docker compose -f docker-compose.axerp.yml up -d --force-recreate
 #
 # Deploy:
 #   aws s3 cp docker-compose.axerp.yml s3://axina-openproject-files/deploy/
@@ -15,12 +21,9 @@
 #
 # Monitor first-run site creation:
 #   docker logs axerp-create-site -f    # exits 0 on success (~5–15 min)
-#
-# After create-site completes, restart backend workers:
-#   docker compose -f docker-compose.axerp.yml restart backend queue-long queue-short scheduler
 
 x-axerp-image: &axerp_image
-  image: axerp:prod
+  image: axerp:v16.22.0-axerp.2
   platform: linux/arm64
   restart: unless-stopped
   networks:
