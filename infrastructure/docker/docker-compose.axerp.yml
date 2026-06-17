@@ -14,9 +14,11 @@
 # To upgrade upstream: bump tag, pull + rebuild on EC2, redeploy.
 #
 # Asset architecture:
-#   axerp-assets (named volume) — populated from image on first run,
-#   shared between backend and frontend so bench build output is immediately
-#   visible to nginx without any docker cp steps.
+#   /data/axerp/sites/assets/ — real directory on host bind mount.
+#   The Dockerfile bakes all app public/ dirs as real directories in sites/assets/
+#   so the image ships complete, symlink-free assets. On first deploy, the image
+#   entrypoint populates sites/assets/ from the image layer into the host volume.
+#   No docker cp required after bench build.
 #
 # Deploy (EC2 via SSM):
 #   aws s3 cp docker-compose.axerp.yml s3://axina-openproject-files/deploy/
@@ -34,7 +36,6 @@ x-axerp-image: &axerp_image
     - openproject_default
   volumes:
     - /data/axerp/sites:/home/frappe/frappe-bench/sites
-    - axerp-assets:/home/frappe/frappe-bench/sites/assets
     - /data/axerp/logs:/home/frappe/frappe-bench/logs
   logging:
     driver: "json-file"
@@ -270,11 +271,3 @@ services:
 networks:
   openproject_default:
     external: true
-
-# Named volumes for data that must outlive containers
-volumes:
-  # axerp-assets: populated from the image's baked sites/assets/ on first run.
-  # Shared between backend (bench build writes here) and frontend (nginx serves from here).
-  # Eliminates the need for docker cp after bench build.
-  # To repopulate after image upgrade: docker volume rm axerp_axerp-assets
-  axerp-assets:
