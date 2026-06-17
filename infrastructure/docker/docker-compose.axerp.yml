@@ -13,6 +13,11 @@
 # Image tag convention: axerp:<ERPNEXT_VERSION>-axerp.<PATCH>
 # To upgrade upstream: bump tag, pull + rebuild on EC2, redeploy.
 #
+# Asset architecture:
+#   axerp-assets (named volume) — populated from image on first run,
+#   shared between backend and frontend so bench build output is immediately
+#   visible to nginx without any docker cp steps.
+#
 # Deploy (EC2 via SSM):
 #   aws s3 cp docker-compose.axerp.yml s3://axina-openproject-files/deploy/
 #   # On EC2:
@@ -22,14 +27,20 @@
 #   docker logs axerp-create-site -f    # exits 0 on success (~5–10 min)
 
 x-axerp-image: &axerp_image
-  image: axerp:v16.23.0-axerp.2
+  image: axerp:v16.23.0-axerp.3
   platform: linux/arm64
   restart: unless-stopped
   networks:
     - openproject_default
   volumes:
     - /data/axerp/sites:/home/frappe/frappe-bench/sites
+    - axerp-assets:/home/frappe/frappe-bench/sites/assets
     - /data/axerp/logs:/home/frappe/frappe-bench/logs
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "10m"
+      max-file: "3"
 
 services:
 
@@ -62,6 +73,10 @@ services:
   backend:
     <<: *axerp_image
     container_name: axerp-backend
+    deploy:
+      resources:
+        limits:
+          memory: 2g
     depends_on:
       configurator:
         condition: service_completed_successfully
@@ -196,6 +211,10 @@ services:
     environment:
       FRAPPE_REDIS_CACHE: redis://axerp-redis-cache:6379
       FRAPPE_REDIS_QUEUE: redis://axerp-redis-queue:6379
+    deploy:
+      resources:
+        limits:
+          memory: 1g
     depends_on:
       configurator:
         condition: service_completed_successfully
@@ -211,6 +230,10 @@ services:
     environment:
       FRAPPE_REDIS_CACHE: redis://axerp-redis-cache:6379
       FRAPPE_REDIS_QUEUE: redis://axerp-redis-queue:6379
+    deploy:
+      resources:
+        limits:
+          memory: 512m
     depends_on:
       configurator:
         condition: service_completed_successfully
@@ -247,3 +270,11 @@ services:
 networks:
   openproject_default:
     external: true
+
+# Named volumes for data that must outlive containers
+volumes:
+  # axerp-assets: populated from the image's baked sites/assets/ on first run.
+  # Shared between backend (bench build writes here) and frontend (nginx serves from here).
+  # Eliminates the need for docker cp after bench build.
+  # To repopulate after image upgrade: docker volume rm axerp_axerp-assets
+  axerp-assets:
