@@ -1,6 +1,6 @@
 # Claude Personal Assistant — CTO Rescues Infrastructure
 
-A complete AI-powered personal assistant ecosystem built with Claude Code and Claude CLI. Runs morning briefings, evening wrap-ups, weekly reviews, and real-time OpenProject notifications — all from a native Mac menu bar app with one click.
+A complete AI-powered personal assistant ecosystem built with Claude Code and Claude CLI. Runs morning briefings, evening wrap-ups, weekly reviews, and real-time OpenProject notifications — invoked directly from the CLI or via scheduled launchd tasks.
 
 > **Author**: Daniel Brody (@dzbrody) — [ctorescues.com](https://ctorescues.com/)  
 > **Infrastructure**: AWS us-east-1  
@@ -14,7 +14,6 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 - [Architecture Overview](#architecture-overview)
 - [Project Structure](#project-structure)
 - [Quick Start](#quick-start)
-- [Desktop App](#desktop-app)
 - [MCP Server Ecosystem](#mcp-server-ecosystem)
 - [Scheduled Briefings](#scheduled-briefings)
 - [Infrastructure](#infrastructure)
@@ -24,8 +23,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 
 | File | Contents |
 |------|----------|
-| [RELEASE-NOTES-v2.0.md](RELEASE-NOTES-v2.0.md) | Full changelog for the June 11 2026 release (v2.0.0) |
-| [desktop/README.md](desktop/README.md) | Menu bar app install, accessibility setup, AWS session, CLI usage, logs |
+| [CHANGELOG.md](CHANGELOG.md) | Version history and release notes |
 | [mcp-servers/TEAM-INSTALL.md](mcp-servers/TEAM-INSTALL.md) | Full 12-step new user setup guide — start here for a fresh Mac |
 | [mcp-servers/README.md](mcp-servers/README.md) | MCP server inventory, WhatsApp architecture, add/remove servers |
 | [scheduled-tasks/README.md](scheduled-tasks/README.md) | Briefing prompts, document saving rules, TSPG group config |
@@ -38,7 +36,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 
 ## What This Does
 
-**Click ☀️ in the menu bar** → Terminal opens, claude launches, the full morning briefing runs automatically:
+**Run the morning briefing** (`bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing` or via launchd) → Claude runs the full morning briefing automatically:
 - Scans last 24h across **8 core WhatsApp groups** (TSPG, TGI Tech, Angola, Uganda, Dev, TGI Geneses, AXINOD UKR, Erin Davidson) — downloads docs to Drive, creates OpenProject tasks
 - Scans **10 NCR Africa WhatsApp groups** — enforces weekly touchpoint rule, prompts y/N before sending nudge messages (never auto-sends)
 - Scans all Gmail in the last 24h, auto-creates OpenProject tasks for action items
@@ -63,9 +61,9 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 
 Run `/pmo-menu` to see the full reference table.
 
-**Click 🌙** → Evening wrap-up: sent emails, Drive activity, TSPG afternoon messages, task status, tomorrow preview.
+**Evening wrap-up** (`evening-wrap-up`) → sent emails, Drive activity, TSPG afternoon messages, task status, tomorrow preview.
 
-**Click 📅 / 📊** → Weekend briefing and weekly review on Sundays.
+**Weekend briefing / weekly review** (`weekend-briefing`, `weekly-review`) → run on Sundays.
 
 **Always running in background** → OpenProject notifier posts every new task, status change, and assignment to the TSPG WhatsApp group every 15 minutes.
 
@@ -78,14 +76,8 @@ Run `/pmo-menu` to see the full reference table.
 │                         YOUR MAC                                │
 │                                                                 │
 │  ┌────────────────────────────────────────────────────────┐    │
-│  │  🤖 Claude Assistant (menu bar app)                     │    │
-│  │  python3.12 + rumps                                     │    │
-│  │  Copies prompt → opens Terminal → launches claude CLI   │    │
-│  └────────────────────────┬───────────────────────────────┘    │
-│                           │                                     │
-│  ┌────────────────────────▼───────────────────────────────┐    │
-│  │  claude CLI (interactive, --dangerously-skip-permissions)│    │
-│  │  Runs from ~/.claude-assistant                           │    │
+│  │  claude CLI (--dangerously-skip-permissions)            │    │
+│  │  Invoked via run-scheduled-task.sh or directly          │    │
 │  │  Reads MCP config from .claude/settings.local.json      │    │
 │  └────────────────────────┬───────────────────────────────┘    │
 │                           │  MCP (stdio + SSE)                  │
@@ -102,7 +94,6 @@ Run `/pmo-menu` to see the full reference table.
 │  │  Background Services (launchd — start at login)          │    │
 │  │  • whatsapp-bridge       Go, :8080, persistent session  │    │
 │  │  • openproject-notifier  Python, every 15 min           │    │
-│  │  • claude-assistant app  Python 3.12 menu bar           │    │
 │  └─────────────────────────────────────────────────────────┘    │
 └─────────────────────────┬───────────────────────────────────────┘
                           │ HTTPS + API Key
@@ -121,15 +112,10 @@ Run `/pmo-menu` to see the full reference table.
 ```
 ~/.claude-assistant/
 ├── README.md
+├── CHANGELOG.md
 ├── .claude/
 │   ├── settings.local.json.example  # Template — copy to settings.local.json, fill in keys
 │   └── settings.local.json          # ⚠️ gitignored — contains MCP API keys and personal paths
-│
-├── desktop/                        # Menu bar app
-│   ├── app.py                     # rumps app — 🤖 in menu bar
-│   ├── build.sh                   # Package as .app, install LaunchAgent
-│   ├── run_briefing.sh            # Shell wrapper — AWS check → launch claude
-│   └── README.md
 │
 ├── scheduled-tasks/                # Briefing prompts
 │   ├── morning-briefing.md        # Full morning briefing — 8 WhatsApp groups, 10 NCR groups
@@ -168,9 +154,8 @@ Full instructions: **[mcp-servers/TEAM-INSTALL.md](mcp-servers/TEAM-INSTALL.md)*
 
 ```bash
 # 1. Install prerequisites
-brew install node uv awscli python@3.12 go
+brew install node uv awscli go
 npm install -g @anthropic/claude-code
-/usr/local/bin/pip3.12 install rumps --break-system-packages
 
 # 2. Clone
 git clone <repo-url> ~/.claude-assistant
@@ -190,32 +175,12 @@ git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
 cd ~/whatsapp-mcp/whatsapp-bridge && go build -o whatsapp-bridge .
 # Run it once, scan QR code on your phone, then install as launchd service
 
-# 6. Install the menu bar app
-bash ~/.claude-assistant/desktop/build.sh
-# Answer y to start at login
-
-# 7. Grant accessibility: System Settings → Privacy & Security → Accessibility → add Terminal
-
-# 8. Configure AWS SSO
+# 6. Configure AWS SSO
 aws sso login --profile xgc-main
+
+# 7. Run a briefing
+bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing
 ```
-
----
-
-## Desktop App
-
-The menu bar app (`desktop/`) is the primary way to run briefings. It:
-
-1. Copies the full prompt to the clipboard
-2. Opens a new Terminal window
-3. Launches `claude --dangerously-skip-permissions`
-4. Waits 8 seconds for claude + MCP servers to load
-5. Pastes via Cmd+V, presses Enter
-6. Claude runs fully interactively — output streams live
-
-**Why interactive mode?** Claude's MCP tool calls require a real TTY. The `-p` non-interactive flag silently produces no output when MCP tools are involved due to output buffering.
-
-See **[desktop/README.md](desktop/README.md)** for full installation details.
 
 ---
 
@@ -244,14 +209,14 @@ API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12,
 
 ## Scheduled Briefings
 
-| Task | Button | Typical Runtime |
-|------|--------|----------------|
-| Morning Briefing | ☀️ | ~12–15 min |
-| Evening Wrap-Up | 🌙 | ~5–7 min |
-| Weekend Briefing | 📅 | ~8–10 min |
-| Weekly Review | 📊 | ~5–8 min |
+| Task | CLI Name | Typical Runtime |
+|------|----------|----------------|
+| Morning Briefing | `morning-briefing` | ~12–15 min |
+| Evening Wrap-Up | `evening-wrap-up` | ~5–7 min |
+| Weekend Briefing | `weekend-briefing` | ~8–10 min |
+| Weekly Review | `weekly-review` | ~5–8 min |
 
-Runs via `scripts/run-scheduled-task.sh` — streams output live, captures for email summary.
+Runs via `scripts/run-scheduled-task.sh` — streams output live, tees to log, sends summary email in the same invocation.
 Output: `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 
 WhatsApp summary sent to Daniel's number at the end of every run.

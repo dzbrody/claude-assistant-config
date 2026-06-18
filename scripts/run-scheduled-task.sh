@@ -31,6 +31,7 @@ LOG_DIR="$HOME/logs/claude-assistant"
 LOG_FILE="$LOG_DIR/${TASK_NAME}.log"
 DATE=$(date '+%Y-%m-%d')
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
+TASK_LABEL=$(echo "$TASK_NAME" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')
 
 # Claude uses AWS Bedrock — export required env vars so they survive non-interactive cron runs
 export CLAUDE_CODE_USE_BEDROCK=1
@@ -45,10 +46,15 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL='us.anthropic.claude-haiku-4-5-20251001-v1:
 CLAUDE_BIN=$(command -v claude 2>/dev/null || echo "$HOME/.local/bin/claude")
 
 echo "[$TIMESTAMP] Checking AWS credentials..."
-if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
-  echo "[$TIMESTAMP] ERROR: xgc-main AWS SSO session expired"
-  echo "[$TIMESTAMP] Run: aws sso login --profile xgc-main"
-  exit 1
+AWS_CRED_CACHE="$HOME/.aws/.cred-cache-xgc-main"
+_cache_age=$(( $(date +%s) - $(stat -f%m "$AWS_CRED_CACHE" 2>/dev/null || echo 0) ))
+if [ $_cache_age -gt 1800 ]; then
+  if ! aws sts get-caller-identity --profile xgc-main &>/dev/null; then
+    echo "[$TIMESTAMP] ERROR: xgc-main AWS SSO session expired"
+    echo "[$TIMESTAMP] Run: aws sso login --profile xgc-main"
+    exit 1
+  fi
+  touch "$AWS_CRED_CACHE"
 fi
 echo "[$TIMESTAMP] AWS credentials OK"
 
@@ -63,7 +69,7 @@ echo "[$TIMESTAMP] Starting $TASK_NAME" >> "$LOG_FILE"
 # Check WhatsApp bridge health (non-fatal) — v0.3.0+ requires Bearer token
 WA_TOKEN_FILE="$HOME/whatsapp-mcp/whatsapp-bridge/store/.bridge-token"
 WA_TOKEN=$(cat "$WA_TOKEN_FILE" 2>/dev/null || echo "")
-if ! curl -sf -H "Authorization: Bearer $WA_TOKEN" http://localhost:8080/api/health | grep -q '"connected":true' 2>/dev/null; then
+if ! curl -sf -m 3 -H "Authorization: Bearer $WA_TOKEN" http://localhost:8080/api/health | grep -q '"connected":true' 2>/dev/null; then
   echo "[$TIMESTAMP] WARNING: WhatsApp bridge not healthy — WhatsApp steps may fail" >> "$LOG_FILE"
 fi
 
@@ -89,45 +95,38 @@ if [ -z "$PROMPT" ]; then
   exit 1
 fi
 
+# Append email instruction to prompt so a single claude run handles both
+EMAIL_INSTRUCTION="
+
+---
+
+When you have completed all of the above, send a summary email using the google-workspace send_email tool:
+To: db@axinagroup.com
+Subject: [Claude] ${TASK_LABEL} — ${DATE}
+Body: A clean plain-text version of your output above, organized by section. Keep all section headers and bullet points. Remove any tool call artifacts or debug lines. Sign off as 'Claude Assistant'."
+
+PROMPT="${PROMPT}${EMAIL_INSTRUCTION}"
+
 # Write prompt to temp file — claude reads it as the initial message
 PROMPT_FILE=$(mktemp /tmp/claude-prompt-XXXXXX)
-OUTPUT_FILE=$(mktemp /tmp/claude-output-XXXXXX)
-trap 'rm -f "$PROMPT_FILE" "$OUTPUT_FILE"' EXIT
+trap 'rm -f "$PROMPT_FILE"' EXIT
 printf '%s' "$PROMPT" > "$PROMPT_FILE"
 
 echo "[$TIMESTAMP] Launching claude (interactive, streaming) | $CLAUDE_BIN" | tee -a "$LOG_FILE"
 echo ""
 
-# Run claude interactively — streams tool calls + output live to terminal.
-# stdout goes to terminal AND is captured for the email step.
+# Single invocation handles task work + email — no second claude spawn needed
 "$CLAUDE_BIN" \
   --dangerously-skip-permissions \
   --print \
   < "$PROMPT_FILE" \
-  2>&1 | tee "$OUTPUT_FILE"
+  2>&1 | tee -a "$LOG_FILE"
 
 EXIT_CODE=${PIPESTATUS[0]}
-TASK_OUTPUT=$(cat "$OUTPUT_FILE")
 
-# Append full output to log
-echo "$TASK_OUTPUT" >> "$LOG_FILE"
-
-if [ $EXIT_CODE -ne 0 ] || [ -z "$TASK_OUTPUT" ]; then
+if [ $EXIT_CODE -ne 0 ]; then
   echo "[$TIMESTAMP] ERROR: claude exited $EXIT_CODE" | tee -a "$LOG_FILE"
   exit 1
 fi
 
 echo "" && echo "[$TIMESTAMP] Completed $TASK_NAME" | tee -a "$LOG_FILE"
-
-# Send summary email
-TASK_LABEL=$(echo "$TASK_NAME" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2); print}')
-EMAIL_PROMPT="Use the google-workspace send_email tool to send an email with these exact details:
-To: db@axinagroup.com
-Subject: [Claude] ${TASK_LABEL} — ${DATE}
-Body: Send the following output as a clean plain-text email, organized by section. Keep all section headers and bullet points. Remove any tool call artifacts or debug lines. Sign off as 'Claude Assistant':
-
-${TASK_OUTPUT}"
-
-echo "[$TIMESTAMP] Sending summary email..." | tee -a "$LOG_FILE"
-printf '%s' "$EMAIL_PROMPT" | "$CLAUDE_BIN" --dangerously-skip-permissions --print 2>&1 | tee -a "$LOG_FILE"
-echo "[$TIMESTAMP] Email sent" >> "$LOG_FILE"

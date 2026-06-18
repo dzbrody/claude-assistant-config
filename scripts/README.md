@@ -54,13 +54,13 @@ bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing
 ```
 
 **How it works:**
-1. Checks AWS SSO credentials
-2. Checks WhatsApp bridge health (Bearer token auth since v0.3.0)
+1. Checks AWS SSO credentials — result cached for 30 min via `~/.aws/.cred-cache-xgc-main` to avoid a round-trip on every run
+2. Checks WhatsApp bridge health with a 3-second timeout (Bearer token auth since v0.3.0)
 3. Extracts the `## Prompt` section from the task `.md` file
 4. Injects private contact data via `os.environ` (not shell interpolation — prevents script injection)
-5. Writes prompt to a temp file; `trap EXIT` guarantees the temp file is wiped on any exit path
-6. Runs `claude --print` — streams tool calls live
-7. Captures output, sends summary email to `db@axinagroup.com`
+5. Appends email instruction to the prompt so the entire run — task work and email summary — is handled in a single `claude` invocation
+6. Writes prompt to a temp file; `trap EXIT` guarantees the temp file is wiped on any exit path
+7. Runs `claude --print` — streams tool calls and output live, tees to the log file
 
 **Requires:**
 - `claude` resolved dynamically via `command -v claude`
