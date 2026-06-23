@@ -1,6 +1,6 @@
-# AXERP Deployment Guide
+# ERP Deployment Guide
 
-ERPNext v16 (AXERP fork) on EC2 with PostgreSQL, served at `erp.axinagroup.com`.
+ERPNext v16 (ERP fork) on EC2 with PostgreSQL, served at `erp.ctorescues.com`.
 
 ## Architecture
 
@@ -13,7 +13,7 @@ Queue:    axerp-redis-queue:6379
 Network:  openproject_default (shared with OpenProject and Nextcloud)
 ```
 
-- **Image**: Built from `github.com/axinagroup/axerp` (`version-16` branch) on top of `frappe/erpnext:v16.13.3`
+- **Image**: Built from your ERP fork on top of `frappe/erpnext:v16.13.3`
 - **Platform**: `linux/arm64` (Graviton2 EC2)
 - **Port**: `127.0.0.1:8082:8080` (internal to EC2 — nginx is the only public entry point)
 
@@ -22,40 +22,40 @@ Network:  openproject_default (shared with OpenProject and Nextcloud)
 ### 1.1 Route53 DNS
 
 ```bash
-# Get the hosted zone ID (same zone as projects.axinagroup.com)
-aws route53 list-hosted-zones-by-name --dns-name axinagroup.com \
+# Get the hosted zone ID (same zone as projects.ctorescues.com)
+aws route53 list-hosted-zones-by-name --dns-name ctorescues.com \
   --query "HostedZones[0].Id" --output text
 
-# Create A record: erp.axinagroup.com → 44.195.198.18
+# Create A record: erp.ctorescues.com → YOUR_EC2_ELASTIC_IP
 aws route53 change-resource-record-sets \
   --hosted-zone-id <zone-id> \
   --change-batch '{
     "Changes": [{
       "Action": "CREATE",
       "ResourceRecordSet": {
-        "Name": "erp.axinagroup.com",
+        "Name": "erp.ctorescues.com",
         "Type": "A",
         "TTL": 300,
-        "ResourceRecords": [{"Value": "44.195.198.18"}]
+        "ResourceRecords": [{"Value": "YOUR_EC2_ELASTIC_IP"}]
       }
     }]
   }'
 ```
 
-Wait ~60 seconds for propagation: `dig +short erp.axinagroup.com`
+Wait ~60 seconds for propagation: `dig +short erp.ctorescues.com`
 
 ## Phase 2: Build & Deploy on EC2
 
 Connect via SSM:
 ```bash
-aws ssm start-session --target i-07bb8581203e52527
+aws ssm start-session --target YOUR_INSTANCE_ID
 ```
 
 ### 2.1 Clone and Build the Image
 
 ```bash
 # Clone to data volume (not root)
-sudo git clone https://github.com/axinagroup/axerp.git /data/axerp-src
+sudo git clone https://github.com/your-org/axerp.git /data/axerp-src
 cd /data/axerp-src
 sudo git checkout version-16
 
@@ -77,13 +77,13 @@ sudo chown -R 1000:1000 /data/axerp  # frappe UID inside the container
 ```bash
 cd /opt/openproject
 
-# Generate AXERP admin password
+# Generate ERP admin password
 AXERP_ADMIN_PASSWORD=$(openssl rand -hex 16)
-echo "AXERP_SITE_NAME=erp.axinagroup.com" >> .env
+echo "AXERP_SITE_NAME=erp.ctorescues.com" >> .env
 echo "AXERP_ADMIN_PASSWORD=$AXERP_ADMIN_PASSWORD" >> .env
 chmod 600 .env
 
-echo "=== Save this admin password in 1Password as 'AXERP Admin' ==="
+echo "=== Save this admin password in 1Password as 'ERP Admin' ==="
 echo "$AXERP_ADMIN_PASSWORD"
 ```
 
@@ -95,7 +95,7 @@ echo "$AXERP_ADMIN_PASSWORD"
 cd /opt/openproject
 
 # Copy compose file from S3 (if not already present)
-aws s3 cp s3://axina-openproject-files/deploy/docker-compose.axerp.yml .
+aws s3 cp s3://ctorescues-openproject-files/deploy/docker-compose.axerp.yml .
 
 # Start everything (create-site runs once and exits)
 docker compose -f docker-compose.axerp.yml up -d
@@ -108,14 +108,14 @@ docker logs axerp-create-site -f
 ### 2.5 Issue TLS Certificate
 
 ```bash
-# Nginx must be running and erp.axinagroup.com must already resolve to this IP
+# Nginx must be running and erp.ctorescues.com must already resolve to this IP
 docker exec openproject-nginx nginx -s reload
 
 docker exec openproject-certbot certbot certonly \
   --webroot \
   --webroot-path /var/www/certbot \
-  -d erp.axinagroup.com \
-  --email admin@axinagroup.com \
+  -d erp.ctorescues.com \
+  --email admin@ctorescues.com \
   --agree-tos \
   --non-interactive
 
@@ -135,16 +135,16 @@ docker compose -f docker-compose.axerp.yml restart backend queue-long queue-shor
 ## Phase 3: Validation
 
 ```bash
-# All AXERP containers should be running (create-site will show Exited 0)
+# All ERP containers should be running (create-site will show Exited 0)
 docker ps --filter "name=axerp"
 
 # Check backend is serving
-curl -sk https://erp.axinagroup.com/api/method/frappe.ping | jq .
+curl -sk https://erp.ctorescues.com/api/method/frappe.ping | jq .
 # Expected: {"message": "pong"}
 
-# Check PostgreSQL — AXERP DB should exist
+# Check PostgreSQL — ERP DB should exist
 docker exec openproject-postgres psql -U openproject -c "\l" | grep erp
-# Expected: erp.axinagroup.com | openproject_erp_... | UTF8 | ...
+# Expected: erp.ctorescues.com | openproject_erp_... | UTF8 | ...
 
 # Check Redis queues
 docker exec axerp-redis-queue redis-cli ping   # PONG
@@ -155,26 +155,26 @@ docker logs axerp-backend --tail 50
 docker logs axerp-queue-long --tail 20
 ```
 
-Expected: `https://erp.axinagroup.com` loads the ERPNext login page.
-Default credentials: `Administrator` / `<AXERP_ADMIN_PASSWORD>` (set in `.env`).
+Expected: `https://erp.ctorescues.com` loads the ERPNext login page.
+Default credentials: `Administrator` / `<ERP_ADMIN_PASSWORD>` (set in `.env`).
 
 ## Phase 4: Initial ERPNext Setup
 
-1. Log in at `https://erp.axinagroup.com` as `Administrator`
+1. Log in at `https://erp.ctorescues.com` as `Administrator`
 2. Complete the Setup Wizard:
    - Country: your primary country
    - Currency: USD (or as needed)
    - Time zone: America/New_York
    - Chart of Accounts: standard
 3. Enable modules needed: Accounts, Projects, HR, Purchasing, Selling
-4. Create company: **AXINA Group**
+4. Create company: **CTO Rescues**
 
 ## Maintenance
 
-### Update AXERP (pull latest from GitHub)
+### Update ERP (pull latest from GitHub)
 
 ```bash
-aws ssm start-session --target i-07bb8581203e52527
+aws ssm start-session --target YOUR_INSTANCE_ID
 
 cd /data/axerp-src
 sudo git pull
@@ -200,8 +200,8 @@ docker logs axerp-frontend --tail 50
 
 ```bash
 docker exec -it axerp-backend bash
-bench --site erp.axinagroup.com migrate
-bench --site erp.axinagroup.com clear-cache
+bench --site erp.ctorescues.com migrate
+bench --site erp.ctorescues.com clear-cache
 ```
 
 ### Stop / remove
@@ -227,8 +227,9 @@ docker compose -f docker-compose.axerp.yml down
 
 ```bash
 docker exec openproject-postgres psql -U openproject \
-  -c "DROP DATABASE IF EXISTS \"erp_axinagroup_com\";"
-rm -rf /data/axerp/sites/erp.axinagroup.com
+  -c "DROP DATABASE IF EXISTS \"erp_ctorescues_com\";"
+rm -rf /data/axerp/sites/erp.ctorescues.com
+
 
 cd /opt/openproject
 docker compose -f docker-compose.axerp.yml up axerp-create-site

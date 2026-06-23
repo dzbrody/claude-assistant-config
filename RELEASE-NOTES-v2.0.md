@@ -15,14 +15,14 @@ This release delivers three things: a hardened, production-ready backend (8 bug/
 
 ### `/transcribe` — Upgraded (Google Drive / Meet support)
 - Now detects whether the input is an AWS S3 key or a Google Drive / Meet URL
-- Drive path: extracts file ID → fetches metadata via Workspace MCP → downloads and stages to `s3://axina-openproject-files/meet-recordings/` → triggers EC2 Whisper pipeline
+- Drive path: extracts file ID → fetches metadata via Workspace MCP → downloads and stages to `s3://ctorescues-openproject-files/meet-recordings/` → triggers EC2 Whisper pipeline
 - MacBook bandwidth untouched — all media transfer flows through the MCP layer
 - Post-transcription: optionally creates OpenProject tasks from action items using the Project Routing Guide
 - *Commit: `3134707`*
 
 ### `/ingest-meeting-notes` — New Command
 - Fetches `gemini-notes@google.com` emails from the last 48 hours via Gmail MCP
-- Business context filter: strips filler, maps names to OP user IDs (Sean McNeill → external, follow-up assigned to Dan), routes each action item to the correct project using the Axina Project Routing Guide
+- Business context filter: strips filler, maps names to OP user IDs (Sean McNeill → external, follow-up assigned to Dan), routes each action item to the correct project using the CTO Rescues Project Routing Guide
 - Deduplicates against open tasks before creating any work package
 - Tested live today: ingested 2 emails, created 9 work packages across `axina-sales`, `kazakhstan-admin`, `tgi-corporate`, and `m-and-a`
 - *Commit: `3134707`*

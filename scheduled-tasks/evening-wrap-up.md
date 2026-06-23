@@ -34,8 +34,8 @@ Using `google-workspace` MCP tools:
 Using `filesystem` MCP tools, scan the following locations for files created or modified today:
 - `~/Documents` — personal
 - `~/Downloads` and `~/Desktop`
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC`
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP`
+- `~/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/XGC`
+- `~/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP`
 - `~/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive`
 - `~/OneDrive`
 
@@ -53,7 +53,7 @@ Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=today 07:00
 **2. Download any new documents or media:**
 For every message with a `media_type` received after 7:00 AM today:
 - Call `download_media` and copy to:
-  `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+  `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 - Get the original filename from the WhatsApp bridge SQLite database:
   `sqlite3 /Users/dzbrody/whatsapp-mcp/whatsapp-bridge/store/messages.db "SELECT filename FROM messages WHERE id='<message_id>'"`
 - Name the file: `{YYYY-MM-DD}_{original_filename}` — prepend date only, preserve original name and extension exactly.
@@ -76,7 +76,7 @@ For any action items or follow-ups not yet captured this morning:
 
 Using `google-workspace` MCP tools, scan the Zoom Meetings Gemini folder for new notes:
 
-1. **List recent files**: Call `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` — this is `db@xgccorp.com/My Drive/ZOOM-MEETINGS/gemini`. Look for files created or modified since 7:00 AM today.
+1. **List recent files**: Call `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` — this is `db@ctorescues.com/My Drive/ZOOM-MEETINGS/gemini`. Look for files created or modified since 7:00 AM today.
 
 2. **For each new meeting notes file**:
    - Read the full file content using `get_file_content`.

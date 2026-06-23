@@ -48,7 +48,7 @@ Ask: `Log these time entries to OpenProject? [y/N]`
 For each confirmed match, POST to the OpenProject time entry endpoint:
 
 ```
-POST https://projects.axinagroup.com/api/v3/time_entries
+POST https://projects.ctorescues.com/api/v3/time_entries
 Authorization: Basic {AUTH}
 Content-Type: application/json
 

@@ -67,7 +67,7 @@ This registers all local (stdio) servers with Claude CLI at user scope.
 
 ## Remote MCP Server
 
-The remote server runs on EC2 at `https://projects.axinagroup.com/mcp/` and works from **any device** — Mac, mobile, or any MCP client.
+The remote server runs on EC2 at `https://projects.ctorescues.com/mcp/` and works from **any device** — Mac, mobile, or any MCP client.
 
 Source code: `openproject-mcp/` — this is the canonical server deployed to EC2.
 
@@ -90,14 +90,14 @@ Source code: `openproject-mcp/` — this is the canonical server deployed to EC2
 **Connect via Claude CLI:**
 ```bash
 claude mcp add --transport sse --scope user openproject-remote \
-  "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"
+  "https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>"
 ```
 
 **Connect via Claude Desktop** — Claude Desktop only supports stdio, so use `mcp-proxy` as a bridge. Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 ```json
 "openproject-remote": {
   "command": "/Users/dzbrody/.local/bin/uvx",
-  "args": ["mcp-proxy", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"]
+  "args": ["mcp-proxy", "https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>"]
 }
 ```
 
@@ -105,16 +105,16 @@ claude mcp add --transport sse --scope user openproject-remote \
 ```json
 "axina-mcp": {
   "command": "uvx",
-  "args": ["mcp-proxy@latest", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"],
+  "args": ["mcp-proxy@latest", "https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>"],
   "env": {}
 }
 ```
 
 **Connect via Claude Mobile:**
 - Settings → MCP Servers → Add Server
-- URL: `https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>`
+- URL: `https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>`
 
-**API key:** stored in 1Password as **AXINA MCP API Key** — ask Daniel if you don't have access.
+**API key:** stored in 1Password as **CTO Rescues MCP API Key** — ask Daniel if you don't have access.
 
 Server source code: `openproject-mcp/` (full 49-tool implementation)
 Infrastructure details: `../infrastructure/README.md`
@@ -125,12 +125,12 @@ Infrastructure details: `../infrastructure/README.md`
 # 1. Tar and upload source
 cd mcp-servers/openproject-mcp
 tar czf /tmp/openproject-mcp-src.tar.gz src/ openproject-mcp-sse.py openproject-mcp-http.py openproject-mcp-fastmcp.py requirements.txt pyproject.toml
-aws s3 cp /tmp/openproject-mcp-src.tar.gz s3://axina-openproject-files/deploy/openproject-mcp-src.tar.gz
+aws s3 cp /tmp/openproject-mcp-src.tar.gz s3://ctorescues-openproject-files/deploy/openproject-mcp-src.tar.gz
 
 # 2. Pull and rebuild on EC2
-aws ssm send-command --region us-east-1 --instance-ids i-07bb8581203e52527 \
+aws ssm send-command --region us-east-1 --instance-ids YOUR_INSTANCE_ID \
   --document-name AWS-RunShellScript \
-  --parameters 'commands=["aws s3 cp s3://axina-openproject-files/deploy/openproject-mcp-src.tar.gz /tmp/src.tar.gz && tar xzf /tmp/src.tar.gz -C /data/mcp-server/ && cd /opt/openproject && docker compose build mcp-server && docker compose up -d --no-deps mcp-server"]'
+  --parameters 'commands=["aws s3 cp s3://ctorescues-openproject-files/deploy/openproject-mcp-src.tar.gz /tmp/src.tar.gz && tar xzf /tmp/src.tar.gz -C /data/mcp-server/ && cd /opt/openproject && docker compose build mcp-server && docker compose up -d --no-deps mcp-server"]'
 ```
 
 ---
@@ -146,8 +146,8 @@ The `filesystem` MCP server has access to these directories. Adjust for your own
 | `~/Downloads` | Staging/downloads |
 | `~/Desktop` | Desktop files |
 
-### Daniel's Extended Access (db@xgccorp.com drives)
-The `install-all.sh` script includes the full Google Drive + OneDrive path list for `db@xgccorp.com`. Team members should edit `install-all.sh` to use their own drive paths.
+### Daniel's Extended Access (db@ctorescues.com drives)
+The `install-all.sh` script includes the full Google Drive + OneDrive path list for `db@ctorescues.com`. Team members should edit `install-all.sh` to use their own drive paths.
 
 ---
 

@@ -41,7 +41,7 @@ echo "  ✓ document-loader added"
 #   ~/Documents                         — personal files
 #   ~/Downloads, ~/Desktop              — general staging
 # Google Drive (XGC account):
-#   My Drive                            — db@xgccorp.com personal drive
+#   My Drive                            — db@ctorescues.com personal drive
 #   Shared drives/XGC                   — XGC company files
 #   Shared drives/AXINAGRP              — AXINA group files
 #   Shared drives/CCCL, Development,
@@ -57,13 +57,13 @@ claude mcp add --transport stdio filesystem -- npx -y @modelcontextprotocol/serv
   "$HOME/Documents" \
   "$HOME/Downloads" \
   "$HOME/Desktop" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/My Drive" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/Shared drives/XGC" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/Shared drives/CCCL" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/Shared drives/Development" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/Shared drives/dnloadfiles" \
-  "$GDRIVE/GoogleDrive-db@xgccorp.com/Shared drives/XGC-WORKING_FILES" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/My Drive" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/Shared drives/XGC" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/Shared drives/CCCL" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/Shared drives/Development" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/Shared drives/dnloadfiles" \
+  "$GDRIVE/GoogleDrive-db@ctorescues.com/Shared drives/XGC-WORKING_FILES" \
   "$GDRIVE/GoogleDrive-daniel@brody.ca/My Drive" \
   "$GDRIVE/GoogleDrive-dzbrody99@gmail.com/My Drive" \
   "$GDRIVE/OneDrive-Personal" \
@@ -85,10 +85,10 @@ if [ -z "$MCP_API_KEY" ]; then
   echo "    security add-generic-password -a \"\$USER\" -s openproject-mcp-api-key -w <key>"
   echo "  Then re-run this script, or add manually:"
   echo "    claude mcp add --transport sse --scope user openproject-remote \\"
-  echo "      \"https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>\""
+  echo "      \"https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>\""
 else
   claude mcp add --transport sse --scope user openproject-remote \
-    "https://projects.axinagroup.com/mcp/sse?key=${MCP_API_KEY}"
+    "https://projects.ctorescues.com/mcp/sse?key=${MCP_API_KEY}"
   echo "  ✓ openproject-remote added (EC2 remote, uses AWS Bedrock credits)"
 fi
 

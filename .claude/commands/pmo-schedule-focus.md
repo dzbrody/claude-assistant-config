@@ -67,8 +67,8 @@ For each confirmed block, call `mcp__google-workspace__create_event` with:
 - `summary`: `PMO Focus Block: [task subject] (OP#[id])`
 - `start`: slot start time (ISO 8601, Eastern)
 - `end`: slot end time
-- `description`: `OpenProject task: https://projects.axinagroup.com/work_packages/[id]\nPriority: [priority]\nDue: [due date or "no date set"]`
-- `calendar`: `db@xgccorp.com` primary calendar
+- `description`: `OpenProject task: https://projects.ctorescues.com/work_packages/[id]\nPriority: [priority]\nDue: [due date or "no date set"]`
+- `calendar`: `db@ctorescues.com` primary calendar
 
 ---
 

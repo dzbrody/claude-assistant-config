@@ -37,7 +37,7 @@ Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=last Friday
 For every message with a `media_type` (document, image, pdf, audio — skip video unless under 10MB):
 - Call `download_media` with the `message_id` and `chat_jid`.
 - Copy the downloaded file to:
-  `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+  `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 - Get the original filename from the WhatsApp bridge SQLite database:
   `sqlite3 /Users/dzbrody/whatsapp-mcp/whatsapp-bridge/store/messages.db "SELECT filename FROM messages WHERE id='<message_id>'"`
 - Name the file: `{YYYY-MM-DD}_{original_filename}` — prepend date only, preserve original name and extension exactly.
@@ -92,8 +92,8 @@ If no emails from `gemini-notes@google.com` are found, skip this step.
 ### Step 4: Scan Weekend Drive Activity
 
 Using `filesystem` MCP tools, scan for files modified since Friday 4:00 PM in:
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC`
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP`
+- `~/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/XGC`
+- `~/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP`
 - `~/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive`
 - `~/OneDrive`
 

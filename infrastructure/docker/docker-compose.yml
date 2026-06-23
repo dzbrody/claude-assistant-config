@@ -28,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.openproject
-    image: axina-openproject:latest
+    image: ctorescues-openproject:latest
     container_name: openproject-app
     restart: unless-stopped
     ports:
@@ -45,14 +45,14 @@ services:
       OPENPROJECT_EMAIL__DELIVERY__METHOD: smtp
       OPENPROJECT_SMTP__ADDRESS: email-smtp.us-east-1.amazonaws.com
       OPENPROJECT_SMTP__PORT: "587"
-      OPENPROJECT_SMTP__DOMAIN: ${SMTP_DOMAIN:-axinagroup.com}
+      OPENPROJECT_SMTP__DOMAIN: ${SMTP_DOMAIN:-ctorescues.com}
       OPENPROJECT_SMTP__AUTHENTICATION: login
       OPENPROJECT_SMTP__USER__NAME: ${SMTP_USERNAME}
       OPENPROJECT_SMTP__PASSWORD: ${SMTP_PASSWORD}
       OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO: "true"
       OPENPROJECT_SMTP__OPENSSL__VERIFY__MODE: peer
-      OPENPROJECT_MAIL__FROM: ${OPENPROJECT_MAIL_FROM:-no-reply@tspgusa.com}
-      OPENPROJECT_ADDITIONAL__HOST__NAMES: "openproject-app,projects.tspgusa.com"
+      OPENPROJECT_MAIL__FROM: ${OPENPROJECT_MAIL_FROM:-no-reply@ctorescues.com}
+      OPENPROJECT_ADDITIONAL__HOST__NAMES: "openproject-app,projects.ctorescues.com"
       OPENPROJECT_HTTPS: "true"
       OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL: wss://${DOMAIN_NAME}/hocuspocus
       OPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET: ${HOCUSPOCUS_SECRET}
@@ -115,7 +115,7 @@ services:
       OPENPROJECT_URL: https://${DOMAIN_NAME}
       OPENPROJECT_API_KEY: ${OPENPROJECT_ADMIN_API_KEY}
       AWS_REGION: us-east-1
-      S3_BUCKETS: axina-openproject-files
+      S3_BUCKETS: ctorescues-openproject-files
     depends_on:
       - openproject
 

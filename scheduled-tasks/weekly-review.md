@@ -55,8 +55,8 @@ Call `list_messages` with `chat_jid=120363424688758322@g.us`, `after=last Friday
 ### Step 2: Scan Drive Activity for the Week
 
 Using `filesystem` MCP tools, scan for files created or modified Mon–Fri this past week in:
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC` → XGC
-- `~/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP` → AXINA
+- `~/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/XGC` → XGC
+- `~/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP` → AXINA
 - `~/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive` → 4ward.earth
 - `~/OneDrive` → cross-org
 

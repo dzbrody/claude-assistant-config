@@ -30,7 +30,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 | [scripts/README.md](scripts/README.md) | OpenProject notifier config, background service management |
 | [infrastructure/README.md](infrastructure/README.md) | Terraform deployment, EC2 operations, Docker containers |
 | [docs/nextcloud-deployment.md](docs/nextcloud-deployment.md) | Nextcloud CE — S3 primary storage, PostgreSQL, OpenProject OAuth integration |
-| [axerp-openproject/](axerp-openproject/) | AXERP & AWS project hierarchy docs for OpenProject wiki |
+| [axerp-openproject/](axerp-openproject/) | ERP & AWS project hierarchy docs for OpenProject wiki |
 
 ---
 
@@ -44,7 +44,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 - Auto-closes OpenProject tasks when completion is confirmed in messages or email
 - Links relevant Drive documents to newly created tasks via Drive file ID
 - Reviews today's calendar, flags conflicts
-- Writes daily brief to `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
+- Writes daily brief to `db@ctorescues.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 - Sends WhatsApp summary to your number
 
 **CLI command matrix** (`/pmo-*` triggers, run from the terminal at any time):
@@ -52,7 +52,7 @@ A complete AI-powered personal assistant ecosystem built with Claude Code and Cl
 | Command | What it does |
 |---------|-------------|
 | `/transcribe` | Transcribe audio/video from S3 or a Google Drive / Meet URL via EC2 Whisper |
-| `/ingest-meeting-notes` | Fetch `gemini-notes@google.com`, filter by Axina context, create OP tasks |
+| `/ingest-meeting-notes` | Fetch `gemini-notes@google.com`, filter by CTO Rescues context, create OP tasks |
 | `/pmo-dedup` | Detect and merge duplicate work packages across all projects |
 | `/pmo-track-time` | Match calendar events to OP tasks and log time entries |
 | `/pmo-sweep-completed` | Auto-close 100%-done or all-children-closed tasks |
@@ -99,11 +99,11 @@ Run `/pmo-menu` to see the full reference table.
                           │ HTTPS + API Key
 ┌─────────────────────────▼───────────────────────────────────────┐
 │  AWS EC2 (us-east-1) — t4g.xlarge arm64, us-east-1f             │
-│  • OpenProject  — projects.axinagroup.com / projects.tspgusa.com│
-│  • AXERP (ERPNext) — erp.axinagroup.com / erp.tspgusa.com       │
-│  • Nextcloud    — files.axinagroup.com / files.tspgusa.com      │
+│  • OpenProject  — projects.ctorescues.com                       │
+│  • ERP (ERPNext) — erp.ctorescues.com                           │
+│  • Nextcloud    — files.ctorescues.com                          │
 │  • Remote MCP Server (SSE) — OpenProject + S3 tools             │
-│  • S3: axina-openproject-files                                   │
+│  • S3: ctorescues-openproject-files                              │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -126,9 +126,9 @@ Run `/pmo-menu` to see the full reference table.
 │   ├── weekly-review.md
 │   └── README.md
 │
-├── axerp-openproject/              # AXERP project hierarchy for OpenProject wiki
+├── axerp-openproject/              # ERP project hierarchy for OpenProject wiki
 │   ├── PROJECT_HIERARCHY.md       # All OpenProject project definitions
-│   └── wiki/                      # Technical specs (AXERP, AWS, Blockchain, API, Onboarding)
+│   └── wiki/                      # Technical specs (ERP, AWS, Blockchain, API, Onboarding)
 │
 ├── mcp-servers/                    # MCP server config and install
 │   ├── install-all.sh             # Register all local servers with claude CLI
@@ -170,7 +170,7 @@ bash ~/.claude-assistant/mcp-servers/install-all.sh
 # Copy .claude/settings.local.json.example → .claude/settings.local.json and fill in your key,
 # or run this command to register it via the CLI:
 claude mcp add --transport sse --scope user openproject-remote \
-  "https://projects.axinagroup.com/mcp/sse?key=<KEY>"
+  "https://projects.ctorescues.com/mcp/sse?key=<KEY>"
 
 # 5. Set up WhatsApp bridge
 git clone https://github.com/lharries/whatsapp-mcp ~/whatsapp-mcp
@@ -203,7 +203,7 @@ bash ~/.claude-assistant/scripts/run-scheduled-task.sh morning-briefing
 
 | Server | Endpoint | Tools |
 |--------|----------|-------|
-| `openproject-remote` | `https://projects.axinagroup.com/mcp/sse` | 49 tools across work packages, projects, users, memberships, hierarchy, relations, time entries, versions, weekly reports, news |
+| `openproject-remote` | `https://projects.ctorescues.com/mcp/sse` | 49 tools across work packages, projects, users, memberships, hierarchy, relations, time entries, versions, weekly reports, news |
 
 API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12, FastMCP 3.4.2, SSE transport, EC2 IAM role for S3. Source: `mcp-servers/openproject-mcp/`.
 
@@ -219,7 +219,7 @@ API key stored in 1Password as **CTO Rescues MCP API Key**. Server: Python 3.12,
 | Weekly Review | `weekly-review` | ~5–8 min |
 
 Runs via `scripts/run-scheduled-task.sh` — streams output live, tees to log, sends summary email in the same invocation.
-Output: `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`
+Output: `db@ctorescues.com → My Drive → _daily_brief/YYYY-MM-DD.md`
 
 WhatsApp summary sent to Daniel's number at the end of every run.
 
@@ -232,10 +232,10 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 | Resource | Detail |
 |----------|--------|
 | EC2 | `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, 60GB root + 500GB data |
-| Instance ID | `i-07bb8581203e52527`, AZ `us-east-1f` |
-| Domains | `*.axinagroup.com` (Let's Encrypt) · `*.tspgusa.com` (internal wildcard CA, Secrets Manager) |
-| Email | SES SMTP — `no-reply@axinagroup.com` and `no-reply@tspgusa.com` (both verified, DKIM+DMARC) |
-| Storage | S3 `axina-openproject-files` (versioned, SSE-S3) |
+| Instance ID | `YOUR_INSTANCE_ID`, AZ `us-east-1f` |
+| Domains | `*.ctorescues.com` (Let's Encrypt) |
+| Email | SES SMTP — `no-reply@ctorescues.com` (verified, DKIM+DMARC) |
+| Storage | S3 `ctorescues-openproject-files` (versioned, SSE-S3) |
 | Terraform | `infrastructure/terraform/` — EC2, EIP, SG, IAM, S3, Route53, SES for both domains |
 
 ### Corporate Domains
@@ -244,9 +244,9 @@ Both domains resolve to the same EC2 instance and are fully interchangeable:
 
 | URL | Service |
 |-----|---------|
-| `projects.axinagroup.com` / `projects.tspgusa.com` | OpenProject |
-| `files.axinagroup.com` / `files.tspgusa.com` | Nextcloud |
-| `erp.axinagroup.com` / `erp.tspgusa.com` | AXERP (ERPNext) |
+| `projects.ctorescues.com` | OpenProject |
+| `files.ctorescues.com` | Nextcloud |
+| `erp.ctorescues.com` | ERP (ERPNext) |
 
 ### Docker Containers on EC2
 
@@ -257,12 +257,12 @@ Docker data dir: `/data/docker` (500GB EBS)
 | `openproject-app` | Project management UI (OpenProject 17.4.1) |
 | `openproject-postgres` | PostgreSQL 16 — shared by OpenProject + Nextcloud |
 | `openproject-nginx` | Reverse proxy + TLS termination (all domains) |
-| `openproject-certbot` | Let's Encrypt auto-renewal for axinagroup.com |
+| `openproject-certbot` | Let's Encrypt auto-renewal for ctorescues.com |
 | `openproject-hocuspocus` | Real-time collaborative editing |
 | `openproject-cache` | Memcached (Rails cache) |
 | `openproject-mcp-server` | Remote MCP endpoint — FastMCP SSE, :39128 internal |
 | `axerp-backend` / `axerp-frontend` | ERPNext v16 (Frappe) |
-| `axerp-mariadb` | MariaDB 10.6 — dedicated to AXERP |
+| `axerp-mariadb` | MariaDB 10.6 — dedicated to ERP |
 | `nextcloud-app` | Nextcloud CE — S3 primary storage |
 
 ---
@@ -273,7 +273,7 @@ Docker data dir: `/data/docker` (500GB EBS)
 - 64-char hex API key required on all `/mcp` endpoints
 - No SSH port open — EC2 management via AWS SSM only
 - No hardcoded secrets — credentials in `.env` (chmod 600) on server, 1Password / macOS Keychain locally
-- S3: SSE-S3, public access blocked, CORS restricted to `projects.axinagroup.com`
+- S3: SSE-S3, public access blocked, CORS restricted to `projects.ctorescues.com`
 - WhatsApp bridge binds to `127.0.0.1:8080` only
 - `.gitignore` excludes `.env`, tokens, `settings.local.json` (MCP API key), `daily_briefs/` (operational output), and private contacts
 - `.claude/settings.local.json.example` provides a redacted template for onboarding new team members

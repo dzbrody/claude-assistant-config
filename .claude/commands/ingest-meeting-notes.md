@@ -38,7 +38,7 @@ Use the Project Routing Guide from `morning-briefing.md` to assign each action i
 - Mentions of carbon, MRV, ANCR, ANCR rollout → consider `axina-carbon-registry` (ID 28) or geo sub-project (Angola → 8, Uganda → 7)
 - Angola ADVENT City / Seaport / IITS → `angola-admin` (ID 8), version ID 29
 - Uganda Commissioner / State House / Aimable → `uganda-admin` (ID 7), version ID 20
-- Engineering / AXERP / platform → route by sub-domain per routing guide
+- Engineering / ERP / platform → route by sub-domain per routing guide
 - M&A / TGI corporate / financials → `m-and-a` (ID 13) or `tgi-corporate` (ID 14)
 - Sales / pipeline / new country → `axina-sales` (ID 11)
 - Default fallback → `axina-group-admin` (ID 3)
@@ -81,4 +81,4 @@ Gemini Notes Ingested — {email subject} ({date})
 ```
 
 Then ask: "Open any of these in OpenProject? Paste task IDs separated by commas, or press Enter to skip."
-If IDs provided, print the direct URL for each: `https://projects.axinagroup.com/work_packages/{id}`
+If IDs provided, print the direct URL for each: `https://projects.ctorescues.com/work_packages/{id}`

@@ -17,7 +17,7 @@ Inspect the argument provided by the user:
 1. **Extract the file ID** from the URL using the pattern `drive.google.com/file/d/([A-Za-z0-9_-]+)`. For Meet recording links that redirect through calendar or other Google products, follow the redirect text or ask the user to copy the direct Drive share link.
 2. **Get file metadata**: call `mcp__google-workspace__get_file` with the extracted file ID to retrieve `name` and `mimeType`.
 3. **Download the file**: call `mcp__google-workspace__get_file_content` with the file ID. Save the binary to local temp via `mcp__filesystem__write_file` at path `/tmp/{name}` (preserve original filename and extension).
-4. **Upload to S3**: run via Bash — `aws s3 cp /tmp/{name} s3://axina-openproject-files/meet-recordings/{name}` — and confirm the upload succeeded.
+4. **Upload to S3**: run via Bash — `aws s3 cp /tmp/{name} s3://ctorescues-openproject-files/meet-recordings/{name}` — and confirm the upload succeeded.
 5. **Clean up**: `rm /tmp/{name}` after a successful upload.
 6. **Set S3 key** to `meet-recordings/{name}` and proceed to **Transcribe** step below.
 
@@ -25,7 +25,7 @@ Inspect the argument provided by the user:
 
 ## S3 Path
 
-1. Ask: "What is the S3 key for the audio file? (bucket defaults to `axina-openproject-files`)"
+1. Ask: "What is the S3 key for the audio file? (bucket defaults to `ctorescues-openproject-files`)"
    - If the user says "latest" or "newest", call `mcp__openproject-remote__search_s3_objects` with query `.m4a` (then `.mp3`, `.wav`) to find the most recent file by `last_modified`.
 
 ---
@@ -33,7 +33,7 @@ Inspect the argument provided by the user:
 ## Transcribe
 
 Call `mcp__openproject-remote__transcribe_s3_audio` with:
-- `bucket`: `axina-openproject-files` (or as specified)
+- `bucket`: `ctorescues-openproject-files` (or as specified)
 - `key`: the S3 key from whichever path was taken above
 - `model_size`: `tiny` (default) — ask if the user wants `base` for better accuracy
 

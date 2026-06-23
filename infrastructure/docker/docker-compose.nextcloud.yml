@@ -1,11 +1,11 @@
-# Nextcloud Community Edition — Axina VDR / Document Store
+# Nextcloud Community Edition — CTO Rescues VDR / Document Store
 #
 # Storage: Amazon S3 primary (stateless — no local data dir mounted)
 # Database: shared openproject-postgres container on openproject_default network
-# Domain: files.axinagroup.com (proxied by openproject-nginx)
+# Domain: files.ctorescues.com (proxied by openproject-nginx)
 #
 # Deploy:
-#   aws s3 cp docker-compose.nextcloud.yml s3://axina-openproject-files/deploy/
+#   aws s3 cp docker-compose.nextcloud.yml s3://ctorescues-openproject-files/deploy/
 #   aws ssm send-command ... "cd /opt/openproject && docker compose -f docker-compose.nextcloud.yml up -d"
 
 services:
@@ -28,12 +28,12 @@ services:
       NEXTCLOUD_ADMIN_PASSWORD: ${NC_ADMIN_PASSWORD}
 
       # ── Trusted domain ──────────────────────────────────────────────────────
-      NEXTCLOUD_TRUSTED_DOMAINS: "files.axinagroup.com files.tspgusa.com"
+      NEXTCLOUD_TRUSTED_DOMAINS: "files.ctorescues.com"
 
       # ── S3 primary object store ─────────────────────────────────────────────
       # Injected into config.php via the autoconfig.php hook on first boot.
       # These env vars are read by /docker-entrypoint-hooks.d/s3-objectstore.sh
-      NC_S3_BUCKET: axina-openproject-files
+      NC_S3_BUCKET: ctorescues-openproject-files
       NC_S3_REGION: ${NC_S3_REGION}
       NC_S3_KEY: ${NC_S3_ACCESS_KEY_ID}
       NC_S3_SECRET: ${NC_S3_SECRET_ACCESS_KEY}
@@ -50,11 +50,11 @@ services:
       SMTP_NAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       MAIL_FROM_ADDRESS: no-reply
-      MAIL_DOMAIN: ${NC_MAIL_DOMAIN:-tspgusa.com}
+      MAIL_DOMAIN: ${NC_MAIL_DOMAIN:-ctorescues.com}
 
       # ── Overwrite URL (required behind nginx reverse proxy) ─────────────────
       OVERWRITEPROTOCOL: https
-      OVERWRITECLIURL: https://files.axinagroup.com
+      OVERWRITECLIURL: https://files.ctorescues.com
       TRUSTED_PROXIES: 127.0.0.1
 
     volumes:

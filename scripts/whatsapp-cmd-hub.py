@@ -36,7 +36,7 @@ from pathlib import Path
 
 # ---- Config ----
 WHATSAPP_BRIDGE = "http://localhost:8080"
-OP_URL = "https://projects.axinagroup.com"
+OP_URL = "https://projects.ctorescues.com"
 OP_API_KEY = os.environ.get("OPENPROJECT_API_KEY", "")
 CLAUDE_BIN = os.environ.get("CLAUDE_BIN", str(Path.home() / ".local/bin/claude"))
 STATE_FILE = Path.home() / "logs/claude-assistant/wa-cmd-state.json"

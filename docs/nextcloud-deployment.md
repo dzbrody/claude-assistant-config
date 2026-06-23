@@ -1,6 +1,6 @@
 # Nextcloud Deployment Guide
 
-Nextcloud Community Edition on the existing EC2 instance, using Amazon S3 as primary storage and the shared `openproject-postgres` container as the database backend. Served at `files.axinagroup.com`.
+Nextcloud Community Edition on the existing EC2 instance, using Amazon S3 as primary storage and the shared `openproject-postgres` container as the database backend. Served at `files.ctorescues.com`.
 
 ---
 
@@ -10,59 +10,59 @@ Nextcloud Community Edition on the existing EC2 instance, using Amazon S3 as pri
 Browser HTTPS
      │
      ▼
-nginx (files.axinagroup.com:443)
+nginx (files.ctorescues.com:443)
      │
      ▼
 nextcloud-app:80  (port 8091 internal)
      │         │
      │         ├── openproject-postgres:5432  (nextcloud DB)
      │         ├── nextcloud-redis:6379       (APCu + lock cache)
-     │         └── S3: axina-openproject-files/nextcloud/  (primary — no local disk)
+     │         └── S3: ctorescues-openproject-files/nextcloud/  (primary — no local disk)
      │
 nextcloud-cron  (background jobs every 5 min)
 ```
 
 | Item | Detail |
 |------|--------|
-| Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` ✅ created 2026-06-16 |
+| Domain | `files.ctorescues.com` — Route53 A → `YOUR_EC2_ELASTIC_IP` ✅ created 2026-06-16 |
 | TLS | Let's Encrypt via shared certbot container — cert to be issued on first deploy |
 | Database | `nextcloud` DB on shared `openproject-postgres` |
-| Storage | `s3://axina-openproject-files/nextcloud/` — shared bucket, scoped prefix. IAM user `nextcloud-s3` |
+| Storage | `s3://ctorescues-openproject-files/nextcloud/` — shared bucket, scoped prefix. IAM user `nextcloud-s3` |
 | Config | `nextcloud-config` Docker named volume → `/data/docker/volumes/` |
 | Hooks | `/data/nextcloud/hooks/` on EBS data volume |
-| OpenProject integration | OAuth 2.0 two-way; `files.axinagroup.com` → `projects.axinagroup.com` |
+| OpenProject integration | OAuth 2.0 two-way; `files.ctorescues.com` → `projects.ctorescues.com` |
 
 ---
 
 ## Phase 1 — AWS Pre-requisites
 
-### 1.0 Route53 DNS — files.axinagroup.com ✅ Already done
+### 1.0 Route53 DNS — files.ctorescues.com ✅ Already done
 
-The A record was created on 2026-06-16 (hosted zone `Z03662342MPWYW6ZEPJLC`):
+The A record was created on 2026-06-16 (hosted zone `YOUR_AXINAGROUP_ZONE_ID`):
 
 ```bash
 # Verify (already INSYNC):
 aws route53 list-resource-record-sets \
-  --hosted-zone-id Z03662342MPWYW6ZEPJLC \
-  --query "ResourceRecordSets[?Name=='files.axinagroup.com.']" \
+  --hosted-zone-id YOUR_AXINAGROUP_ZONE_ID \
+  --query "ResourceRecordSets[?Name=='files.ctorescues.com.']" \
   --output table
 
 # Live DNS check:
-dig +short files.axinagroup.com
-# Expected: 44.195.198.18
+dig +short files.ctorescues.com
+# Expected: YOUR_EC2_ELASTIC_IP
 ```
 
 ### 1.1 S3 Storage — No new bucket needed ✅
 
-Nextcloud uses the existing `axina-openproject-files` bucket under the `nextcloud/` prefix.
-All Nextcloud objects are stored at `s3://axina-openproject-files/nextcloud/<urn>` and are
+Nextcloud uses the existing `ctorescues-openproject-files` bucket under the `nextcloud/` prefix.
+All Nextcloud objects are stored at `s3://ctorescues-openproject-files/nextcloud/<urn>` and are
 fully isolated from OpenProject objects by prefix.
 
 Create the prefix placeholder (S3 doesn't require it but makes the layout explicit):
 
 ```bash
 aws s3api put-object \
-  --bucket axina-openproject-files \
+  --bucket ctorescues-openproject-files \
   --key nextcloud/ \
   --region us-east-1 && echo "prefix created"
 ```
@@ -70,17 +70,17 @@ aws s3api put-object \
 Verify the existing bucket already has versioning and encryption:
 
 ```bash
-aws s3api get-bucket-versioning --bucket axina-openproject-files
+aws s3api get-bucket-versioning --bucket ctorescues-openproject-files
 # Expected: {"Status": "Enabled"}
 
-aws s3api get-bucket-encryption --bucket axina-openproject-files
+aws s3api get-bucket-encryption --bucket ctorescues-openproject-files
 # Expected: AES256
 ```
 
 ### 1.2 Create IAM User and Keys
 
 The policy (`infrastructure/nextcloud/nextcloud-iam-policy.json`) grants access
-to `axina-openproject-files` bucket-level operations and object access scoped
+to `ctorescues-openproject-files` bucket-level operations and object access scoped
 to the `nextcloud/*` prefix only — cannot touch OpenProject objects.
 
 ```bash
@@ -106,7 +106,7 @@ Test the keys before proceeding:
 ```bash
 AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> \
 aws s3api list-objects-v2 \
-  --bucket axina-openproject-files \
+  --bucket ctorescues-openproject-files \
   --prefix nextcloud/ \
   --region us-east-1
 # Expected: empty Contents (prefix exists, no files yet)
@@ -114,7 +114,7 @@ aws s3api list-objects-v2 \
 # Confirm it CANNOT access openproject objects:
 AWS_ACCESS_KEY_ID=<key> AWS_SECRET_ACCESS_KEY=<secret> \
 aws s3api list-objects-v2 \
-  --bucket axina-openproject-files \
+  --bucket ctorescues-openproject-files \
   --prefix backups/ \
   --region us-east-1
 # Expected: AccessDenied
@@ -129,10 +129,10 @@ aws route53 change-resource-record-sets \
     "Changes":[{
       "Action":"UPSERT",
       "ResourceRecordSet":{
-        "Name":"files.axinagroup.com",
+        "Name":"files.ctorescues.com",
         "Type":"A",
         "TTL":300,
-        "ResourceRecords":[{"Value":"44.195.198.18"}]
+        "ResourceRecords":[{"Value":"YOUR_EC2_ELASTIC_IP"}]
       }
     }]
   }'
@@ -145,7 +145,7 @@ aws route53 change-resource-record-sets \
 ### 2.1 Create Nextcloud database and user
 
 ```bash
-aws ssm start-session --target i-07bb8581203e52527
+aws ssm start-session --target YOUR_INSTANCE_ID
 
 docker exec openproject-postgres psql -U openproject -c \
   "CREATE USER nextcloud WITH PASSWORD '<NC_DB_PASSWORD>';"
@@ -161,12 +161,12 @@ mkdir -p /data/nextcloud/hooks
 mkdir -p /data/nextcloud/config
 
 # Copy S3 hook script
-aws s3 cp s3://axina-openproject-files/deploy/s3-objectstore.sh \
+aws s3 cp s3://ctorescues-openproject-files/deploy/s3-objectstore.sh \
   /data/nextcloud/hooks/s3-objectstore.sh
 chmod +x /data/nextcloud/hooks/s3-objectstore.sh
 
 # Copy Redis config (placed in named volume after first boot — see §2.5)
-aws s3 cp s3://axina-openproject-files/deploy/redis.config.php \
+aws s3 cp s3://ctorescues-openproject-files/deploy/redis.config.php \
   /data/nextcloud/config/redis.config.php
 ```
 
@@ -180,7 +180,7 @@ cat >> /opt/openproject/.env << 'EOF'
 # ---- Nextcloud ----
 NC_DB_PASSWORD=<generated_with_openssl_rand_hex_32>
 NC_ADMIN_PASSWORD=<generated_with_openssl_rand_hex_16>
-NC_S3_BUCKET=axina-openproject-files
+NC_S3_BUCKET=ctorescues-openproject-files
 NC_S3_REGION=us-east-1
 NC_S3_ACCESS_KEY_ID=<from_iam_create_access_key>
 NC_S3_SECRET_ACCESS_KEY=<from_iam_create_access_key>
@@ -194,7 +194,7 @@ chmod 600 /opt/openproject/.env
 cd /opt/openproject
 
 # Copy compose file (or pull from S3)
-aws s3 cp s3://axina-openproject-files/deploy/docker-compose.nextcloud.yml \
+aws s3 cp s3://ctorescues-openproject-files/deploy/docker-compose.nextcloud.yml \
   /opt/openproject/docker-compose.nextcloud.yml
 
 # Start
@@ -232,7 +232,7 @@ docker exec -u www-data nextcloud-app php occ app:install groupfolders
 # The app store version downloads correctly via occ after apps_paths is set:
 docker exec -u www-data nextcloud-app php occ app:install integration_openproject
 # If it errors with "Cannot write into apps directory", extract manually:
-#   aws s3 cp s3://axina-openproject-files/deploy/integration_openproject-3.0.0.tar.gz /tmp/
+#   aws s3 cp s3://ctorescues-openproject-files/deploy/integration_openproject-3.0.0.tar.gz /tmp/
 #   docker cp /tmp/integration_openproject-3.0.0.tar.gz nextcloud-app:/tmp/
 #   docker exec nextcloud-app tar xzf /tmp/integration_openproject-3.0.0.tar.gz -C /var/www/html/custom_apps/
 #   docker exec nextcloud-app chown -R www-data:www-data /var/www/html/custom_apps/integration_openproject
@@ -261,28 +261,28 @@ docker restart nextcloud-app
 
 ### 2.6 Deploy updated nginx.conf and issue TLS certificate
 
-The `nginx.conf` in this repo already includes the `files.axinagroup.com` server block
+The `nginx.conf` in this repo already includes the `files.ctorescues.com` server block
 and the `upstream nextcloud` entry. Deploy it before issuing the cert so the ACME
 HTTP-01 challenge can be served.
 
 ```bash
 # Upload updated nginx.conf to S3
 aws s3 cp infrastructure/docker/nginx.conf \
-  s3://axina-openproject-files/deploy/nginx.conf
+  s3://ctorescues-openproject-files/deploy/nginx.conf
 
 # Pull to EC2 and restart nginx
-aws ssm start-session --target i-07bb8581203e52527
+aws ssm start-session --target YOUR_INSTANCE_ID
 cd /opt/openproject
-aws s3 cp s3://axina-openproject-files/deploy/nginx.conf /opt/openproject/nginx.conf
+aws s3 cp s3://ctorescues-openproject-files/deploy/nginx.conf /opt/openproject/nginx.conf
 
 # nginx needs to start without the TLS cert — temporarily comment out the
-# files.axinagroup.com 443 block, reload, then issue the cert, then uncomment.
+# files.ctorescues.com 443 block, reload, then issue the cert, then uncomment.
 # Easier: issue cert first via standalone mode while nginx is serving port 80.
 docker compose restart openproject-nginx
 docker compose run --rm certbot certonly \
   --webroot --webroot-path /var/www/certbot \
-  -d files.axinagroup.com \
-  --email db@xgccorp.com \
+  -d files.ctorescues.com \
+  --email db@ctorescues.com \
   --agree-tos --non-interactive
 ```
 
@@ -296,14 +296,14 @@ docker exec openproject-nginx nginx -s reload
 Verify:
 
 ```bash
-curl -sI https://files.axinagroup.com | grep -E "HTTP|Location|Server"
+curl -sI https://files.ctorescues.com | grep -E "HTTP|Location|Server"
 # Expect: HTTP/2 200 (or 302 to /login)
 
 # Check cert subject
-echo | openssl s_client -connect files.axinagroup.com:443 \
-  -servername files.axinagroup.com 2>/dev/null \
+echo | openssl s_client -connect files.ctorescues.com:443 \
+  -servername files.ctorescues.com 2>/dev/null \
   | openssl x509 -noout -subject -dates
-# Expected: subject=CN=files.axinagroup.com
+# Expected: subject=CN=files.ctorescues.com
 ```
 
 ---
@@ -317,7 +317,7 @@ echo | openssl s_client -connect files.axinagroup.com:443 \
 docker exec nextcloud-app php occ files:scan --all
 
 # Check a file actually landed in S3
-aws s3 ls s3://axina-openproject-files/nextcloud/ --recursive | head -10
+aws s3 ls s3://ctorescues-openproject-files/nextcloud/ --recursive | head -10
 ```
 
 ### 3.2 Database connectivity
@@ -398,29 +398,29 @@ docker exec -u www-data nextcloud-app php occ app:list | grep openproject
 
 ### 4.2 Configure OAuth 2.0 on OpenProject side
 
-**In OpenProject admin panel** (`https://projects.axinagroup.com/admin`):
+**In OpenProject admin panel** (`https://projects.ctorescues.com/admin`):
 
 1. Go to **Administration → Authentication → OAuth applications → + New application**
 2. Fill in:
    - **Name**: `Nextcloud`
-   - **Redirect URI**: `https://files.axinagroup.com/apps/integration_openproject/oauth-redirect`
+   - **Redirect URI**: `https://files.ctorescues.com/apps/integration_openproject/oauth-redirect`
    - **Client credentials**: check **"Confidential"**
 3. Click **Create**. Copy the **Client ID** and **Client secret** — needed in §4.3.
 4. Go to **Administration → Files → External file storages → + Storage**:
    - **Storage type**: Nextcloud
-   - **Storage name**: `Axina Nextcloud`
-   - **Nextcloud URL**: `https://files.axinagroup.com`
+   - **Storage name**: `CTO Rescues Nextcloud`
+   - **Nextcloud URL**: `https://files.ctorescues.com`
    - **OpenProject OAuth application**: select the one created above
    - **Automatically managed folders**: ✅ Enable
 5. Click **Save**. OpenProject will display a **Nextcloud OAuth app** Client ID + Secret — copy these for §4.3.
 
 ### 4.3 Configure OAuth 2.0 on Nextcloud side
 
-**In Nextcloud admin panel** (`https://files.axinagroup.com/settings/admin/openproject`):
+**In Nextcloud admin panel** (`https://files.ctorescues.com/settings/admin/openproject`):
 
 1. Go to **Administration → OpenProject Integration**
 2. Fill in:
-   - **OpenProject host**: `https://projects.axinagroup.com`
+   - **OpenProject host**: `https://projects.ctorescues.com`
    - **Client ID**: (from OpenProject OAuth app in §4.2)
    - **Client secret**: (from OpenProject OAuth app in §4.2)
 3. Click **Save**. The page will redirect to OpenProject to authorize.
@@ -434,7 +434,7 @@ docker exec -u www-data nextcloud-app php occ app:list | grep openproject
 # Check integration app reports connected
 docker exec -u www-data nextcloud-app php occ config:app:get \
   integration_openproject openproject_instance_url
-# Expected: https://projects.axinagroup.com
+# Expected: https://projects.ctorescues.com
 
 docker exec -u www-data nextcloud-app php occ config:app:get \
   integration_openproject token_type
@@ -443,7 +443,7 @@ docker exec -u www-data nextcloud-app php occ config:app:get \
 
 ### 4.5 Enable project folder auto-management
 
-Back in OpenProject **Administration → Files → External file storages → Axina Nextcloud**:
+Back in OpenProject **Administration → Files → External file storages → CTO Rescues Nextcloud**:
 
 1. Confirm **Automatically managed project folders** is ON.
 2. OpenProject will create `/OpenProject/<project-name>/` folders on Nextcloud automatically when projects have the Files module enabled.
@@ -477,7 +477,7 @@ docker run --rm \
   alpine tar czf /backup/nextcloud-config-$(date +%F).tar.gz /data
 
 aws s3 cp /tmp/nextcloud-config-$(date +%F).tar.gz \
-  s3://axina-openproject-files/backups/nextcloud/
+  s3://ctorescues-openproject-files/backups/nextcloud/
 ```
 
 ### Logs

@@ -1,6 +1,6 @@
 # Scripts
 
-Utility scripts for the AXINA Claude Assistant ecosystem.
+Utility scripts for the CTO Rescues Claude Assistant ecosystem.
 
 ## Background Services (launchd)
 
@@ -8,7 +8,7 @@ Two scripts run automatically as launchd agents — started at login, no manual 
 
 ### openproject-whatsapp-notifier.py
 
-Posts OpenProject `axina-group-admin` changes to the AXINA-TSPG-TEAM WhatsApp group every 15 minutes.
+Posts OpenProject `axina-group-admin` changes to the TSPG WhatsApp group every 15 minutes.
 
 **Notifies on:**
 - 🆕 New work package created

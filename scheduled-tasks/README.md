@@ -13,7 +13,7 @@ Prompts for the four automated briefings. These are run via the **🤖 Claude As
 | `weekend-briefing.md` | Sundays, ~8:00 AM | Covers Fri 4 PM → Sun morning: full group catch-up, urgent email scan, Gemini notes, Drive activity, Monday preview, sends WhatsApp summary |
 | `weekly-review.md` | Sundays, ~10:00 AM | Reads all daily brief files, aggregates by org (4ward / XGC / AXINA), flags stale OpenProject tasks, sends WhatsApp summary |
 
-Briefing files are written to `db@xgccorp.com → My Drive → _daily_brief/YYYY-MM-DD.md`.
+Briefing files are written to `db@ctorescues.com → My Drive → _daily_brief/YYYY-MM-DD.md`.
 
 ---
 
@@ -119,7 +119,7 @@ See `../scripts/README.md` and `../mcp-servers/TEAM-INSTALL.md` Step 10 for setu
 
 Daily briefs write to Google Drive (synced, accessible from any device):
 ```
-db@xgccorp.com → My Drive → _daily_brief/
+db@ctorescues.com → My Drive → _daily_brief/
 ├── 2026-06-09.md          ← morning briefing
 ├── 2026-06-09-wrapup.md   ← evening wrap-up
 ├── 2026-06-10.md

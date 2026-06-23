@@ -30,7 +30,7 @@ fi
 
 echo "=== Step 1: Upload Dockerfile to S3 ==="
 aws s3 cp "$(dirname "$0")/Dockerfile.openproject" \
-  s3://axina-openproject-files/deploy/Dockerfile.openproject \
+  s3://ctorescues-openproject-files/deploy/Dockerfile.openproject \
   --profile "$PROFILE" --region "$REGION"
 echo "✓ Dockerfile uploaded"
 
@@ -44,10 +44,10 @@ COMMAND_ID=$(aws ssm send-command \
   --parameters 'commands=[
     "set -e",
     "echo \"--- Pulling Dockerfile from S3 ---\"",
-    "aws s3 cp s3://axina-openproject-files/deploy/Dockerfile.openproject /opt/openproject/Dockerfile.openproject",
+    "aws s3 cp s3://ctorescues-openproject-files/deploy/Dockerfile.openproject /opt/openproject/Dockerfile.openproject",
     "echo \"--- Building custom OpenProject image ---\"",
     "cd /opt/openproject",
-    "docker build -f Dockerfile.openproject -t axina-openproject:latest . 2>&1 | tail -20",
+    "docker build -f Dockerfile.openproject -t ctorescues-openproject:latest . 2>&1 | tail -20",
     "echo \"--- Stopping old openproject-app container ---\"",
     "docker compose stop openproject || docker stop openproject-app || true",
     "echo \"--- Starting new container ---\"",
@@ -104,13 +104,13 @@ if [ "$STATUS" == "Success" ]; then
   echo ""
   echo "1. Go to: https://github.com/dzbrody/claude-assistant-config/settings/hooks/new"
   echo ""
-  echo "2. Payload URL:  https://projects.axinagroup.com/webhooks/github"
+  echo "2. Payload URL:  https://projects.ctorescues.com/webhooks/github"
   echo "   Content type: application/json"
   echo "   Secret:       generate with: openssl rand -hex 32"
   echo "   Events:       'Pull requests' + 'Pull request reviews' + 'Pushes'"
   echo ""
   echo "3. Save the secret, then add it to OpenProject:"
-  echo "   https://projects.axinagroup.com/admin/settings/plugin/openproject_github_integration"
+  echo "   https://projects.ctorescues.com/admin/settings/plugin/openproject_github_integration"
   echo ""
   echo "4. Test by opening a PR with 'Closes OP#164' in the description."
   echo "   It will appear on work package #164 under the GitHub tab."

@@ -1,5 +1,5 @@
-# AXERP (ERPNext v16) — Production Compose
-# Domain:   erp.axinagroup.com
+# ERP (ERPNext v16) — Production Compose
+# Domain:   erp.ctorescues.com
 # Database: axerp-mariadb (MariaDB 10.6) — dedicated container, arm64
 #           ERPNext requires MariaDB; PostgreSQL has thousands of incompatible
 #           raw SQL queries (sum(unknown), DATE_SUB, etc.) across the codebase.
@@ -21,7 +21,7 @@
 #   No docker cp required after bench build.
 #
 # Deploy (EC2 via SSM):
-#   aws s3 cp docker-compose.axerp.yml s3://axina-openproject-files/deploy/
+#   aws s3 cp docker-compose.axerp.yml s3://ctorescues-openproject-files/deploy/
 #   # On EC2:
 #   cd /opt/openproject && docker compose -f docker-compose.axerp.yml up -d
 #
@@ -156,7 +156,7 @@ services:
         bench --site $$SITE_NAME install-app insights;
         echo "Site creation complete.";
     environment:
-      SITE_NAME: ${AXERP_SITE_NAME:-erp.axinagroup.com}
+      SITE_NAME: ${AXERP_SITE_NAME:-erp.ctorescues.com}
       DB_ROOT_PASSWORD: ${AXERP_DB_ROOT_PASSWORD}
       SITE_ADMIN_PASSWORD: ${AXERP_ADMIN_PASSWORD}
     depends_on:
@@ -173,7 +173,7 @@ services:
       - nginx-entrypoint.sh
     environment:
       BACKEND: axerp-backend:8000
-      FRAPPE_SITE_NAME_HEADER: ${AXERP_SITE_NAME:-erp.axinagroup.com}
+      FRAPPE_SITE_NAME_HEADER: ${AXERP_SITE_NAME:-erp.ctorescues.com}
       SOCKETIO: axerp-websocket:9000
       UPSTREAM_REAL_IP_ADDRESS: 127.0.0.1
       UPSTREAM_REAL_IP_HEADER: X-Forwarded-For

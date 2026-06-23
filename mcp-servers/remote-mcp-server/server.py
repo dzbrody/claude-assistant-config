@@ -35,11 +35,11 @@ from starlette.routing import Route
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 # ---- Configuration ----
-OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.axinagroup.com")
+OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.ctorescues.com")
 OP_API_KEY = os.environ.get("OPENPROJECT_API_KEY", "")
 MCP_API_KEY = os.environ.get("MCP_API_KEY", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKETS = os.environ.get("S3_BUCKETS", "axina-openproject-files").split(",")
+S3_BUCKETS = os.environ.get("S3_BUCKETS", "ctorescues-openproject-files").split(",")
 
 # Disable DNS rebinding protection — nginx is the trusted reverse proxy
 _no_dns_rebind = TransportSecuritySettings(enable_dns_rebinding_protection=False)
@@ -48,7 +48,7 @@ _no_dns_rebind = TransportSecuritySettings(enable_dns_rebinding_protection=False
 # mount_path="/mcp" makes FastMCP advertise /mcp/messages/ in SSE event data
 # so mcp-proxy posts to the nginx-proxied path, not bare /messages/
 mcp = FastMCP(
-    "AXINA Group MCP Server",
+    "CTO Rescues MCP Server",
     auth=None,
     host="0.0.0.0",
     port=39128,

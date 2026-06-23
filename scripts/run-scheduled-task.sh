@@ -101,7 +101,7 @@ EMAIL_INSTRUCTION="
 ---
 
 When you have completed all of the above, send a summary email using the google-workspace send_email tool:
-To: db@axinagroup.com
+To: db@ctorescues.com
 Subject: [Claude] ${TASK_LABEL} — ${DATE}
 Body: A clean plain-text version of your output above, organized by section. Keep all section headers and bullet points. Remove any tool call artifacts or debug lines. Sign off as 'Claude Assistant'."
 

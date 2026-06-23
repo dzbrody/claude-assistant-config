@@ -11,7 +11,7 @@
 
 # ============================================================
 # OpenProject Server — EC2 + Docker Compose
-# Domain: projects.axinagroup.com
+# Domain: projects.ctorescues.com
 # ============================================================
 
 terraform {
@@ -219,7 +219,7 @@ resource "aws_route53_record" "openproject" {
 
 
 # ============================================================
-# IAM Role — Axina OpenProject EC2
+# IAM Role — CTO Rescues OpenProject EC2
 # ============================================================
 
 data "aws_iam_policy_document" "ec2_assume_role" {
@@ -234,11 +234,11 @@ data "aws_iam_policy_document" "ec2_assume_role" {
 }
 
 resource "aws_iam_role" "openproject" {
-  name               = "axina-openproject-role"
+  name               = "ctorescues-openproject-role"
   assume_role_policy = data.aws_iam_policy_document.ec2_assume_role.json
 
   tags = {
-    Name = "axina-openproject-role"
+    Name = "ctorescues-openproject-role"
   }
 }
 
@@ -248,7 +248,7 @@ resource "aws_iam_role_policy_attachment" "openproject_ssm" {
 }
 
 resource "aws_iam_instance_profile" "openproject" {
-  name = "axina-openproject-profile"
+  name = "ctorescues-openproject-profile"
   role = aws_iam_role.openproject.name
 }
 
@@ -257,7 +257,7 @@ resource "aws_iam_instance_profile" "openproject" {
 # ============================================================
 
 resource "aws_s3_bucket" "openproject_files" {
-  bucket = "axina-openproject-files"
+  bucket = "ctorescues-openproject-files"
 }
 
 resource "aws_s3_bucket_versioning" "openproject_files" {
@@ -331,7 +331,7 @@ resource "aws_s3_bucket_cors_configuration" "openproject_files" {
   bucket = aws_s3_bucket.openproject_files.id
 
   cors_rule {
-    allowed_origins = ["https://projects.axinagroup.com", "https://projects.tspgusa.com"]
+    allowed_origins = ["https://projects.ctorescues.com"]
     allowed_methods = ["GET", "PUT", "POST", "DELETE"]
     allowed_headers = ["*"]
     max_age_seconds = 3600

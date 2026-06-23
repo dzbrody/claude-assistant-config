@@ -9,7 +9,7 @@ Step-by-step setup for a new Mac. Takes about 30 minutes end to end.
 - **🤖 Claude Assistant menu bar app** — click to run morning/evening/weekend/weekly briefings
 - Claude CLI connected to OpenProject, Google Workspace, WhatsApp, S3, and your filesystem
 - Claude Desktop with the same tools (optional)
-- The AXINA remote MCP server accessible from mobile and any IDE
+- The CTO Rescues remote MCP server accessible from mobile and any IDE
 
 ---
 
@@ -18,8 +18,8 @@ Step-by-step setup for a new Mac. Takes about 30 minutes end to end.
 You need:
 - macOS 13 or later
 - An Anthropic account (claude.ai)
-- Access to the AXINA team 1Password vault (for the MCP API key)
-- An OpenProject account at https://projects.axinagroup.com (ask Daniel to create one)
+- Access to the CTO Rescues 1Password vault (for the MCP API key)
+- An OpenProject account at https://projects.ctorescues.com (ask Daniel to create one)
 - AWS SSO access on the `xgc-main` profile
 
 ---
@@ -61,7 +61,7 @@ cd ~/.claude-assistant
 bash mcp-servers/install-all.sh
 ```
 
-> **Note:** `install-all.sh` includes filesystem paths for `db@xgccorp.com` Google Drive.
+> **Note:** `install-all.sh` includes filesystem paths for `db@ctorescues.com` Google Drive.
 > If you use different Google accounts, edit the filesystem paths in the script first.
 
 Verify:
@@ -71,14 +71,14 @@ claude mcp list
 
 ---
 
-## Step 4 — Connect the AXINA remote MCP server
+## Step 4 — Connect the CTO Rescues remote MCP server
 
-1. Get the API key from 1Password: **AXINA MCP API Key**
+1. Get the API key from 1Password: **CTO Rescues MCP API Key**
 2. Run:
 
 ```bash
 claude mcp add --transport sse --scope user openproject-remote \
-  "https://projects.axinagroup.com/mcp/sse?key=<PASTE_KEY_HERE>"
+  "https://projects.ctorescues.com/mcp/sse?key=<PASTE_KEY_HERE>"
 ```
 
 3. Test:
@@ -261,7 +261,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
     },
     "openproject-remote": {
       "command": "/Users/<YOUR_USERNAME>/.local/bin/uvx",
-      "args": ["mcp-proxy", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"]
+      "args": ["mcp-proxy", "https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>"]
     }
   }
 }
@@ -276,9 +276,9 @@ Restart Claude Desktop after saving.
 Edit `~/.kiro/settings/mcp.json` and add inside `mcpServers`:
 
 ```json
-"axina-mcp": {
+"ctorescues-mcp": {
   "command": "uvx",
-  "args": ["mcp-proxy@latest", "https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>"],
+  "args": ["mcp-proxy@latest", "https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>"],
   "env": {},
   "disabled": false
 }
@@ -291,8 +291,8 @@ Reload: **Cmd+Shift+P → "Kiro: Reload MCP Servers"**
 ## Step 10 — Connect Claude Mobile (optional)
 
 1. Settings → **MCP Servers** → **Add Server**
-2. Name: `AXINA Group`
-3. URL: `https://projects.axinagroup.com/mcp/sse?key=<MCP_API_KEY>`
+2. Name: `CTO Rescues`
+3. URL: `https://projects.ctorescues.com/mcp/sse?key=<MCP_API_KEY>`
 
 ---
 
@@ -366,6 +366,6 @@ launchctl list | grep -E "whatsapp-bridge|openproject-notifier|claude-assistant"
 | WhatsApp `"connected":false` | Session expired — stop bridge, run manually to get new QR code, scan, reload service |
 | `claude: command not found` in Terminal | Script sources `~/.zshrc` — make sure claude is at `~/.local/bin/claude` (`which claude`) |
 | Google Workspace auth error | Run once manually to complete OAuth: `npx -y @alanxchen/google-workspace-mcp` |
-| `openproject-remote` times out | Test directly: `curl "https://projects.axinagroup.com/mcp/sse?key=<KEY>" --max-time 3` |
+| `openproject-remote` times out | Test directly: `curl "https://projects.ctorescues.com/mcp/sse?key=<KEY>" --max-time 3` |
 
-**Getting help:** Contact Daniel (db@xgccorp.com) for API key access or OpenProject account creation.
+**Getting help:** Contact Daniel (db@ctorescues.com) for API key access or OpenProject account creation.

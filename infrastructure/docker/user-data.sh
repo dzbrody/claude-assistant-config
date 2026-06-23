@@ -66,7 +66,7 @@ default:
   attachments_storage: fog
   fog:
     provider: AWS
-    directory: axina-openproject-files
+    directory: ctorescues-openproject-files
     region: us-east-1
     credentials:
       provider: AWS
@@ -134,13 +134,13 @@ services:
       OPENPROJECT_EMAIL__DELIVERY__METHOD: smtp
       OPENPROJECT_SMTP__ADDRESS: email-smtp.us-east-1.amazonaws.com
       OPENPROJECT_SMTP__PORT: "587"
-      OPENPROJECT_SMTP__DOMAIN: axinagroup.com
+      OPENPROJECT_SMTP__DOMAIN: ctorescues.com
       OPENPROJECT_SMTP__AUTHENTICATION: login
       OPENPROJECT_SMTP__USER__NAME: $${SMTP_USERNAME}
       OPENPROJECT_SMTP__PASSWORD: $${SMTP_PASSWORD}
       OPENPROJECT_SMTP__ENABLE__STARTTLS__AUTO: "true"
       OPENPROJECT_SMTP__OPENSSL__VERIFY__MODE: peer
-      OPENPROJECT_MAIL__FROM: no-reply@axinagroup.com
+      OPENPROJECT_MAIL__FROM: no-reply@ctorescues.com
     volumes:
       - /data/openproject/assets:/var/openproject/assets
       - /data/openproject/config/configuration.yml:/app/config/configuration.yml:ro
@@ -195,7 +195,7 @@ services:
       OPENPROJECT_URL: https://$${DOMAIN_NAME}
       OPENPROJECT_API_KEY: $${OPENPROJECT_ADMIN_API_KEY}
       AWS_REGION: us-east-1
-      S3_BUCKETS: axina-openproject-files
+      S3_BUCKETS: ctorescues-openproject-files
     depends_on:
       - openproject
 
@@ -391,12 +391,12 @@ from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse, JSONResponse
 from pydantic import BaseModel
 
-OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.axinagroup.com")
+OP_URL = os.environ.get("OPENPROJECT_URL", "https://projects.ctorescues.com")
 OP_API_KEY = os.environ.get("OPENPROJECT_API_KEY", "")
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
-S3_BUCKETS = os.environ.get("S3_BUCKETS", "axina-openproject-files").split(",")
+S3_BUCKETS = os.environ.get("S3_BUCKETS", "ctorescues-openproject-files").split(",")
 
-app = FastAPI(title="AXINA Group MCP Server")
+app = FastAPI(title="CTO Rescues MCP Server")
 s3_client = boto3.client("s3", region_name=AWS_REGION)
 
 class MCPToolCall(BaseModel):

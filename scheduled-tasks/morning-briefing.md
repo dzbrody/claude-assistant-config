@@ -20,7 +20,7 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 > `run-scheduled-task.sh`). Do not add them here.
 
 ### OpenProject API — Credentials & REST Reference
-- **Base URL:** `https://projects.axinagroup.com`
+- **Base URL:** `https://projects.ctorescues.com`
 - **API Key:** in `~/.claude-assistant/mcp-servers/openproject-mcp/.env` as `OPENPROJECT_API_KEY`
 - **Auth header:** `Authorization: Basic $(python3 -c "import base64; print(base64.b64encode(b'apikey:{KEY}').decode())")`
 - **Post comment:** `POST /api/v3/work_packages/{id}/activities` with body `{"comment":{"format":"markdown","raw":"..."}}`
@@ -31,18 +31,18 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 - **Deal:** Multi-vertical sovereign technology deployment — Angola National Carbon Registry (ANCR live Apr 13 2026), ADVENT City smart city, Sovereign Smart Seaport, IITS data sovereignty
 - **Deal Stage:** Signed — Active Deployment (pipeline version ID 29)
 - **WhatsApp Group:** Vista Angola — members: Dan, Henry, Nathan Missial (Vista Capital), Jean Lesly
-- **Key Initiatives:** ANCR 12-month rollout, Blue Carbon Spine (1,600km coastline), ADVENT City AXERP integration, Methane mitigation credit quantification, Sovereign Smart Seaport proposal
-- **Documents:** `AXINAGRP/Sales/Africa/Angola/` — roadmap, LOE, seaport proposal, Huambo carbon report; also at `projects.axinagroup.com/projects/angola-admin/documents`
+- **Key Initiatives:** ANCR 12-month rollout, Blue Carbon Spine (1,600km coastline), ADVENT City ERP integration, Methane mitigation credit quantification, Sovereign Smart Seaport proposal
+- **Documents:** `AXINAGRP/Sales/Africa/Angola/` — roadmap, LOE, seaport proposal, Huambo carbon report; also at `projects.ctorescues.com/projects/angola-admin/documents`
 - **Sales pipeline version IDs:** 24=Prospecting, 25=Gov Qualification, 26=Proposal Submitted, 27=MOU/Agreement, 28=Negotiation & Legal, 29=Signed Active, 30=Closed Lost
 - **When creating Angola tasks:** set version to "6. Signed — Active Deployment" (ID 29) unless context indicates otherwise
 
 ### Uganda-Admin — Key Context
-- **Deal:** Uganda National Sovereign Carbon Registry powered by AXINA Group / XGC technology
+- **Deal:** Uganda National Sovereign Carbon Registry powered by CTO Rescues / XGC technology
 - **Deal Stage:** MOU / Agreement (pipeline version ID 20 — "4. MOU / Agreement")
 - **Field Partner:** Aimable Mbarushimana — primary in-country contact (JID in `.people.private.md`)
 - **Key Stakeholders:** Commissioner (Ministry of Water & Environment), State House team, President's Office
 - **Milestone #564 — OVERDUE:** Was May 25 2026 at 3:00 PM Uganda time (EAT/UTC+3). Presentation to Commissioner and State House team. Flag every day until Aimable confirms outcome.
-- **Documents:** `AXINAGRP/Sales/Africa/Uganda/` — meeting notes, email proposal, agreements; also at `projects.axinagroup.com/projects/uganda-admin/documents`
+- **Documents:** `AXINAGRP/Sales/Africa/Uganda/` — meeting notes, email proposal, agreements; also at `projects.ctorescues.com/projects/uganda-admin/documents`
 - **Sales pipeline stages (version IDs):** 17=Prospecting, 18=Gov Qualification, 19=Proposal Submitted, 20=MOU/Agreement, 21=Negotiation & Legal, 22=Signed Active, 23=Closed Lost
 - **When creating Uganda tasks:** set version to "4. MOU / Agreement" (ID 20) unless context indicates a different stage
 
@@ -70,7 +70,7 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 
 ### Project Routing Guide (when creating work packages)
 
-**Portfolio hierarchy:** Marketing (40) → sub-projects 41–44 | Engineering (33) → Infra (34), AXERP Platform (35), Registries (36) | TGI Corporate (14) → M&A (13), AGI (15), OKRs (16) | AXINA Group Admin (3) → Sales (11) → geo sub-projects 7–10 | AXINOD™ (51) → Sales (53), Hardware (54), Deployment (55), Support (56)
+**Portfolio hierarchy:** Marketing (40) → sub-projects 41–44 | Engineering (33) → Infra (34), ERP Platform (35), Registries (36) | TGI Corporate (14) → M&A (13), AGI (15), OKRs (16) | Admin (3) → Sales (11) → geo sub-projects 7–10 | AXINOD™ (51) → Sales (53), Hardware (54), Deployment (55), Support (56)
 
 | Topic | Project ID | Project Identifier |
 |---|---|---|
@@ -85,12 +85,12 @@ You are my executive assistant and AI coworker. It is now the morning of {date}.
 | M&A, listings (Cardiogenics, Netbrands), SAFE, board resolutions | 13 | `m-and-a` |
 | Strategic OKRs | 16 | `tgi-okrs` |
 | Engineering — general / cross-domain | 33 | `engineering` |
-| AXERP core app, DocTypes, Frappe, frontend | 20 | `axerp-code` |
-| AXERP API / integrations (Plaid, Shopify, Amazon, SendCloud) | 21 | `axerp-api` |
-| AXERP onboarding / tenant provisioning | 19 | `axerp-onboarding` |
+| ERP core app, DocTypes, Frappe, frontend | 20 | `axerp-code` |
+| ERP API / integrations (Plaid, Shopify, Amazon, SendCloud) | 21 | `axerp-api` |
+| ERP onboarding / tenant provisioning | 19 | `axerp-onboarding` |
 | Logistics / supply chain / warehouse | 22 | `axerp-axlogistics` |
-| AXERP SAIL / Silk Road corridor | 32 | `axerp-logistics-sail` |
-| AXERP Health (Kazakhstan, Kenya, Angola) | 31 | `axerp-health` |
+| ERP SAIL / Silk Road corridor | 32 | `axerp-logistics-sail` |
+| ERP Health (Kazakhstan, Kenya, Angola) | 31 | `axerp-health` |
 | Terrain to Token / asset digitization | 29 | `axerp-terrain-to-token` |
 | Food Registry / traceability | 30 | `axina-food-registry` |
 | Carbon Registry / MRV / Angola carbon | 28 | `axina-carbon-registry` |
@@ -130,7 +130,7 @@ Using `google-workspace` MCP tools:
 - **For each action item in email**, create an OpenProject task (Project Routing Guide + Task Assignment Rules). Prefix subject `[Email]`. Check `list_work_packages` first — no duplicates.
 - **Link Drive documents to new tasks**: After creating any task, check if a related document exists in AXINAGRP drive. If so, get its Drive ID via `xattr -p "com.google.drivefs.item-id#S" "/path/to/file"` and post a comment with the link using `POST /api/v3/work_packages/{id}/activities`.
 - **Close completed tasks**: For each email indicating a previously-open task was resolved (e.g., "done", "sent", "confirmed", "completed"), find the matching open work package via `list_work_packages`, get its `lockVersion`, then close it:
-  `curl -X PATCH https://projects.axinagroup.com/api/v3/work_packages/{id} -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}'`
+  `curl -X PATCH https://projects.ctorescues.com/api/v3/work_packages/{id} -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}'`
 
 ---
 
@@ -141,27 +141,27 @@ Scan **all eight** channels for the last 24 hours of messages. For each, call `l
 **Closing completed tasks**: After scanning each channel, look for messages that indicate a previously-created OpenProject task was completed or resolved (e.g., "done", "sent it", "confirmed", "signed", "paid", "resolved", "finished"). For any match:
 1. Find the open work package via `list_work_packages` (match by subject keyword)
 2. Get its `lockVersion` from the result
-3. Close it via REST: `curl -X PATCH https://projects.axinagroup.com/api/v3/work_packages/{id} -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}'`
+3. Close it via REST: `curl -X PATCH https://projects.ctorescues.com/api/v3/work_packages/{id} -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"lockVersion": N, "_links":{"status":{"href":"/api/v3/statuses/12"}}}'`
 4. Note in the briefing: "Closed #[id] — [reason]"
 
 **Document linking on new tasks**: After creating any OpenProject task from a WhatsApp message, if a relevant document exists in the AXINAGRP drive:
-1. Get the file's Drive ID: `xattr -p "com.google.drivefs.item-id#S" "/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/..."`
+1. Get the file's Drive ID: `xattr -p "com.google.drivefs.item-id#S" "/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/..."`
 2. Build the link: `.gdoc/.gslides/.gsheet` → `https://docs.google.com/document/d/{id}/edit`; `.pdf`/other → `https://drive.google.com/file/d/{id}/view`
-3. Post as a comment: `curl -X POST https://projects.axinagroup.com/api/v3/work_packages/{id}/activities -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"comment":{"format":"markdown","raw":"📎 Related doc: [filename](url)"}}'`
+3. Post as a comment: `curl -X POST https://projects.ctorescues.com/api/v3/work_packages/{id}/activities -H "Authorization: Basic {AUTH}" -H "Content-Type: application/json" -d '{"comment":{"format":"markdown","raw":"📎 Related doc: [filename](url)"}}'`
 
 **Before creating any OpenProject task:** call `list_work_packages` on the target project and check for an existing open task with a matching subject. Never create duplicates.
 
-**OpenProject Mobile App** is live at `https://projects.axinagroup.com/` — team members can log in with their existing credentials on iOS/Android.
+**OpenProject Mobile App** is live at `https://projects.ctorescues.com/` — team members can log in with their existing credentials on iOS/Android.
 
 #### Group A — AXINA-TSPG-TEAM (`120363424688758322@g.us`)
-**Project scope:** AXINA Group Admin, Sales/geo projects, Marketing, M&A
+**Project scope:** Group Admin, Sales/geo projects, Marketing, M&A
 
 **1. Get messages** — `list_messages` with `chat_jid=120363424688758322@g.us`
 
 **2. Download documents and media:**
 For every message with a `media_type` (document, image, pdf, audio — skip video unless under 10MB):
 - Call `download_media` with `message_id` and `chat_jid`.
-- Copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+- Copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 - Get original filename: `sqlite3 /Users/dzbrody/whatsapp-mcp/whatsapp-bridge/store/messages.db "SELECT filename FROM messages WHERE id='<message_id>'"`
 - Name: `{YYYY-MM-DD}_{original_filename}` — preserve original name/extension exactly. If blank: `{YYYY-MM-DD}_{media_type}.{ext}`
 - **Never convert file formats.**
@@ -176,15 +176,15 @@ For any action item, request, decision, or follow-up:
 - **Link related docs** — see document linking instructions at top of Step 1.5
 
 #### Group B — TGI Tech (`120363428241001289@g.us`)
-**Project scope:** TGI Corporate, Engineering, AXERP, Carbon Registry, M&A
+**Project scope:** TGI Corporate, Engineering, ERP, Carbon Registry, M&A
 
 **1. Get messages** — `list_messages` with `chat_jid=120363428241001289@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
-- Use the **Project Routing Guide** to route to the correct TGI/Engineering/AXERP project
+- Use the **Project Routing Guide** to route to the correct TGI/Engineering/ERP project
 - Assign using **Task Assignment Rules** (members: Dan, Henry, Jatin)
 - Prefix subject: `[TGI-Tech]`
 - Do not duplicate — check existing tasks first
@@ -196,8 +196,8 @@ Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared 
 **1. Get messages** — `list_messages` with `chat_jid=120363426342012826@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Angola/whatsapp-docs/`
-Also copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Angola/_source_docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/Sales/Africa/Angola/whatsapp-docs/`
+Also copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/Sales/Africa/Angola/_source_docs/`
 
 **3. Extract action items → OpenProject:**
 - **All tasks go to `angola-admin` (project ID 8)**
@@ -224,8 +224,8 @@ Vista Angola: [X] messages, [X] docs saved, [X] tasks created
 **1. Get messages** — `list_messages` with Aimable's JID from `.people.private.md`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Uganda/whatsapp-docs/`
-Also copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/Sales/Africa/Uganda/_source_docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/Sales/Africa/Uganda/whatsapp-docs/`
+Also copy to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/Sales/Africa/Uganda/_source_docs/`
 
 **3. Extract action items → OpenProject:**
 - **All tasks go to `uganda-admin` (project ID 7)**
@@ -244,14 +244,14 @@ Aimable (Uganda): [X] messages, [X] docs saved, [X] tasks created
 ---
 
 #### Group F — TGI Genesys Health / Aximedic.com (`120363404307998608@g.us`)
-**Project scope:** TGI Corporate, AXERP Health, Engineering — AX-HEALTH partnership, AXINOD hardware
+**Project scope:** TGI Corporate, ERP Health, Engineering — AX-HEALTH partnership, AXINOD hardware
 **Members:** Dan, Henry Val, Dr. Viinay Genis India, Vijaygopal R (contact details in `.people.private.md`)
 **Context:** Health tech vertical — Aximedic.com / TGI Genesys Health / AX-HEALTH partnership (Care Relay + AXINOD HIS integration + AXINOD Data Center in a Box hardware production). Viinay's team is subcontractor for AXINOD unit assembly/shipping. Henry driving agreement before announcements. Also tracks UNDP Uganda bids submitted through Dan as registered supplier.
 
 **1. Get messages** — `list_messages` with `chat_jid=120363404307998608@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route to `tgi-corporate` (ID 14) for partnership/agreement/business plan items
@@ -274,7 +274,7 @@ TGI Genesys Health / Aximedic.com: [X] messages, [X] docs saved, [X] tasks creat
 **1. Get messages** — `list_messages` with `chat_jid=120363407823632328@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route to the correct engineering/infra project using the **Project Routing Guide**
@@ -296,7 +296,7 @@ Tasks created: [list #ID + subject or "none"]
 **1. Get messages** — `list_messages` with `chat_jid=120363408952824635@g.us`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route to the correct AXINOD sub-project using context: sales/proposals → 53, hardware/BOM/shipping → 54, deployment/installation → 55, support/monitoring → 56, general → 51
@@ -321,7 +321,7 @@ Tasks created: [list #ID + subject or "none"]
 **1. Get messages** — `list_messages` with TGI Inside JID (add to `.people.private.md` when known)
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route to `tgi-corporate` (ID 14) for corporate/financial items; `m-and-a` (ID 13) for M&A items
@@ -342,7 +342,7 @@ TGI Inside: [X] messages, [X] docs saved, [X] tasks created
 **1. Get messages** — `list_messages` with Erin's JID from `.people.private.md`
 
 **2. Download documents and media** — same procedure as Group A.
-Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
+Save to: `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP/XGC-TSPG/whatsapp-docs/`
 
 **3. Extract action items → OpenProject:**
 - Route using the **Project Routing Guide**
@@ -419,7 +419,7 @@ If no emails found, skip.
 
 ### Step 2.6: Scan ZOOM-MEETINGS Drive Folder for AI Notes (google-workspace + openproject-remote)
 
-1. **List recent files**: `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` (db@xgccorp.com/My Drive/ZOOM-MEETINGS/gemini). Look for files created or modified in the last 24 hours.
+1. **List recent files**: `list_files` with parent folder ID `1eX4JoDAFyMQeO93chj3yC33ZVIlmIEEJ` (db@ctorescues.com/My Drive/ZOOM-MEETINGS/gemini). Look for files created or modified in the last 24 hours.
 
 2. **For each new meeting notes file**:
    - Read full content via `get_file_content`
@@ -460,9 +460,9 @@ For any flagged email or meeting item that requires action today:
 Using `google-workspace` `list_files` with `modifiedTime > '{yesterday_iso}' and trashed = false`, scan for files modified in the last 24 hours. Run separate queries for each shared drive context. Also use `filesystem` `search_files` for local sync paths.
 
 Key paths to check:
-- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/AXINAGRP` — company shared drive
-- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@xgccorp.com/Shared drives/XGC` — XGC shared drive
-- `/Users/dzbrody/db@xgccorp.com - Google Drive/My Drive/_daily_brief/` — daily briefs (auto-written, skip)
+- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/AXINAGRP` — company shared drive
+- `/Users/dzbrody/Library/CloudStorage/GoogleDrive-db@ctorescues.com/Shared drives/XGC` — XGC shared drive
+- `/Users/dzbrody/db@ctorescues.com - Google Drive/My Drive/_daily_brief/` — daily briefs (auto-written, skip)
 - `/Users/dzbrody/Library/CloudStorage/GoogleDrive-daniel@brody.ca/My Drive` — personal drive
 - `/Users/dzbrody/OneDrive` — OneDrive (currently empty)
 
@@ -472,7 +472,7 @@ Note modified files by folder and org. Flag anything unexpected — especially n
 
 ### Step 5: Write the Briefing File
 
-Using `mcp__filesystem__write_file`, create `/Users/dzbrody/db@xgccorp.com - Google Drive/My Drive/_daily_brief/{date}.md`:
+Using `mcp__filesystem__write_file`, create `/Users/dzbrody/db@ctorescues.com - Google Drive/My Drive/_daily_brief/{date}.md`:
 
 ```markdown
 # Daily Briefing — {date}
@@ -645,4 +645,4 @@ Using `whatsapp` MCP tools, send me a WhatsApp message (my JID is in `.people.pr
 > ⚠️ Panama Canal #692 — [scheduled / pending Henry coordination]
 > 🌍 NCR Africa: [list countries with ⚠️ NUDGE DUE, or "all touched this week" if none]
 > ⚠️ [any other critical alerts, omit if none]
-> Full briefing: /Users/dzbrody/db@xgccorp.com - Google Drive/My Drive/_daily_brief/{date}.md
+> Full briefing: /Users/dzbrody/db@ctorescues.com - Google Drive/My Drive/_daily_brief/{date}.md

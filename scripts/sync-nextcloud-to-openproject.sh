@@ -17,7 +17,7 @@
 set -e
 
 SOURCE_BUCKET="xgccloud-nextcloud"
-DEST_BUCKET="axina-openproject-files"
+DEST_BUCKET="ctorescues-openproject-files"
 
 echo "============================================"
 echo "  Nextcloud -> OpenProject S3 Migration"

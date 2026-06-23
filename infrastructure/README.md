@@ -1,21 +1,21 @@
 # OpenProject Infrastructure
 
-OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagroup.com`.
+OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.ctorescues.com`.
 
 ## Architecture
 
-- **EC2 Instance**: `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, `i-07bb8581203e52527`, AZ `us-east-1f`
-- **Elastic IP**: `44.195.198.18` — static, re-associated after t3→t4g migration
+- **EC2 Instance**: `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, `YOUR_INSTANCE_ID`, AZ `us-east-1f`
+- **Elastic IP**: `YOUR_EC2_ELASTIC_IP` — static, re-associated after t3→t4g migration
 - **Docker Containers**:
   - `openproject/openproject:17.4.1` — OpenProject application (port 8080)
-  - `postgres:16` — PostgreSQL database (shared by OpenProject, Nextcloud, and AXERP)
+  - `postgres:16` — PostgreSQL database (shared by OpenProject, Nextcloud, and ERP)
   - `memcached:alpine` — Rails cache
   - `nginx:alpine` — Reverse proxy + SSL for all three domains
   - `certbot/certbot` — Let's Encrypt auto-renewal (cert expires 2026-09-12)
   - `openproject/hocuspocus:latest` — Real-time document collaboration (port 1234, internal)
   - `openproject-mcp-server` — Remote MCP endpoint (Python 3.12, FastMCP 3.4.2, 49 tools, port 39128 internal). Source: `mcp-servers/openproject-mcp/`
   - `nextcloud:stable` — Nextcloud document store (port 8091 internal)
-  - `axerp:prod` — ERPNext v16 (AXERP fork, port 8082 internal). Source: `github.com/axinagroup/axerp@version-16`
+  - `axerp:prod` — ERPNext v16 (ERP fork, port 8082 internal)
 - **EBS Volumes**:
   - `/dev/xvda` (60GB gp3) — Root volume (`/`) — OS, minimal system files only (~7GB used)
   - `/dev/xvdf` (`vol-02ddb201266e90a56`, 500GB gp3) — Persistent data volume mounted at `/data` — Docker data dir, PostgreSQL, OpenProject assets, backups
@@ -23,10 +23,10 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 ## Storage
 
 - **Database**: PostgreSQL (containerized, data on `/data/openproject/pgdata`)
-- **Attachments**: S3 bucket `axina-openproject-files` in us-east-1
+- **Attachments**: S3 bucket `ctorescues-openproject-files` in us-east-1
   - SSE-S3 encryption enabled
   - Versioning enabled (90-day retention for old versions)
-  - CORS configured for `projects.axinagroup.com`
+  - CORS configured for `projects.ctorescues.com`
   - No public access
   - Access granted to EC2 via IAM role (no hardcoded credentials)
 - **Docker data dir**: `/data/docker` on the 500GB EBS volume (`/etc/docker/daemon.json` → `"data-root": "/data/docker"`)
@@ -43,7 +43,7 @@ OpenProject + MCP Server on EC2 with Docker Compose, served at `projects.axinagr
 - AWS CLI configured with `us-east-1`
 - Terraform installed (`brew install terraform`)
 - Your IP: your IPv4 and IPv6 addresses (set in terraform.tfvars)
-- SSH key: `aws-key-xgccloudcom`
+- SSH key: `YOUR_KEY_PAIR_NAME`
 
 ### 1. Configure variables
 
@@ -97,7 +97,7 @@ curl https://<your-domain>/mcp/health -H "X-MCP-Key: $MCP_API_KEY"
 
 ### 5. IAM role
 
-Terraform creates `axina-openproject-role` with `AmazonSSMManagedInstanceCore` and scoped S3 access. No manual IAM steps needed.
+Terraform creates `ctorescues-openproject-role` with `AmazonSSMManagedInstanceCore` and scoped S3 access. No manual IAM steps needed.
 
 ### 6. Connect Claude to the remote MCP server
 
@@ -121,8 +121,8 @@ See `mcp-servers/README.md` for full client setup including Claude Desktop and K
 
 - **Provider**: AWS SES us-east-1
 - **SMTP endpoint**: `email-smtp.us-east-1.amazonaws.com:587`
-- **Verified domain**: `axinagroup.com`
-- **From address**: `no-reply@axinagroup.com`
+- **Verified domain**: `ctorescues.com`
+- **From address**: `no-reply@ctorescues.com`
 - **Auth**: STARTTLS + login (SMTP credentials, not IAM keys)
 
 ### Generate SES SMTP Credentials
@@ -166,7 +166,7 @@ SES starts in sandbox — can only send to verified addresses.
 ## Backup
 
 - **Schedule**: Daily at 2:00 AM Eastern (07:00 UTC) via systemd timer
-- **Destination**: `s3://axina-openproject-files/backups/YYYY/MM/DD/`
+- **Destination**: `s3://ctorescues-openproject-files/backups/YYYY/MM/DD/`
 - **Retention**: 7 days STANDARD → 90 days STANDARD_IA → 365 days GLACIER
 - **Script**: `/opt/openproject/scripts/backup-to-s3.sh`
 - **Credentials**: `/opt/openproject/.env.backup` (chmod 600)
@@ -192,13 +192,13 @@ aws ssm start-session --target <instance-id>
 
 ### Verify
 ```bash
-aws s3 ls s3://axina-openproject-files/backups/ --recursive --human-readable
+aws s3 ls s3://ctorescues-openproject-files/backups/ --recursive --human-readable
 systemctl status openproject-backup.timer
 ```
 
 ### Restore
 ```bash
-aws s3 cp s3://axina-openproject-files/backups/YYYY/MM/DD/<file>.zip /tmp/
+aws s3 cp s3://ctorescues-openproject-files/backups/YYYY/MM/DD/<file>.zip /tmp/
 aws ssm start-session --target <instance-id>
 docker exec -it openproject-app bundle exec rake backup:restore BACKUP=/tmp/<file>.zip
 ```
@@ -208,7 +208,7 @@ docker exec -it openproject-app bundle exec rake backup:restore BACKUP=/tmp/<fil
 - **OpenProject user**: `github-integration` — makes automated PR comments
 - **Role**: `GitHub Integration` — `view_work_packages` + `add_work_package_notes`
 - **Webhook token**: stored in 1Password as **OpenProject GitHub Webhook Token**
-- **Webhook URL**: `https://projects.axinagroup.com/webhooks/github?key=<WEBHOOK_TOKEN>`
+- **Webhook URL**: `https://projects.ctorescues.com/webhooks/github?key=<WEBHOOK_TOKEN>`
 - **GitHub module enabled**: per-project (enable via Administration → Modules)
 
 ### Generate a Webhook Token
@@ -220,7 +220,7 @@ docker exec -it openproject-app bundle exec rake backup:restore BACKUP=/tmp/<fil
 ### Add a Webhook to a GitHub Repo
 
 1. GitHub repo → **Settings** → **Webhooks** → **Add webhook**
-2. Payload URL: `https://projects.axinagroup.com/webhooks/github?key=<WEBHOOK_TOKEN>`
+2. Payload URL: `https://projects.ctorescues.com/webhooks/github?key=<WEBHOOK_TOKEN>`
 3. Content type: `application/json`
 4. Events: **Send me everything**
 5. Active: ✓ → **Add webhook**
@@ -306,7 +306,7 @@ mkdir -p /data/mcp-server
 docker-compose up -d --build mcp-server
 
 # 6. Verify
-curl https://projects.axinagroup.com/mcp/health \
+curl https://projects.ctorescues.com/mcp/health \
   -H "X-MCP-Key: $MCP_API_KEY"
 ```
 
@@ -314,7 +314,7 @@ curl https://projects.axinagroup.com/mcp/health \
 
 ```bash
 claude mcp add --transport sse --scope user openproject-remote \
-  https://projects.axinagroup.com/mcp/sse \
+  https://projects.ctorescues.com/mcp/sse \
   --header "X-MCP-Key: <your-mcp-api-key>"
 ```
 
@@ -322,9 +322,9 @@ claude mcp add --transport sse --scope user openproject-remote \
 
 1. Open Claude mobile app
 2. Settings → MCP Servers → Add Server
-3. URL: `https://projects.axinagroup.com/mcp/sse`
+3. URL: `https://projects.ctorescues.com/mcp/sse`
 4. Header: `X-MCP-Key: <your-mcp-api-key>`
-5. Name: `AXINA Group`
+5. Name: `CTO Rescues`
 
 ### Rebuild and Deploy the MCP Container
 
@@ -339,20 +339,20 @@ aws ssm start-session --target <instance-id>
 
 # 3. Pull latest and rebuild
 cd /opt/openproject
-git pull   # or copy files via S3: aws s3 cp s3://axina-openproject-files/tmp/server.py /data/mcp-server/server.py
+git pull   # or copy files via S3: aws s3 cp s3://ctorescues-openproject-files/tmp/server.py /data/mcp-server/server.py
 docker compose up -d --build mcp-server
 
 # 4. Verify — tools count will increase when new tools are added
-curl https://projects.axinagroup.com/mcp/health -H "X-MCP-Key: <MCP_API_KEY>"
+curl https://projects.ctorescues.com/mcp/health -H "X-MCP-Key: <MCP_API_KEY>"
 ```
 
 The `tools` field in the health response reflects the number of registered MCP tools. Confirm it matches after a rebuild.
 
 ### Voice Memo → OpenProject Workflow
 
-Drop any `.m4a`, `.mp3`, or `.wav` recording into `s3://axina-openproject-files/voice-memos/` then instruct Claude:
+Drop any `.m4a`, `.mp3`, or `.wav` recording into `s3://ctorescues-openproject-files/voice-memos/` then instruct Claude:
 
-> "Find the newest audio file in the `axina-openproject-files` bucket under `voice-memos/` using `search_s3_objects`, transcribe it with `transcribe_s3_audio` using model size `tiny`, summarize the action items, and create work packages in the appropriate projects using the Project Routing Guide."
+> "Find the newest audio file in the `ctorescues-openproject-files` bucket under `voice-memos/` using `search_s3_objects`, transcribe it with `transcribe_s3_audio` using model size `tiny`, summarize the action items, and create work packages in the appropriate projects using the Project Routing Guide."
 
 Whisper runs on the EC2 instance (CPU, int8 quantization). The `tiny` model uses ~75MB RAM and transcribes a 5-minute memo in ~30 seconds on a t3.large. Use `base` for better accuracy on accented speech or technical terminology.
 
@@ -370,34 +370,33 @@ security find-generic-password -s "openproject-mcp-api-key" -w
 
 ## Nextcloud (Document Store / VDR)
 
-Self-hosted Nextcloud at `files.axinagroup.com`. Full deployment guide: `docs/nextcloud-deployment.md`.
+Self-hosted Nextcloud at `files.ctorescues.com`. Full deployment guide: `docs/nextcloud-deployment.md`.
 
 | Item | Detail |
 |------|--------|
-| Domain | `files.axinagroup.com` — Route53 A → `44.195.198.18` ✅ (created 2026-06-16, zone Z03662342MPWYW6ZEPJLC) |
+| Domain | `files.ctorescues.com` — Route53 A → `YOUR_EC2_ELASTIC_IP` |
 | TLS | Let's Encrypt via shared certbot container |
 | Database | `nextcloud` DB on shared `openproject-postgres` container |
-| Storage | `s3://axina-openproject-files/nextcloud/` — shared bucket, `nextcloud/` prefix. IAM user `nextcloud-s3` (policy: `infrastructure/nextcloud/nextcloud-iam-policy.json`) |
+| Storage | `s3://ctorescues-openproject-files/nextcloud/` — shared bucket, `nextcloud/` prefix. IAM user `nextcloud-s3` (policy: `infrastructure/nextcloud/nextcloud-iam-policy.json`) |
 | Config | `nextcloud-config` Docker named volume |
 | Hooks | `/data/nextcloud/hooks/` on EBS data volume |
 | OpenProject | OAuth 2.0 two-way integration — project folder auto-management enabled |
 | Compose file | `infrastructure/docker/docker-compose.nextcloud.yml` |
 
-## AXERP (ERPNext)
+## ERP (ERPNext)
 
-AXERP fork of ERPNext v16 at `erp.axinagroup.com`. Full deployment guide: `docs/axerp-deployment.md`.
+ERP fork of ERPNext v16 at `erp.ctorescues.com`. Full deployment guide: `docs/axerp-deployment.md`.
 
 | Item | Detail |
 |------|--------|
-| Domain | `erp.axinagroup.com` — Route53 A → `44.195.198.18` |
+| Domain | `erp.ctorescues.com` — Route53 A → `YOUR_EC2_ELASTIC_IP` |
 | TLS | Let's Encrypt via shared certbot container |
-| Database | `erp.axinagroup.com` DB on shared `openproject-postgres` container (PostgreSQL) |
+| Database | `erp.ctorescues.com` DB on shared `openproject-postgres` container (PostgreSQL) |
 | Storage | `/data/axerp/sites/` on EBS data volume |
-| Source | `github.com/axinagroup/axerp`, branch `version-16` — cloned to `/data/axerp-src` on EC2 |
 | Image | `axerp:prod` — built on EC2 from `frappe/erpnext:v16.13.3` (arm64 native) |
 | Port | `127.0.0.1:8082:8080` (nginx proxied) |
 | Compose file | `infrastructure/docker/docker-compose.axerp.yml` |
-| Admin password | 1Password → "AXERP Admin" |
+| Admin password | 1Password → "ERP Admin" |
 
 ## Security Notes
 
