@@ -98,10 +98,12 @@ Run `/pmo-menu` to see the full reference table.
 └─────────────────────────┬───────────────────────────────────────┘
                           │ HTTPS + API Key
 ┌─────────────────────────▼───────────────────────────────────────┐
-│  AWS EC2 (us-east-1)                                            │
-│  • OpenProject (Docker) — projects.axinagroup.com               │
+│  AWS EC2 (us-east-1) — t4g.xlarge arm64, us-east-1f             │
+│  • OpenProject  — projects.axinagroup.com / projects.tspgusa.com│
+│  • AXERP (ERPNext) — erp.axinagroup.com / erp.tspgusa.com       │
+│  • Nextcloud    — files.axinagroup.com / files.tspgusa.com      │
 │  • Remote MCP Server (SSE) — OpenProject + S3 tools             │
-│  • S3: xgccloud-openproject-files                                │
+│  • S3: axina-openproject-files                                   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -231,24 +233,37 @@ WhatsApp summary sent to Daniel's number at the end of every run.
 |----------|--------|
 | EC2 | `t4g.xlarge` (4 vCPU, 16GB RAM, Graviton2 arm64), Amazon Linux 2023, 60GB root + 500GB data |
 | Instance ID | `i-07bb8581203e52527`, AZ `us-east-1f` |
-| Domain | `projects.axinagroup.com` (Route53) |
-| SSL | Let's Encrypt via Certbot (auto-renewing, expires 2026-09-12) |
-| Email | SES SMTP `no-reply@axinagroup.com` |
+| Domains | `*.axinagroup.com` (Let's Encrypt) · `*.tspgusa.com` (internal wildcard CA, Secrets Manager) |
+| Email | SES SMTP — `no-reply@axinagroup.com` and `no-reply@tspgusa.com` (both verified, DKIM+DMARC) |
 | Storage | S3 `axina-openproject-files` (versioned, SSE-S3) |
+| Terraform | `infrastructure/terraform/` — EC2, EIP, SG, IAM, S3, Route53, SES for both domains |
+
+### Corporate Domains
+
+Both domains resolve to the same EC2 instance and are fully interchangeable:
+
+| URL | Service |
+|-----|---------|
+| `projects.axinagroup.com` / `projects.tspgusa.com` | OpenProject |
+| `files.axinagroup.com` / `files.tspgusa.com` | Nextcloud |
+| `erp.axinagroup.com` / `erp.tspgusa.com` | AXERP (ERPNext) |
 
 ### Docker Containers on EC2
 
-Docker data dir: `/data/docker` (500GB EBS, configured via `/etc/docker/daemon.json`)
+Docker data dir: `/data/docker` (500GB EBS)
 
 | Container | Purpose |
 |-----------|---------|
 | `openproject-app` | Project management UI (OpenProject 17.4.1) |
-| `openproject-postgres` | PostgreSQL 16 database |
-| `openproject-nginx` | Reverse proxy + SSL termination |
-| `openproject-certbot` | Let's Encrypt auto-renewal |
+| `openproject-postgres` | PostgreSQL 16 — shared by OpenProject + Nextcloud |
+| `openproject-nginx` | Reverse proxy + TLS termination (all domains) |
+| `openproject-certbot` | Let's Encrypt auto-renewal for axinagroup.com |
 | `openproject-hocuspocus` | Real-time collaborative editing |
 | `openproject-cache` | Memcached (Rails cache) |
-| `openproject-mcp-server` | Remote MCP endpoint — 49-tool FastMCP server (SSE, :39128 internal) |
+| `openproject-mcp-server` | Remote MCP endpoint — FastMCP SSE, :39128 internal |
+| `axerp-backend` / `axerp-frontend` | ERPNext v16 (Frappe) |
+| `axerp-mariadb` | MariaDB 10.6 — dedicated to AXERP |
+| `nextcloud-app` | Nextcloud CE — S3 primary storage |
 
 ---
 

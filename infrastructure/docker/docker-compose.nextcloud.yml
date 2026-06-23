@@ -28,7 +28,7 @@ services:
       NEXTCLOUD_ADMIN_PASSWORD: ${NC_ADMIN_PASSWORD}
 
       # ── Trusted domain ──────────────────────────────────────────────────────
-      NEXTCLOUD_TRUSTED_DOMAINS: files.axinagroup.com
+      NEXTCLOUD_TRUSTED_DOMAINS: "files.axinagroup.com files.tspgusa.com"
 
       # ── S3 primary object store ─────────────────────────────────────────────
       # Injected into config.php via the autoconfig.php hook on first boot.
@@ -50,7 +50,7 @@ services:
       SMTP_NAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       MAIL_FROM_ADDRESS: no-reply
-      MAIL_DOMAIN: axinagroup.com
+      MAIL_DOMAIN: ${NC_MAIL_DOMAIN:-tspgusa.com}
 
       # ── Overwrite URL (required behind nginx reverse proxy) ─────────────────
       OVERWRITEPROTOCOL: https

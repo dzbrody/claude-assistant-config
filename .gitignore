@@ -23,6 +23,8 @@ daily_briefs/
 *.tfstate.*
 .terraform.lock.hcl
 terraform.tfvars
+*.tfplan
+tfplan
 
 # Logs
 logs/

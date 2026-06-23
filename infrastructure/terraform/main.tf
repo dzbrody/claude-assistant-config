@@ -331,7 +331,7 @@ resource "aws_s3_bucket_cors_configuration" "openproject_files" {
   bucket = aws_s3_bucket.openproject_files.id
 
   cors_rule {
-    allowed_origins = ["https://projects.axinagroup.com"]
+    allowed_origins = ["https://projects.axinagroup.com", "https://projects.tspgusa.com"]
     allowed_methods = ["GET", "PUT", "POST", "DELETE"]
     allowed_headers = ["*"]
     max_age_seconds = 3600
