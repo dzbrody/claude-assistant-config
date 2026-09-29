@@ -102,3 +102,8 @@ Contributions: bug fixes and documentation corrections as pull requests. Do not 
 If your leadership team is still the integration layer between mail, chat, and the project system, this repository is the reference architecture I run myself.
 
 [Book a Fractional CTO call](https://ctorescues.com/contact/) · [Autonomic PMO case study](https://ctorescues.com/autonomic-pmo/) · [LinkedIn](https://www.linkedin.com/in/danielbrody/) · [GitHub profile](https://github.com/dzbrody)
+
+
+---
+**CITO for Hire** — design-it · sell-it · build-it · implement-it
+[ctorescues.com](https://ctorescues.com) · [Facebook](https://www.facebook.com/people/CTORescues/100067231596849/) · [GitHub](https://github.com/dzbrody) · [LinkedIn](https://www.linkedin.com/in/danielbrody/)
